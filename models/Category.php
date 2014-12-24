@@ -31,7 +31,10 @@ class Category extends Model
     public $hasOne = [];
     public $hasMany = [];
     public $belongsTo = [];
-    public $belongsToMany = [];
+    public $belongsToMany = [
+        // 'discount' => ['Bedard\Shop\Models\Discount', 'table' => 'bedard_shop_discounts_categories', 'scope' => 'isActive'],
+        'raw_products' => ['Bedard\Shop\Models\Product', 'table' => 'bedard_shop_products_categories']//, 'scope' => 'isActive', 'order' => 'name asc']
+    ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
@@ -65,6 +68,10 @@ class Category extends Model
     /**
      * Query Scopes
      */
+    public function scopeNonPseudo($query)
+    {
+        $query->whereNull('pseudo');
+    }
     public function scopeDefaultOrder($query)
     {
         $query->orderBy('is_active', 'desc')
@@ -77,7 +84,7 @@ class Category extends Model
      */
     public function getProductCountAttribute()
     {
-        return 0;
+        return count($this->raw_products);
     }
 
     

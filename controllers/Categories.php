@@ -87,7 +87,7 @@ class Categories extends Controller
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             foreach ($checkedIds as $recordId) {
                 if (!$record = Category::find($recordId)) continue;
-                if (!$record->delete()) $successful = false;
+                if (!$record->delete()) $successful = FALSE;
             }
         }
         if ($successful) Flash::success('Successfully deleted categories.');
