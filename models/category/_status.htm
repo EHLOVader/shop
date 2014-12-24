@@ -1,0 +1,9 @@
+<?php
+if (!$record->is_active)
+	echo '<i class="list-icon icon-times red"></i>Inactive';
+
+elseif (!$record->is_visible)
+	echo '<i class="list-icon icon-minus grey"></i>Hidden';
+
+else
+	echo '<i class="list-icon icon-check green"></i>Active';

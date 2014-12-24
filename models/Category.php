@@ -7,6 +7,7 @@ use Model;
  */
 class Category extends Model
 {
+    use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
@@ -36,4 +37,31 @@ class Category extends Model
     public $attachOne = [];
     public $attachMany = [];
 
+    /*
+     * Validation
+     */
+    public $rules = [
+        'name' => 'required',
+        'slug' => 'required|between:3,64|unique:bedard_shop_categories|regex:/^[a-z0-9\-]+$/i'
+    ];
+
+    /**
+     * Query Scopes
+     */
+    public function scopeDefaultOrder($query)
+    {
+        $query->orderBy('is_active', 'desc')
+              ->orderBy('is_visible', 'desc')
+              ->orderBy('position', 'asc');
+    }
+
+    /**
+     * Returns the number of products the category contains
+     */
+    public function getProductCountAttribute()
+    {
+        return 0;
+    }
+
+    
 }

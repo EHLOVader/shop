@@ -1,0 +1,46 @@
+<?php Block::put('breadcrumb') ?>
+    <ul>
+        <li><a href="<?= Backend::url('bedard/shop/categories') ?>">Categories</a></li>
+        <li>Manage Category Order</li>
+    </ul>
+<?php Block::endPut() ?>
+
+<?php if (!$this->fatalError): ?>
+
+    <?= Form::open(['class'=>'layout']) ?>
+
+		<div data-control="toolbar">
+			<button
+				class="btn btn-primary oc-icon-check update-positions"
+				disabled="disabled"
+				data-request="onUpdatePosition"
+				data-stripe-load-indicator>
+				Save Order
+			</button>
+		</div>
+
+    	<ul class="sortable">
+	    	<?php foreach ($categories as $category): ?>
+		    	<li<?php if (!$category->is_active || !$category->is_visible) echo ' class="disabled"' ?>>
+		    		<input type="hidden" name="Category[position][]" value="<?= $category->id ?>" />
+		    		<span class="left"><?= $category->name ?></span>
+		    		<span class="right">
+		    			<?php
+		    			if (!$category->is_active) echo '<span class="status-label">Inactive</span><i class="icon-times red"></i>';
+		    			elseif (!$category->is_visible) echo '<span class="status-label">Hidden</span><i class="icon-minus grey"></i>';
+		    			else echo '<span class="status-label">Active</span><i class="icon-check green"></i>';
+		    			?>
+		    		</span>
+		    	</li>
+		    <?php endforeach; ?>
+		</ul>
+
+    <?= Form::close() ?>
+
+<?php endif ?>
+
+<script>
+    $('.sortable').sortable({items: ':not(.disabled)'}).bind('sortupdate', function() {
+	    $('.update-positions').removeAttr('disabled');
+	});
+</script>

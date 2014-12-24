@@ -12,12 +12,12 @@ class CreateCategoriesTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name')->nullable();
-            $table->string('slug')->unique()->nullable();
+            $table->string('name', 64)->nullable();
+            $table->string('slug', 64)->unique()->nullable();
             $table->string('description')->nullable();
             $table->integer('position')->unsigned();
             $table->string('pseudo', 4)->nullable();
-            $table->boolean('is_hidden')->unsigned();
+            $table->boolean('is_visible')->unsigned();
             $table->boolean('is_active')->unsigned();
             $table->timestamps();
         });

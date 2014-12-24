@@ -3,6 +3,39 @@
 # ===================================
 
 fields:
-    id:
-        label: ID
-        disabled: true
+
+    name:
+        label: Name
+        required: true
+        span: left
+
+    slug:
+        label: Slug
+        required: true
+        attributes:
+            data-input-preset: 'input[name="Category[name]"]'
+            data-input-preset-type: slug
+            data-input-preset-closest-parent: form
+        span: right
+
+    description:
+        label: Description
+        type: textarea
+
+    is_active:
+        label: Status
+        type: dropdown
+        options:
+            1: Active
+            0: Inactive
+        default: 1
+        span: left
+
+    is_visible:
+        label: Visibility
+        type: dropdown
+        options:
+            1: Visible
+            0: Hidden
+        default: 1
+        span: right

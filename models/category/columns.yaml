@@ -3,6 +3,18 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
+
+    name:
+        label: Name
         searchable: true
+
+    productCount:
+        label: Products
+
+    arrangement:
+        label: Arrangement
+
+    is_active:
+        label: Status
+        type: partial
+        path: @/plugins/bedard/shop/models/category/_status.htm

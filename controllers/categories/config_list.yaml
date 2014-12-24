@@ -18,21 +18,21 @@ recordUrl: bedard/shop/categories/update/:id
 noRecordsMessage: backend::lang.list.no_records
 
 # Records to display per page
-recordsPerPage: 20
+recordsPerPage: 0
 
 # Displays the list column set up button
-showSetup: true
+showSetup: false
 
 # Displays the sorting link on each column
-showSorting: true
+showSorting: false
 
 # Default sorting column
-# defaultSort:
-#     column: created_at
-#     direction: desc
+defaultSort:
+    column: is_active
+    direction: desc
 
 # Display checkboxes next to each record
-# showCheckboxes: true
+showCheckboxes: true
 
 # Toolbar widget configuration
 toolbar:
