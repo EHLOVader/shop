@@ -9,7 +9,7 @@ ul.sortable {
 	margin-top: 20px;
 }
 ul.sortable li, ul.sortable .sortable-placeholder {
-	margin: 5px 0;
+	margin: 0 0 10px 0;
 	padding: 0 10px;
 	border: 1px solid #ccc;
 	height: 40px;

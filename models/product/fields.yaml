@@ -3,6 +3,96 @@
 # ===================================
 
 fields:
-    id:
-        label: ID
-        disabled: true
+
+    name:
+        label: Product Name
+        placeholder: New product name
+        span: left
+        required: true
+
+    slug:
+        label: Slug
+        placeholder: new-product-slug
+        span: right
+        attributes:
+            data-input-preset: 'input[name="Product[name]"]'
+            data-input-preset-type: slug
+            data-input-preset-closest-parent: form
+        required: true
+
+    toolbar:
+        type: partial
+        path: post_toolbar
+        cssClass: collapse-visible
+
+secondaryTabs:
+
+    stretch: true
+
+    fields:
+
+        description:
+            tab: Information
+            label: Description
+            type: richeditor
+            span: left
+        full_price:
+            tab: Information
+            label: Price
+            type: text
+            placeholder: "0.00"
+            span: right
+        weight:
+            tab: Information
+            label: Weight (ounces)
+            type: text
+            placeholder: 0
+            span: right
+        is_active:
+            tab: Information
+            label: Status
+            type: dropdown
+            options:
+                1: Active
+                0: Inactive
+            default: 1
+            span: left
+        is_visible:
+            tab: Information
+            label: Visibility
+            type: dropdown
+            options:
+                1: Visible
+                0: Hidden
+            default: 1
+            span: right
+
+        categories:
+            tab: Categories
+            label: Categories
+            type: relation
+
+        thumbnail:
+            tab: Images
+            label: Thumbnail
+            type: fileupload
+            mode: image
+            imageWidth: 200
+            imageHeight: 200
+            span: left
+            required: true
+        thumbnail_alt:
+            tab: Images
+            label: Thumbnail Alternate
+            type: fileupload
+            mode: image
+            imageWidth: 200
+            imageHeight: 200
+            span: right
+        images:
+            tab: Images
+            label: Featured Images
+            type: fileupload
+            mode: image
+            imageWidth: 200
+            imageHeight: 200

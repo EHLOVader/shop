@@ -35,7 +35,7 @@ class Category extends Model
     public $belongsTo = [];
     public $belongsToMany = [
         // 'discount' => ['Bedard\Shop\Models\Discount', 'table' => 'bedard_shop_discounts_categories', 'scope' => 'isActive'],
-        'products' => ['Bedard\Shop\Models\Product', 'table' => 'bedard_shop_products_categories']//, 'scope' => 'isActive', 'order' => 'name asc']
+        'products' => ['Bedard\Shop\Models\Product', 'table' => 'bedard_shop_products_categories', 'scope' => 'isActive']
     ];
     public $morphTo = [];
     public $morphOne = [];

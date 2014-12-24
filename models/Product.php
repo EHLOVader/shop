@@ -34,9 +34,14 @@ class Product extends Model
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
-    public $attachOne = [];
-    public $attachMany = [];
-
+    public $attachOne = [
+        'thumbnail' => ['System\Models\File'],
+        'thumbnail_alt' => ['System\Models\File']
+    ];
+    public $attachMany = [
+        'images' => ['System\Models\File']
+    ];
+    
     /**
      * Attach every product to the "all" pseudo category
      */
@@ -50,8 +55,12 @@ class Product extends Model
     /**
      * Query Scopes
      */
+    public function scopeIsActive($query)
+    {
+        $query->where('is_active', TRUE);
+    }
     public function scopeIsVisible($query)
     {
-        $query->where('is_active', true);
+        $query->where('is_active', TRUE);
     }
 }
