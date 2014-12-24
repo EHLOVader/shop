@@ -92,14 +92,14 @@ class Category extends Model
      */
     public function getProductCountAttribute()
     {
-        return 0;//count($this->products);
+        return count($this->products);
     }
 
     /**
      * Returns the category's product arrangement
      * @return Collection   Bedard\Shop\Models\Product
      */
-    public function getArrangedProducts($page = 9)
+    public function getArrangedProducts($page = 0)
     {
         $categoryId = $this->id;
         $products = $this->pseudo == 'all'
@@ -125,7 +125,7 @@ class Category extends Model
                 $products->orderBy(DB::raw("id <> $id"));
         }
 
-        // If a page value was passed in, only query products on that page
+        // If a page value was passed in, query only products on that page
         if ($page > 0) {
             $limit = $this->arrangement_columns * $this->arrangement_rows;
             $offset = $limit * ($page - 1);

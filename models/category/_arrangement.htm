@@ -1,0 +1,15 @@
+<?php
+if ($record->arrangement_method == 'alpha_asc')
+	echo '<i class="list-icon icon-sort-alpha-asc"></i>Alphebetized (asc)';
+
+if ($record->arrangement_method == 'alpha_desc')
+	echo '<i class="list-icon icon-sort-alpha-desc"></i>Alphebetized (desc)';
+
+if ($record->arrangement_method == 'newest')
+	echo '<i class="list-icon icon-sort-numeric-asc"></i>Newest First';
+
+if ($record->arrangement_method == 'oldest')
+	echo '<i class="list-icon icon-sort-numeric-desc"></i>Oldest First';
+
+if ($record->arrangement_method == 'custom')
+	echo '<i class="list-icon icon-th"></i>Custom';

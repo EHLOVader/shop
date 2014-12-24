@@ -1,18 +1,18 @@
 <div class="products">
-	<?php if (!empty($arrangedProducts)): ?>
-		<ul class="arrangement span<?=$cols ?> connected">
+	<?php if (!empty($arrangedProducts) && count($arrangedProducts) > 0): ?>
+		<ul class="arrangement span<?=$cols ?>">
 			<?php foreach ($arrangedProducts as $product): ?>
-			<li>
-				<div class="grid-inner">
-					<input type="hidden" name="Category[arrangement_order][]" value="<?= $product->id ?>" />
-					<?php
-					// if (!empty($product->thumbnail))
-					// 	echo '<span class="thumbnail"><img src="'.$product->thumbnail->getPath().'" alt="'.$product->name.'" /></span>';
-					// else
-						echo '<div class="table"><span class="cell">'.$product->name.'</span></div>';
-					?>
-				</div>
-			</li>
+				<li>
+					<div class="grid-inner">
+						<input type="hidden" name="Category[arrangement_order][]" value="<?= $product->id ?>" />
+						<?php
+						// if (!empty($product->thumbnail))
+						// 	echo '<span class="thumbnail"><img src="'.$product->thumbnail->getPath().'" alt="'.$product->name.'" /></span>';
+						// else
+							echo '<div class="table"><span class="cell">'.$product->name.'</span></div>';
+						?>
+					</div>
+				</li>
 			<?php endforeach ?>
 		</ul>
 	<?php else: ?>

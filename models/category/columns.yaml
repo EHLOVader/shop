@@ -11,6 +11,11 @@ columns:
     productCount:
         label: Products
 
+    arrangement_method:
+        label: Arrangement
+        type: partial
+        path: @/plugins/bedard/shop/models/category/_arrangement.htm
+
     is_active:
         label: Status
         type: partial
