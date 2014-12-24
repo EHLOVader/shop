@@ -20,14 +20,18 @@ class DatabaseSeeder extends Seeder {
 			'name'				=> 'All',
 			'slug'				=> 'all',
 			'description'		=> 'Everything in the shop',
-			'pseudo'			=> 'all'
+			'pseudo'			=> 'all',
+			'is_visible'		=> 1,
+			'is_active'			=> 1
 		]);
 		Category::create([
 			'position'			=> 2,
 			'name'				=> 'Sale',
 			'slug'				=> 'sale',
 			'description'		=> 'Products on sale.',
-			'pseudo'			=> 'sale'
+			'pseudo'			=> 'sale',
+			'is_visible'		=> 1,
+			'is_active'			=> 1
 		]);
 
 		// Enable foreign keys

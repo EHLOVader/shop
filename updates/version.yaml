@@ -2,3 +2,4 @@
   - First version of Shop
   - create_categories_table.php
   - seed_the_database.php
+  - temp_seeder.php
