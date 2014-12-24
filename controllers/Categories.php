@@ -19,6 +19,7 @@ class Categories extends Controller
 
     public $formConfig = 'config_form.yaml';
     public $listConfig = 'config_list.yaml';
+    public $bodyClass = 'compact-container';
 
     /**
      * Categories Controller
@@ -27,7 +28,13 @@ class Categories extends Controller
     {
         parent::__construct();
         BackendMenu::setContext('Bedard.Shop', 'shop', 'categories');
+
         $this->addCss('/plugins/bedard/shop/assets/css/backend.css');
+        $this->addCss('/plugins/bedard/shop/assets/css/sortable.css');
+
+        $this->addJs('/plugins/bedard/shop/assets/js/html5sortable.min.js');
+        $this->addJs('/plugins/bedard/shop/assets/js/backend.js');
+
     }
 
     /**
@@ -51,9 +58,6 @@ class Categories extends Controller
      */
     public function position()
     {
-        // Add html5sortable
-        $this->addJs('/plugins/bedard/shop/assets/js/html5sortable.min.js');
-
         $this->pageTitle = "Manage Category Order";
         $this->vars['categories'] = Category::defaultOrder()->get();
     }

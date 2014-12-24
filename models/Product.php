@@ -46,4 +46,12 @@ class Product extends Model
             if ($category->pseudo == 'all') return;
         $this->categories()->attach(1);
     }
+
+    /**
+     * Query Scopes
+     */
+    public function scopeIsVisible($query)
+    {
+        $query->where('is_active', true);
+    }
 }

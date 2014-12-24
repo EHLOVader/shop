@@ -16,6 +16,10 @@ class CreateCategoriesTable extends Migration
             $table->string('slug', 64)->unique()->nullable();
             $table->string('description')->nullable();
             $table->integer('position')->unsigned();
+            $table->string('arrangement_method', 10)->default('newest')->nullable();
+            $table->text('arrangement_order')->nullable();
+            $table->integer('arrangement_rows')->unsigned();
+            $table->integer('arrangement_columns')->unsigned();
             $table->string('pseudo', 4)->nullable();
             $table->boolean('is_visible')->unsigned();
             $table->boolean('is_active')->unsigned();

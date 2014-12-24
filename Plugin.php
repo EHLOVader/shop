@@ -27,7 +27,7 @@ class Plugin extends PluginBase
     /**
      * Returns backend navigation
      *
-     * @return  Array
+     * @return array
      */
     public function registerNavigation()
     {
@@ -93,4 +93,18 @@ class Plugin extends PluginBase
         ];
     }
 
+    /**
+     * Returns form widgets
+     * 
+     * @return array
+     */
+    public function registerFormWidgets()
+    {
+        return [
+            'Bedard\Shop\FormWidgets\Arrangement' => [
+                'label' => 'Product Arrangement',
+                'code'  => 'arrangement'
+            ]
+        ];
+    }
 }

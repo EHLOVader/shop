@@ -1,0 +1,46 @@
+.sortable-container {
+	padding: 0 15px;
+}
+
+ul.sortable {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	margin-top: 20px;
+}
+ul.sortable li, ul.sortable .sortable-placeholder {
+	margin: 5px 0;
+	padding: 0 10px;
+	border: 1px solid #ccc;
+	height: 40px;
+	line-height: 40px;
+	background: #F6F6F6;
+	font-size: 12px;
+	cursor: move;
+}
+ul.sortable .sortable-placeholder {
+	border-style: dashed;
+	background-color: #F9F9F9;
+}
+ul.sortable li.disabled {
+	cursor: context-menu;
+	opacity: 0.5;
+}
+ul.sortable li span.left {
+	display: inline-block;
+	float: left;
+	font-weight: bold;
+}
+ul.sortable li span.right {
+	display: inline-block;
+	float: right;
+}
+ul.sortable li span.right i {
+	display: inline-block;
+	width: 15px;
+	text-align: center;
+}
+ul.sortable li span.status-label {
+	display: inline-block;
+	padding-right: 10px;
+}

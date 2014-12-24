@@ -5,37 +5,106 @@
 fields:
 
     name:
-        label: Name
-        required: true
+        label: Category Name
+        placeholder: New category name
         span: left
+        required: true
 
     slug:
         label: Slug
-        required: true
+        placeholder: new-category-slug
+        span: right
         attributes:
             data-input-preset: 'input[name="Category[name]"]'
             data-input-preset-type: slug
             data-input-preset-closest-parent: form
-        span: right
+        required: true
 
-    description:
-        label: Description
-        type: textarea
+    toolbar:
+        type: partial
+        path: post_toolbar
+        cssClass: collapse-visible
 
-    is_active:
-        label: Status
-        type: dropdown
-        options:
-            1: Active
-            0: Inactive
-        default: 1
-        span: left
+secondaryTabs:
 
-    is_visible:
-        label: Visibility
-        type: dropdown
-        options:
-            1: Visible
-            0: Hidden
-        default: 1
-        span: right
+    stretch: true
+
+    fields:
+
+        description:
+            tab: Information
+            label: Description
+            type: richeditor
+
+        is_active:
+            tab: Information
+            label: Status
+            type: dropdown
+            options:
+                1: Active
+                0: Inactive
+            default: 1
+            span: left
+
+        is_visible:
+            tab: Information
+            label: Visibility
+            type: dropdown
+            options:
+                1: Visible
+                0: Hidden
+            default: 1
+            span: right
+
+        arrangement_method:
+            tab: Product Arrangement
+            label: Product Order
+            type: dropdown
+            options:
+                alpha_asc: Alphabetized (ascending)
+                alpha_desc: Alphabetized (descending)
+                newest: Newest First
+                oldest: Oldest First
+                custom: Custom
+
+        arrangement_rows:
+            tab: Product Arrangement
+            label: Rows
+            type: dropdown
+            options:
+                0: Unlimited
+                1: 1
+                2: 2
+                3: 3
+                4: 4
+                5: 5
+                6: 6
+                7: 7
+                8: 8
+                9: 9
+                10: 10
+            default: 2
+            span: left
+
+        arrangement_columns:
+            tab: Product Arrangement
+            label: Columns
+            type: dropdown
+            options:
+                1: 1
+                2: 2
+                3: 3
+                4: 4
+                5: 5
+                6: 6
+                7: 7
+                8: 8
+                9: 9
+                10: 10
+            default: 6
+            span: right
+
+        arrangement_order:
+            tab: Product Arrangement
+            label: Product Arrangement
+            type: arrangement

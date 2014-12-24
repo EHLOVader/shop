@@ -11,9 +11,6 @@ columns:
     productCount:
         label: Products
 
-    arrangement:
-        label: Arrangement
-
     is_active:
         label: Status
         type: partial

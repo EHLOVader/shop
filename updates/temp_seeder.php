@@ -63,12 +63,14 @@ class TempSeeder extends Seeder {
 				'slug' => str_replace(' ', '-', $seed),
 				'full_price' => rand(10, 20),
 				'ounces' => rand(0, 10),
-				'description' => "Some awesome $seed... You should totaly buy it."
+				'description' => "Some awesome $seed... You should totaly buy it.",
+				'is_active' => rand(0, 10) > 0 ? 1 : 0
 			]);
 			if (strpos($seed, 'board') !== FALSE) $product->categories()->attach(3);
 			elseif (strpos($seed, 'hat') !== FALSE) $product->categories()->attach(10);
 			elseif (strpos($seed, 'shirt') !== FALSE) $product->categories()->attach(4);
 			elseif (strpos($seed, 'sticker') !== FALSE) $product->categories()->attach(6);
+			
 		}
 		
 		// Enable foreign keys

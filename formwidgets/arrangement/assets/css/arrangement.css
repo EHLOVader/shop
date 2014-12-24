@@ -1,0 +1,76 @@
+.arrangement {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	margin: 0 -5px;
+	padding: 0;
+	overflow: hidden;
+	max-width: 768px;
+}
+.arrangement li {
+	list-style: none;
+}
+.arrangement li {
+	float: left;
+	text-align: center;
+	position: relative;
+}
+.arrangement li .grid-inner {
+	border: 1px solid #CCC;
+	background: #F6F6F6;
+}
+li.sortable-placeholder {
+	background: none;
+	overflow: hidden;
+	position: relative;
+}
+li.sortable-placeholder .placeholder-inner {
+	border: 1px dashed #CCC;
+	background: none;
+}
+.arrangement li .grid-inner, li.sortable-placeholder .placeholder-inner {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	bottom: 5px;
+	left: 5px;
+}
+
+.arrangement .thumbnail img {
+	width: 100%;
+	height: auto;
+}
+.arrangement .table {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+.arrangement .cell {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.arrangement.span1  li { padding-bottom: 100%; width: 100%; }
+.arrangement.span2  li { padding-bottom: 50%; width: 50%; }
+.arrangement.span3  li { padding-bottom: 33.3333%; width: 33.3333%; }
+.arrangement.span4  li { padding-bottom: 25%; width: 25%; }
+.arrangement.span5  li { padding-bottom: 20%; width: 20%; }
+.arrangement.span6  li { padding-bottom: 16.6666%; width: 16.6666%; }
+.arrangement.span7  li { padding-bottom: 14.2857%; width: 14.2857%; }
+.arrangement.span8  li { padding-bottom: 12.5%; width: 12.5%; }
+.arrangement.span9  li { padding-bottom: 11.1111%; width: 11.1111%; }
+.arrangement.span10 li { padding-bottom: 10%; width: 10%; }
+
+/*
+@media only screen and (min-width: 0px) and (max-width: 769px) {
+	.arrangement li {
+		padding: 35px !important;
+		width: 100% !important;
+	}
+	.arrangement .thumbnail img {
+		height: 100%;
+		width: auto;
+	}
+}
+*/
