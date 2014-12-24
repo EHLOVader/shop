@@ -104,6 +104,10 @@ class Plugin extends PluginBase
             'Bedard\Shop\FormWidgets\Arrangement' => [
                 'label' => 'Product Arrangement',
                 'code'  => 'arrangement'
+            ],
+            'Bedard\Shop\FormWidgets\Inventory' => [
+                'label' => 'Inventory',
+                'code'  => 'inventory'
             ]
         ];
     }
