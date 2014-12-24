@@ -24,7 +24,7 @@ ul.sortable .sortable-placeholder {
 	background-color: #F9F9F9;
 }
 ul.sortable li.disabled {
-	cursor: no-drop;
+	cursor: context-menu;
 	opacity: 0.5;
 }
 ul.sortable li span.left {
