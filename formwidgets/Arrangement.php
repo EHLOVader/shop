@@ -1,6 +1,5 @@
 <?php namespace Bedard\Shop\FormWidgets;
 
-use Backend\Classes\FormField;
 use Backend\Classes\FormWidgetBase;
 
 class Arrangement extends FormWidgetBase
