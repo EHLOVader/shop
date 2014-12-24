@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Flash;
 use Model;
 
 /**
@@ -44,6 +45,22 @@ class Category extends Model
         'name' => 'required',
         'slug' => 'required|between:3,64|unique:bedard_shop_categories|regex:/^[a-z0-9\-]+$/i'
     ];
+
+    /**
+     * Prevent pseudo categories from being deleted
+     */
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($model) {
+            if ($model->pseudo) {
+                $model->is_active = 0;
+                $model->save();
+                Flash::warning('Pseudo categories cannot be deleted, '.$model->name.' has been set to inactive.');
+                return FALSE;
+            }
+        });
+    }
 
     /**
      * Query Scopes

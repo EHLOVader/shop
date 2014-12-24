@@ -63,21 +63,34 @@ class Categories extends Controller
      */
     public function position_onUpdatePosition()
     {
-        $position = post('Category')['position'];
-
-        $i = 0;
-        foreach ($position as $categoryId) {
+        $positions = post('Category')['position'];
+        foreach ($positions as $position => $categoryId) {
             $category = Category::find($categoryId);
             if (!$category) {
                 Flash::error('An unknown error has occured.');
                 return Redirect::refresh();
             }
-            $category->position = $i;
+            $category->position = $position;
             $category->save();
-            $i++;
         }
-
         Flash::success('Category orders have been successfully updated.');
         return Redirect::to(Backend::url('bedard/shop/categories'));
+    }
+
+
+    /**
+     * Delete list rows
+     */
+    public function index_onDelete()
+    {
+        $successful = true;
+        if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
+            foreach ($checkedIds as $recordId) {
+                if (!$record = Category::find($recordId)) continue;
+                if (!$record->delete()) $successful = false;
+            }
+        }
+        if ($successful) Flash::success('Successfully deleted categories.');
+        return $this->listRefresh();
     }
 }
