@@ -1,3 +1,6 @@
+/**
+ * Fire up HTML5 Sortable
+ */
 function attachSortable()
 {
 	$('.inventories').sortable({
@@ -7,6 +10,9 @@ function attachSortable()
 	});
 }
 
+/**
+ * Toggle the "is_active" field on icon click
+ */
 function toggleIsActive(div)
 {
 	var isActive = $(div).find('input');
@@ -20,6 +26,35 @@ function toggleIsActive(div)
 	}
 }
 
+/**
+ * Show / Hides the "no inventories" div
+ */
+function toggleNoInventoriesSign()
+{
+	if ($('.inventories .inventory').length == 0) {
+		$('.no-inventories').removeClass('hidden');
+		$('.inventories').addClass('hidden');	
+	} else {
+		$('.no-inventories').addClass('hidden');
+		$('.inventories').removeClass('hidden');
+	}
+}
+
+/**
+ * Delete a row from the inventory form
+ */
+var deleteTarget;
+function setDeleteTarget( target )
+{
+	deleteTarget = target.closest('.inventory');
+}
+function removeDeleteTarget()
+{
+	deleteTarget.remove();
+	deleteTarget = false;
+	toggleNoInventoriesSign();
+}
+
 $(function() {
 
 	// Fire up sortable
@@ -31,6 +66,8 @@ $(function() {
 			'<li class="inventory">' + $('ul.inventories .template').html() + '</li>'
 		);
 		$('.inventories').sortable('destroy');
+
+		toggleNoInventoriesSign();
 		attachSortable();
 	});
 

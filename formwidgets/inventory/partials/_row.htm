@@ -1,23 +1,33 @@
+<?php
+$inventory_id = isset($id) ? $id : 0;
+$is_active = isset($is_active) ? $is_active : 1;
+?>
+
 <div class="fields">
 	<div class="name">
 		<label>Inventory Name</label>
-		<input name="Inventory[name][]" type="text" class="form-control" placeholder="Name" />
+		<input name="Inventory[id][]" type="hidden" value="<?= $inventory_id ?>" />
+		<input name="Inventory[name][]" type="text" class="form-control" placeholder="Name" 
+			<?php if (isset($name)) echo 'value="'.$name.'"' ?> />
 	</div>
 	<div class="quantity">
 		<label>Quantity</label>
-		<input name="Inventory[quantity][]" type="number" class="form-control" placeholder="0" min="0" />
+		<input name="Inventory[quantity][]" type="text" class="form-control" placeholder="0" min="0" 
+			<?php if (isset($quantity)) echo 'value="'.$quantity.'"' ?> />
 	</div>
 	<div class="modifier">
 		<label>Price Modifier</label>
-		<input name="Inventory[modifier][]" type="number" class="form-control" placeholder="0.00" step="any" />
+		<input name="Inventory[modifier][]" type="text" class="form-control" placeholder="0.00" 
+			value="<?php if (isset($modifier)) echo $modifier ?>" />
 	</div>
 </div>
 <div class="actions">
 	<div class="status">
 		<label>Status</label>
 		<div class="toggle-is-active" onClick="toggleIsActive(this);">
-			<i class="icon-check"></i>
-			<input type="text" name="Inventory[is_active[]" value="1" />
+			<i class="<?= $is_active ? 'icon-check' : 'icon-times' ?>"></i>
+			<input type="hidden" name="Inventory[is_active][]" 
+				value="<?= $is_active ?>" />
 		</div>
 	</div>
 	<div class="handle">
@@ -26,6 +36,14 @@
 	</div>
 	<div class="delete">
 		<label>Delete</label>
-		<div><i class="icon-trash"></i></div>
+		<div>
+			<a href="#" onclick="setDeleteTarget($(this))" 
+				data-request="onDeleteInventory"
+				data-request-data="inventory_id: <?= $inventory_id ?>"
+				data-request-confirm="Are you sure?"
+				data-request-success="removeDeleteTarget()">
+				<i class="icon-trash"></i>
+			</a>
+		</div>
 	</div>
 </div>

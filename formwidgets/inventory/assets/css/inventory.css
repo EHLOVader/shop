@@ -3,6 +3,14 @@ a.new-inventory {
 	margin-bottom: 10px;
 }
 
+div.no-inventories {
+	text-align: center;
+	font-size: 26px;
+}
+div.no-inventories.hidden {
+	display: none;
+}
+
 ul.inventories {
 	margin: 0;
 	padding: 0;
@@ -54,25 +62,20 @@ ul.inventories .actions > div i {
 	line-height: 40px;
 	color: #444;
 }
+ul.inventories .actions > div i:hover {
+	color: #000;
+}
 
 ul.inventories .handle span {
 	cursor: move;
 }
 
-ul.inventories .toggle-is-active i {
-	cursor: pointer;
-}
-ul.inventories .toggle-is-active input {
-	/*display: none;*/
+ul.inventories .delete a:hover {
+	text-decoration: none;
 }
 
-ul.inventories .name {
-	
-}
-ul.inventories .quantity, ul.inventories .modifier {
-}
-ul.inventories .handle, ul.inventories .delete {
-	
+ul.inventories .toggle-is-active i {
+	cursor: pointer;
 }
 
 @media screen and (max-width: 700px) {

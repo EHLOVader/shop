@@ -2,8 +2,7 @@
 
 	<a href="#" class="btn btn-primary oc-icon-plus new-inventory">Add Inventory</a>
 
-
-	<ul class="inventories">
+	<ul class="inventories<?php if (count($inventories) == 0) echo ' hidden' ?>">
 
 		<li class="disabled header">
 			<div class="fields">
@@ -22,9 +21,22 @@
 			<?= $this->makePartial('row') ?>
 		</li>
 
-		<li class="inventory">
-			<?= $this->makePartial('row') ?>
-		</li>
+		<?php foreach ($inventories as $inventory): ?>
+			<li class="inventory">
+				<?= $this->makePartial('row', [
+					'id'		=> $inventory->id,
+					'name'		=> $inventory->name,
+					'quantity'	=> $inventory->quantity,
+					'modifier'	=> $inventory->modifier,
+					'is_active'	=> $inventory->is_active
+				]) ?>
+			</li>
+		<?php endforeach ?>
 
 	</ul>
+
+	<div class="no-inventories<?php if (count($inventories) > 0) echo ' hidden' ?>">
+		There are no inventories for this product.
+	</div>
+
 </div>
