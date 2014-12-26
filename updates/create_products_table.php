@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->decimal('full_price', 10, 2)->unsigned();
             $table->integer('ounces')->unsigned();
             $table->boolean('is_active')->unsigned();
+            $table->boolean('is_visible')->unsigned();
             $table->timestamps();
         });
 

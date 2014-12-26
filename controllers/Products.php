@@ -25,6 +25,7 @@ class Products extends Controller
         parent::__construct();
         BackendMenu::setContext('Bedard.Shop', 'shop', 'products');
 
+        $this->addJs('/plugins/bedard/shop/assets/js/html5sortable.min.js');
         $this->addCss('/plugins/bedard/shop/assets/css/backend.css');
     }
 }

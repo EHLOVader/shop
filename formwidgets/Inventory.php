@@ -10,7 +10,8 @@ class Inventory extends FormWidgetBase
      */
     public function loadAssets()
     {
-        
+    	$this->addCss('/plugins/bedard/shop/formwidgets/inventory/assets/css/inventory.css');
+        $this->addJs('/plugins/bedard/shop/formwidgets/inventory/assets/js/inventory.js');
     }
 
     /**
@@ -39,7 +40,14 @@ class Inventory extends FormWidgetBase
     public function render()
     {
         $this->prepareVars();
-
     	return $this->makePartial('inventory');
+    }
+
+    /**
+     * Prevents the widget from screwing up our form
+     */
+    public function getSaveData($value)
+    {
+        return FormField::NO_SAVE_DATA;
     }
 }

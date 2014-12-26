@@ -1,1 +1,26 @@
-hello
+<div class="form-group">
+
+	<a href="#" class="btn btn-primary oc-icon-plus new-inventory">Add Inventory</a>
+
+
+	<ul class="inventories">
+
+		<li class="disabled header">
+			<div class="fields">
+				<div class="name"><label>Inventory Name</label></div>
+				<div class="quantity"><label>Quantity</label></div>
+				<div class="modifier"><label>Price Modifier</label></div>
+			</div>
+			<div class="actions">
+				<div class="status"><label>Status</label></div>
+				<div class="handle"><label>Move</label></div>
+				<div class="delete"><label>Delete</label></div>
+			</div>
+		</li>
+
+		<li class="disabled template">
+			<?= $this->makePartial('row') ?>
+		</li>
+
+	</ul>
+</div>

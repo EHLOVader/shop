@@ -1,4 +1,4 @@
-.fancy-layout .control-tabs > div.tab-content > div.tab-pane {
+.fancy-layout .control-tabs > div.tab-content > div.tab-pane > div.form-group {
 	padding: 10px 15px;
 }
 

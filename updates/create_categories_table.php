@@ -21,8 +21,8 @@ class CreateCategoriesTable extends Migration
             $table->integer('arrangement_rows')->default(2)->unsigned();
             $table->integer('arrangement_columns')->default(6)->unsigned();
             $table->string('pseudo', 4)->nullable();
-            $table->boolean('is_visible')->unsigned();
             $table->boolean('is_active')->unsigned();
+            $table->boolean('is_visible')->unsigned();
             $table->timestamps();
         });
     }

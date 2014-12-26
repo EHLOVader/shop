@@ -1,0 +1,31 @@
+<div class="fields">
+	<div class="name">
+		<label>Inventory Name</label>
+		<input name="Inventory[name][]" type="text" class="form-control" placeholder="Name" />
+	</div>
+	<div class="quantity">
+		<label>Quantity</label>
+		<input name="Inventory[quantity][]" type="number" class="form-control" placeholder="0" min="0" />
+	</div>
+	<div class="modifier">
+		<label>Price Modifier</label>
+		<input name="Inventory[modifier][]" type="number" class="form-control" placeholder="0.00" step="any" />
+	</div>
+</div>
+<div class="actions">
+	<div class="status">
+		<label>Status</label>
+		<div class="toggle-is-active">
+			<i class="icon-check"></i>
+			<input type="checkbox" name="Inventory[is_active][]" checked />
+		</div>
+	</div>
+	<div class="handle">
+		<label>Move</label>
+		<span><i class="icon-bars"></i></span>
+	</div>
+	<div class="delete">
+		<label>Delete</label>
+		<div><i class="icon-trash"></i></div>
+	</div>
+</div>

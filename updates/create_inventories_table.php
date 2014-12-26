@@ -17,6 +17,8 @@ class CreateInventoriesTable extends Migration
             $table->string('name')->nullable();
             $table->integer('quantity')->unsigned();
             $table->decimal('modifier');
+            $table->integer('position')->unsigned();
+            $table->boolean('is_active')->unsigned();
             $table->timestamps();
         });
     }

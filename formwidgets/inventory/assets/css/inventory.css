@@ -1,0 +1,93 @@
+a.new-inventory {
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+ul.inventories {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	max-width: 900px;
+	width: 100%;
+}
+
+ul.inventories > li {
+	overflow: hidden;
+	margin-bottom: 15px;
+}
+ul.inventories li.header {
+	margin-bottom: 0;
+}
+ul.inventories li.template {
+	display: none;
+}
+ul.inventories li.inventory label {
+	display: none;
+}
+
+ul.inventories .fields {
+	width: 70%;
+	float: left;
+}
+ul.inventories .actions {
+	width: 30%;
+	float: left;
+}
+
+ul.inventories > li > div > div {
+	display: inline-block;
+	float: left;
+}
+
+ul.inventories .fields > div {
+	width: 33.3333%;
+	padding-right: 15px;
+}
+
+ul.inventories .actions > div {
+	width: 33.3333%;
+	text-align: center;
+}
+ul.inventories .actions > div i {
+	font-size: 22px;
+	height: 40px;
+	line-height: 40px;
+	color: #444;
+}
+
+ul.inventories .handle span {
+	cursor: move;
+}
+
+ul.inventories .toggle-is-active i {
+	cursor: pointer;
+}
+ul.inventories .toggle-is-active input {
+	display: none;
+}
+
+ul.inventories .name {
+	
+}
+ul.inventories .quantity, ul.inventories .modifier {
+}
+ul.inventories .handle, ul.inventories .delete {
+	
+}
+
+@media screen and (max-width: 700px) {
+	ul.inventories li.header {
+		display: none;
+	}
+	ul.inventories li.inventory label {
+		display: block;
+	}
+	ul.inventories .fields, ul.inventories .actions {
+		width: 100%;
+	}
+	ul.inventories .fields > div {
+		width: 100%;
+		padding-right: 0;
+		padding-bottom: 5px;
+	}
+}
