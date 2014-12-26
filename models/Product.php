@@ -28,7 +28,7 @@ class Product extends Model
      */
     public $hasOne = [];
     public $hasMany = [
-        'inventories' => ['Bedard\Shop\Models\Inventory', 'table' => 'bedard_shop_inventories']
+        'inventories' => ['Bedard\Shop\Models\Inventory', 'table' => 'bedard_shop_inventories', 'order' => 'position asc']
     ];
     public $belongsToMany = [
         'categories' => ['Bedard\Shop\Models\Category', 'table' => 'bedard_shop_products_categories', 'scope' => 'nonPseudo']

@@ -31,7 +31,7 @@ class Inventory extends FormWidgetBase
      */
     public function prepareVars()
     {
-        
+        $this->vars['inventories'] = $this->model->inventories;
     }
 
     /**
@@ -48,6 +48,21 @@ class Inventory extends FormWidgetBase
      */
     public function getSaveData($value)
     {
+    	// Build up our inventory arrays
+    	$inventory['names'] = post('Inventory')['name'];
+    	$inventory['quantities'] = post('Inventory')['quantity'];
+    	$inventory['modifiers'] = post('Inventory')['modifier'];
+
+    	// Shift the template info off the arrays
+    	array_shift($inventory['names']);
+    	array_shift($inventory['quantities']);
+    	array_shift($inventory['modifiers']);
+
+    	print_r ($inventory);
+
+    	print_r ($inventory);
+
+    	// Return no save data
         return FormField::NO_SAVE_DATA;
     }
 }

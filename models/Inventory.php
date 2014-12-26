@@ -38,4 +38,11 @@ class Inventory extends Model
     public $attachOne = [];
     public $attachMany = [];
 
+    /**
+     * Query Scopes
+     */
+    public function scopeIsActive($query)
+    {
+        $query->where('is_active', true);
+    }
 }

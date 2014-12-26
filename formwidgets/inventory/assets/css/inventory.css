@@ -63,7 +63,7 @@ ul.inventories .toggle-is-active i {
 	cursor: pointer;
 }
 ul.inventories .toggle-is-active input {
-	display: none;
+	/*display: none;*/
 }
 
 ul.inventories .name {
