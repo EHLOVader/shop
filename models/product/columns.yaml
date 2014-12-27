@@ -3,6 +3,30 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
+
+    name:
+        label: Name
         searchable: true
+
+    category_string:
+        label: Categories
+        relation: categories
+        select: @name
+        sortable: false
+        searchable: true
+
+    full_price:
+        label: Price
+        # type: partial
+        # path: @/plugins/bedard/shop/models/product/_price.htm
+
+    stock:
+        label: Manage Inventory
+        type: partial
+        path: @/plugins/bedard/shop/models/product/_inventory.htm
+        class: list-link
+
+    is_active:
+        label: Status
+        type: partial
+        path: @/plugins/bedard/shop/models/product/_status.htm

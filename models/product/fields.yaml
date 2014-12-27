@@ -31,9 +31,9 @@ secondaryTabs:
 
     fields:
 
-        inventory:
-            tab: Inventory
-            type: inventory
+        # inventory:
+        #     tab: Inventory
+        #     type: inventory
 
         description:
             tab: Information

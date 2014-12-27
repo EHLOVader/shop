@@ -1,12 +1,13 @@
-a.new-inventory {
-	margin-top: 5px;
-	margin-bottom: 10px;
+.widget-toolbar {
+	margin-bottom: 15px;
+}
+.widget-toolbar .btn {
+	white-space: nowrap;
+	float: none;
+	display: inline-block;
+	margin-right: 10px;
 }
 
-div.no-inventories {
-	text-align: center;
-	font-size: 26px;
-}
 div.no-inventories.hidden {
 	display: none;
 }

@@ -37,11 +37,7 @@ $is_active = isset($is_active) ? $is_active : 1;
 	<div class="delete">
 		<label>Delete</label>
 		<div>
-			<a href="#" onclick="setDeleteTarget($(this))" 
-				data-request="onDeleteInventory"
-				data-request-data="inventory_id: <?= $inventory_id ?>"
-				data-request-confirm="Are you sure?"
-				data-request-success="removeDeleteTarget()">
+			<a href="#" onclick="deleteInventory(this)">
 				<i class="icon-trash"></i>
 			</a>
 		</div>

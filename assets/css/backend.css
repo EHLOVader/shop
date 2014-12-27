@@ -2,11 +2,37 @@
 	padding: 10px 15px;
 }
 
+/**
+ * Gives list icons some size and room to breath
+ */
 .list-icon {
 	font-size: 16px;
 	margin-right: 5px;
+    display: inline-block;
+    width: 20px;
+    text-align: center;
 }
 
+/**
+ * Makes list link's easier to click on by filling their container
+ */
+.list-link {
+    padding: 11px 0;
+}
+.list-link:hover {
+    text-decoration: underline !important;
+}
+
+/**
+ * Widget styling
+ */
+.widget-body {
+    padding: 0 15px;
+}
+
+/**
+ * Font colors
+ */
 .green { color: #95B753  !important; }
 .yellow { color: #E5A91A !important; }
 .red { color: #CC3300 !important; }

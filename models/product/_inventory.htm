@@ -1,0 +1,12 @@
+<a class="list-link" href="<?= Backend::url('bedard/shop/products/inventory/'.$record->id); ?>">
+    <?php
+    if ($record->stock <= 0)
+        echo '<i class="list-icon icon-exclamation-triangle yellow"></i><span>Out Of Stock</span>';
+
+    elseif ($record->stock == 1)
+        echo '<i class="list-icon icon-cube"></i>One Left ('.$record->stock.')';
+
+    else
+        echo '<i class="list-icon icon-cubes"></i>In Stock ('.$record->stock.')';
+    ?>
+</a>

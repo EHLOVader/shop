@@ -1,0 +1,48 @@
+<div class="layout-row">
+
+    <?= Form::open([
+        'data-request' => 'onSaveInventories',
+        'data-request-success' => 'attachSortable()',
+        'data-request-error' => 'attachSortable()'
+    ]) ?>
+
+        <?= $this->makePartial('toolbar') ?>
+
+        <ul class="inventories<?php if (count($inventories) == 0) echo ' hidden' ?>">
+            <li class="disabled header">
+                <div class="fields">
+                    <div class="name"><label>Inventory Name</label></div>
+                    <div class="quantity"><label>Quantity</label></div>
+                    <div class="modifier"><label>Price Modifier</label></div>
+                </div>
+                <div class="actions">
+                    <div class="status"><label>Status</label></div>
+                    <div class="handle"><label>Move</label></div>
+                    <div class="delete"><label>Delete</label></div>
+                </div>
+            </li>
+
+            <li class="disabled template">
+                <?= $this->makePartial('inventory') ?>
+            </li>
+
+            <?php foreach ($inventories as $inventory): ?>
+                <li class="inventory">
+                    <?= $this->makePartial('inventory', [
+                        'id'        => $inventory->id,
+                        'name'      => $inventory->name,
+                        'quantity'  => $inventory->quantity,
+                        'modifier'  => $inventory->modifier,
+                        'is_active' => $inventory->is_active
+                    ]) ?>
+                </li>
+            <?php endforeach ?>
+        </ul>
+
+    <?= Form::close() ?>
+
+    <div class="flash-message static warning no-inventories<?php if (count($inventories) > 0) echo ' hidden' ?>">
+        This product does not have any inventories yet.
+    </div>
+
+</div>

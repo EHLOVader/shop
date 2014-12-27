@@ -77,7 +77,7 @@ class Category extends Model
      */
     public function scopeNonPseudo($query)
     {
-        $query->whereNull('pseudo');
+        return $query->whereNull('pseudo');
     }
     public function scopeDefaultOrder($query)
     {

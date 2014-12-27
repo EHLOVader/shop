@@ -6,6 +6,7 @@ use DB;
 
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Product;
+use Bedard\Shop\Models\Inventory;
 
 class TempSeeder extends Seeder {
 
@@ -64,13 +65,36 @@ class TempSeeder extends Seeder {
 				'full_price' => rand(10, 20),
 				'ounces' => rand(0, 10),
 				'description' => "Some awesome $seed... You should totaly buy it.",
-				'is_active' => rand(0, 10) > 0 ? 1 : 0
+				'is_active' => rand(0, 10) > 0 ? 1 : 0,
+				'is_visible' => rand(0, 10) > 0 ? 1 : 0
 			]);
 			if (strpos($seed, 'board') !== FALSE) $product->categories()->attach(3);
 			elseif (strpos($seed, 'hat') !== FALSE) $product->categories()->attach(10);
 			elseif (strpos($seed, 'shirt') !== FALSE) $product->categories()->attach(4);
 			elseif (strpos($seed, 'sticker') !== FALSE) $product->categories()->attach(6);
 			
+			$small = Inventory::create([
+				'product_id' => $product->id,
+				'name' => 'Small',
+				'quantity' => rand(0,2),
+				'is_active' => rand(0, 10) > 0 ? 1 : 0
+			]);
+
+			$medium = Inventory::create([
+				'product_id' => $product->id,
+				'name' => 'Medium',
+				'quantity' => rand(0,2),
+				'position' => 1,
+				'is_active' => rand(0, 10) > 0 ? 1 : 0
+			]);
+
+			$large = Inventory::create([
+				'product_id' => $product->id,
+				'name' => 'Large',
+				'quantity' => rand(0,2),
+				'position' => 2,
+				'is_active' => rand(0, 10) > 0 ? 1 : 0
+			]);
 		}
 		
 		// Enable foreign keys
