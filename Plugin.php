@@ -11,8 +11,7 @@ class Plugin extends PluginBase
 
     /**
      * Returns information about this plugin.
-     *
-     * @return array
+     * @return  array
      */
     public function pluginDetails()
     {
@@ -26,8 +25,7 @@ class Plugin extends PluginBase
 
     /**
      * Returns backend navigation
-     *
-     * @return array
+     * @return  array
      */
     public function registerNavigation()
     {
@@ -95,19 +93,14 @@ class Plugin extends PluginBase
 
     /**
      * Returns form widgets
-     * 
-     * @return array
+     * @return  array
      */
     public function registerFormWidgets()
     {
         return [
-            'Bedard\Shop\FormWidgets\Arrangement' => [
+            'Bedard\Shop\Widgets\Arrangement' => [
                 'label' => 'Product Arrangement',
                 'code'  => 'arrangement'
-            ],
-            'Bedard\Shop\FormWidgets\Inventory' => [
-                'label' => 'Inventory',
-                'code'  => 'inventory'
             ]
         ];
     }

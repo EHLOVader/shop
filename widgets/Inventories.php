@@ -1,4 +1,4 @@
-<?php namespace Bedard\Shop\FormWidgets;
+<?php namespace Bedard\Shop\Widgets;
 
 use Backend\Classes\WidgetBase;
 use Bedard\Shop\Models\Inventory;
@@ -31,9 +31,9 @@ class Inventories extends WidgetBase
      */
     public function loadAssets()
     {
-        $this->addCss('/plugins/bedard/shop/formwidgets/inventories/assets/css/inventories.css');
         $this->addJs('/plugins/bedard/shop/assets/js/html5sortable.min.js');
-        $this->addJs('/plugins/bedard/shop/formwidgets/inventories/assets/js/inventories.js');
+        $this->addJs('/plugins/bedard/shop/widgets/inventories/assets/js/inventories.js');
+        $this->addCss('/plugins/bedard/shop/widgets/inventories/assets/css/inventories.css');
     }
 
     /**

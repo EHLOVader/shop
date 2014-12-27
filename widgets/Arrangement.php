@@ -1,4 +1,4 @@
-<?php namespace Bedard\Shop\FormWidgets;
+<?php namespace Bedard\Shop\Widgets;
 
 use Backend\Classes\FormWidgetBase;
 
@@ -9,8 +9,8 @@ class Arrangement extends FormWidgetBase
      */
     public function loadAssets()
     {
-        $this->addCss('/plugins/bedard/shop/formwidgets/arrangement/assets/css/arrangement.css');
-        $this->addJs('/plugins/bedard/shop/formwidgets/arrangement/assets/js/sortable.js');
+        $this->addCss('/plugins/bedard/shop/widgets/arrangement/assets/css/arrangement.css');
+        $this->addJs('/plugins/bedard/shop/widgets/arrangement/assets/js/sortable.js');
     }
 
     public function widgetDetails()

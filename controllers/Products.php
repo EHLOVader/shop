@@ -2,7 +2,7 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
-use Bedard\Shop\FormWidgets\Inventories as InventoriesWidget;
+use Bedard\Shop\Widgets\Inventories as InventoriesWidget;
 use Bedard\Shop\Models\Product;
 
 /**
