@@ -140,7 +140,7 @@ class Discount extends Model
             $collisionString = count($collisions == 1)
                 ? "This discount has $scope that overlap with the discount $collisions[0]."
                 : "This discount has $scope that overlap with the following discounts...\n".implode(', ', $collisions);
-                
+
             Flash::error($collisionString);
             throw new ValidationException($collisionString);
         }
@@ -149,6 +149,8 @@ class Discount extends Model
     /**
      * Query Scopes
      */
+    
+    // Checks if a discount is running during a certain time frame
     public function scopeIsActiveDuring($query, $startDate = NULL, $endDate = NULL)
     {
         // If no start date was provided, assume it starts now
@@ -172,6 +174,7 @@ class Discount extends Model
         return $query;
     }
 
+    // Checks if a discount is currently running
     public function scopeIsActive($query)
     {
         $now = date('Y-m-d H:i:s');
@@ -188,7 +191,8 @@ class Discount extends Model
 
 
     /**
-     * Percentages use integers, exact amounts use decimal
+     * Floor percentage discounts, and round exact amount discounts
+     * @param   string  $amount
      */
     public function setAmountAttribute($amount)
     {
@@ -200,6 +204,11 @@ class Discount extends Model
                 ? $this->attributes['amount'] = floor($amount)
                 : round($this->attributes['amount'], 2);
     }
+
+    /**
+     * Floor percentage discounts
+     * @return  numeric
+     */
     public function getAmountAttribute()
     {
         if (!isset($this->attributes['amount']))
