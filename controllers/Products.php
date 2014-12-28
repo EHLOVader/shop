@@ -37,11 +37,11 @@ class Products extends Controller
     }
 
     /**
-     * Extend the list query to eager load categories and product
+     * Extend the list query to eager load categories and discounts
      */
     public function listExtendQuery($query, $definition = null)
     {
-        $query->with('categories');//with('product_discount')->with('categories.discount');
+        $query->with('categories.discounts')->with('discounts');
     }
 
     /**

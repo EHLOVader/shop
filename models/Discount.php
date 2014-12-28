@@ -32,9 +32,11 @@ class Discount extends Model
      */
     public $morphedByMany = [
         'products' => ['Bedard\Shop\Models\Product', 'table' => 'bedard_shop_discountables',
-            'name' => 'discountable', 'foreignKey' => 'discountable_id', 'order' => 'name'],
+            'name' => 'discountable', 'foreignKey' => 'discountable_id', 'order' => 'name'
+        ],
         'categories' => ['Bedard\Shop\Models\Category', 'table' => 'bedard_shop_discountables',
-            'name' => 'discountable', 'foreignKey' => 'discountable_id', 'scope' => 'nonPseudoDefaultOrder']
+            'name' => 'discountable', 'foreignKey' => 'discountable_id', 'scope' => 'nonPseudoDefaultOrder'
+        ]
     ];
 
     /**
@@ -126,6 +128,10 @@ class Discount extends Model
         // Query the database and look for collisions
         $collisions = Discount::where('id', '<>', $discountId)
             ->isActiveDuring($this->start_date, $this->end_date)
+            ->where(function($query) {
+                $query->whereNull('end_date')
+                      ->orWhere('end_date', '>=', date('Y-m-d H:i:s'));
+            })
             ->whereHas($scope, function($query) use ($discountableIds) {
                 $query->whereIn('id', $discountableIds);
             })

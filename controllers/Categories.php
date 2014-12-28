@@ -50,7 +50,9 @@ class Categories extends Controller
      */
     public function listExtendQuery($query, $definition = null)
     {
-        $query->orderBy('is_visible', 'desc')->orderBy('position', 'asc');
+        $query->defaultOrder()
+            ->with('discounts')
+            ->with('products');
     }
 
     /**

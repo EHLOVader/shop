@@ -37,6 +37,11 @@ class Product extends Model
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
+    public $morphToMany = [
+        'discounts' => ['Bedard\Shop\Models\Discount', 'table' => 'bedard_shop_discountables',
+            'name' => 'discountable', 'foreignKey' => 'discount_id', 'scope' => 'isActive'
+        ],
+    ];
     public $attachOne = [
         'thumbnail' => ['System\Models\File'],
         'thumbnail_alt' => ['System\Models\File']
@@ -66,6 +71,10 @@ class Product extends Model
     public function scopeIsVisible($query)
     {
         $query->where('is_active', TRUE);
+    }
+    public function scopeWithDiscounts($query)
+    {
+        $query->with('discounts');
     }
 
     /**
