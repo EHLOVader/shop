@@ -94,7 +94,7 @@ class Categories extends Controller
                 if (!$record->delete()) $successful = FALSE;
             }
         }
-        if ($successful) Flash::success('Successfully deleted categories.');
+        if ($successful) Flash::success('Categories successfully deleted.');
         return $this->listRefresh();
     }
 }

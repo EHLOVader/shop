@@ -4,6 +4,7 @@ use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Widgets\Inventories as InventoriesWidget;
 use Bedard\Shop\Models\Product;
+use Flash;
 
 /**
  * Products Back-end Controller
@@ -68,5 +69,21 @@ class Products extends Controller
         else {
             $this->fatalError = 'There is no product with an ID of '.intval($productId).'.';
         }
+    }
+
+    /**
+     * Delete list rows
+     */
+    public function index_onDelete()
+    {
+        $successful = true;
+        if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
+            foreach ($checkedIds as $recordId) {
+                if (!$record = Product::find($recordId)) continue;
+                if (!$record->delete()) $successful = FALSE;
+            }
+        }
+        if ($successful) Flash::success('Products successfully deleted.');
+        return $this->listRefresh();
     }
 }

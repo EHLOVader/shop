@@ -67,7 +67,7 @@ class Discounts extends Controller
                 if (!$record->delete()) $successful = FALSE;
             }
         }
-        if ($successful) Flash::success('Successfully deleted discounts.');
+        if ($successful) Flash::success('Discounts successfully deleted.');
         return $this->listRefresh();
     }
 
