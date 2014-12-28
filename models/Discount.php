@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use DB;
 use Model;
 use Flash;
 use ValidationException;
@@ -41,7 +42,8 @@ class Discount extends Model
      */
     public $rules = [
         'name'          => 'required',
-        'start_date'    => 'before:end_date',
+        'start_date'    => 'date',
+        'end_date'      => 'date',
         'amount'        => 'required|numeric|min:0',
         'is_percentage' => 'required|boolean'
     ];
@@ -55,38 +57,121 @@ class Discount extends Model
      */
     public function beforeValidate()
     {
+        // Adjust our validation rules
+        $this->addDynamicValidationRules();
+
+        // Make sure that the category applies to categories or products
+        $scope = $this->validateDiscountScope();
+
+        // Lastly, check for collisions
+        $this->validateDiscountCollisions($scope);
+    }
+
+    /**
+     * Dynamic validation rules that are changed based on model values
+     */
+    private function addDynamicValidationRules()
+    {
         // Only check the start / end dates when both are provided
-        if (!$this->start_date || !$this->end_date)
-            unset($this->rules['start_date']);
+        if ($this->start_date && $this->end_date)
+            $this->rules['start_date'] .= '|before:end_date';
 
         // If this is a percentage discount, add integer and max validation
-        if ($this->is_percentage) {
+        if ($this->is_percentage)
             $this->rules['amount'] .= '|integer|max:100';
-        }
+    }
 
-        // Make sure atleast one category or product was selected
-        if (count($this->categories) == 0 && count($this->products) == 0) {
+    /**
+     * Makes sure the discount has a either categories or products
+     * @return  string  The discount scope
+     */
+    private function validateDiscountScope()
+    {
+        // Count the categories and products that are selected
+        $checkedCategories = is_array(post('Discount')['categories'])
+            ? count(post('Discount')['categories'])
+            : 0;
+        $checkedProducts = is_array(post('Discount')['products'])
+            ? count(post('Discount')['products'])
+            : 0;
+
+        // Require a discount or a category
+        if (!$checkedCategories && !$checkedProducts) {
             Flash::error('Please select categories or products for this discount to apply to.');
             throw new ValidationException('Please select categories or products for this discount to apply to.');
         }
 
         // Allow discounts to apply to either categories or products, but not both.
-        if (count($this->products) > 0 && count($this->categories) > 0) {
+        if ($checkedCategories && $checkedProducts) {
             Flash::error('A discount may apply to categories or products, but not both.');
             throw new ValidationException('A discount may apply to categories or products, but not both.');
         }
 
-        // Lastly, check for collisions
-        $discountableIds = [];
-        $discountableType = count($this->products) > 1
-            ? 'Bedard\Shop\Models\Product'
-            : 'Bedard\Shop\Models\Category';
+        // Return the discount scope
+        return $checkedCategories
+            ? 'categories'
+            : 'products';
+    }
 
+    /**
+     * Run a query to search for discount collisions
+     * @param   string  $scope ('categories' or 'discounts')
+     */
+    private function validateDiscountCollisions($scope)
+    {
+        // Skip the collision check if our discount has already ended
+        if ($this->end_date && strtotime($this->end_date) < time())
+            return;
+
+        // Load our discount_id and discountable_id values
+        $discountableIds = post('Discount')[$scope];
+        $discountId = $this->id ? $this->id : 0;
+
+        // Query the database and look for collisions
+        $collisions = Discount::where('id', '<>', $discountId)
+            ->isActiveDuring($this->start_date, $this->end_date)
+            ->whereHas($scope, function($query) use ($discountableIds) {
+                $query->whereIn('id', $discountableIds);
+            })
+            ->lists('name');
+
+        // If collisions were found, throw an exception
+        if (count($collisions) > 0) {
+            $collisionString = count($collisions == 1)
+                ? "This discount has $scope that overlap with the discount $collisions[0]."
+                : "This discount has $scope that overlap with the following discounts...\n".implode(', ', $collisions);
+                
+            Flash::error($collisionString);
+            throw new ValidationException($collisionString);
+        }
     }
 
     /**
      * Query Scopes
      */
+    public function scopeIsActiveDuring($query, $startDate = NULL, $endDate = NULL)
+    {
+        // If no start date was provided, assume it starts now
+        if (!$startDate)
+            $startDate = date('Y-m-d H:i:s');
+
+        // The discount must end after our start date
+        $query->where(function($query) use ($startDate) {
+            $query->whereNull('end_date')
+                  ->orWhere('end_date', '>=', $startDate);
+        });
+
+        // And start before our end date
+        if ($endDate) {
+            $query->where(function($query) use ($endDate) {
+                $query->whereNull('start_date')
+                      ->orWhere('start_date', '<=', $endDate);
+            });
+        }
+
+        return $query;
+    }
+
     public function scopeIsActive($query)
     {
         $now = date('Y-m-d H:i:s');
@@ -107,15 +192,19 @@ class Discount extends Model
      */
     public function setAmountAttribute($amount)
     {
-        $this->attributes['amount'] = $this->is_percentage
-            ? $this->attributes['amount'] = floor($amount)
-            : round($this->attributes['amount'], 2);
+        if (!isset($this->attributes['is_percentage']))
+            $this->attributes['amount'] = $amount;
+
+        else
+            $this->attributes['amount'] = $this->attributes['is_percentage']
+                ? $this->attributes['amount'] = floor($amount)
+                : round($this->attributes['amount'], 2);
     }
     public function getAmountAttribute()
     {
         if (!isset($this->attributes['amount']))
             return;
-        
+
         return $this->is_percentage
             ? floor($this->attributes['amount'])
             : $this->attributes['amount'];
