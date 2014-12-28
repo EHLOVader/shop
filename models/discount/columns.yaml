@@ -3,6 +3,31 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
+
+    name:
+        label: Name
         searchable: true
+
+    start_date:
+        label: Start Date
+        type: partial
+        path: @/plugins/bedard/shop/models/discount/_start.htm
+        searchable: false
+
+    end_date:
+        label: End Date
+        type: partial
+        path: @/plugins/bedard/shop/models/discount/_end.htm
+        searchable: false
+
+    amount:
+        label: Amount
+        type: partial
+        path: @/plugins/bedard/shop/models/discount/_amount.htm
+        searchable: false
+
+    created_at:
+        label: Scope
+        type: partial
+        path: @/plugins/bedard/shop/models/discount/_scope.htm
+        searchable: false

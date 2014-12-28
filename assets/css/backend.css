@@ -14,6 +14,17 @@
 }
 
 /**
+ * Currency / Percent icons
+ */
+.currency-icon {
+    margin-right: 2px;
+}
+.currency-percent {
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+/**
  * Makes list link's easier to click on by filling their container
  */
 .list-link {

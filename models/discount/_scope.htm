@@ -1,0 +1,26 @@
+<?php
+if ($record->discountableType == 'Bedard\Shop\Models\Category') {
+    $categories = $record->categories->toArray();
+    $categoryCount = count($categories);
+    if ($categoryCount == 1)
+        echo '<i class="list-icon icon-folder-o"></i>'.$categories[0]['name'];
+    else {
+         $tooltip = implode('&#xa;', array_column($categories, 'name'));
+         echo '<span data-tooltip="'.$tooltip.'">
+            <i class="list-icon icon-folder-o"></i>'.$categoryCount.' categories
+        </span>';
+    }
+}
+
+elseif ($record->discountableType == 'Bedard\Shop\Models\Product') {
+    $products = $record->products->toArray();
+    $productCount = count($products);
+    if ($productCount == 1)
+        echo '<i class="list-icon icon-cube"></i>'.$products[0]['name'];
+    else {
+        $tooltip = implode('&#xa;', array_column($products, 'name'));
+        echo '<span data-tooltip="'.$tooltip.'">
+            <i class="list-icon icon-cubes"></i>'.$productCount.' products
+        </span>';
+    }
+}

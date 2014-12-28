@@ -48,10 +48,6 @@ class Discount extends Model
         'is_percentage' => 'required|boolean'
     ];
 
-    public $customMessages = [
-        
-    ];
-
     /**
      * Apply some extra validation
      */
@@ -140,7 +136,6 @@ class Discount extends Model
             $collisionString = count($collisions == 1)
                 ? "This discount has $scope that overlap with the discount $collisions[0]."
                 : "This discount has $scope that overlap with the following discounts...\n".implode(', ', $collisions);
-
             Flash::error($collisionString);
             throw new ValidationException($collisionString);
         }
@@ -217,5 +212,18 @@ class Discount extends Model
         return $this->is_percentage
             ? floor($this->attributes['amount'])
             : $this->attributes['amount'];
+    }
+
+    /**
+     * Returns the discountable relationship type
+     * @return  string
+     */
+    public function getDiscountableTypeAttribute()
+    {
+        if (count($this->categories) > 0)
+            return 'Bedard\Shop\Models\Category';
+
+        elseif (count($this->products) > 0)
+            return 'Bedard\Shop\Models\Product';
     }
 }
