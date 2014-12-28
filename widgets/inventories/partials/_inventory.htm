@@ -4,42 +4,42 @@ $is_active = isset($is_active) ? $is_active : 1;
 ?>
 
 <div class="fields">
-	<div class="name">
-		<label>Inventory Name</label>
-		<input name="Inventory[id][]" type="hidden" value="<?= $inventory_id ?>" />
-		<input name="Inventory[name][]" type="text" class="form-control" placeholder="Name" 
-			<?php if (isset($name)) echo 'value="'.$name.'"' ?> />
-	</div>
-	<div class="quantity">
-		<label>Quantity</label>
-		<input name="Inventory[quantity][]" type="text" class="form-control" placeholder="0" min="0" 
-			<?php if (isset($quantity)) echo 'value="'.$quantity.'"' ?> />
-	</div>
-	<div class="modifier">
-		<label>Price Modifier</label>
-		<input name="Inventory[modifier][]" type="text" class="form-control" placeholder="0.00" 
-			value="<?php if (isset($modifier)) echo $modifier ?>" />
-	</div>
+    <div class="name">
+        <label>Inventory Name</label>
+        <input name="Inventory[id][]" type="hidden" value="<?= $inventory_id ?>" />
+        <input name="Inventory[name][]" type="text" class="form-control" placeholder="Name" 
+            <?php if (isset($name)) echo 'value="'.$name.'"' ?> />
+    </div>
+    <div class="quantity">
+        <label>Quantity</label>
+        <input name="Inventory[quantity][]" type="text" class="form-control" placeholder="0" min="0" 
+            <?php if (isset($quantity)) echo 'value="'.$quantity.'"' ?> />
+    </div>
+    <div class="modifier">
+        <label>Price Modifier</label>
+        <input name="Inventory[modifier][]" type="text" class="form-control" placeholder="0.00" 
+            value="<?php if (isset($modifier)) echo $modifier ?>" />
+    </div>
 </div>
 <div class="actions">
-	<div class="status">
-		<label>Status</label>
-		<div class="toggle-is-active" onClick="toggleIsActive(this);">
-			<i class="<?= $is_active ? 'icon-check' : 'icon-times' ?>"></i>
-			<input type="hidden" name="Inventory[is_active][]" 
-				value="<?= $is_active ?>" />
-		</div>
-	</div>
-	<div class="handle">
-		<label>Move</label>
-		<span><i class="icon-bars"></i></span>
-	</div>
-	<div class="delete">
-		<label>Delete</label>
-		<div>
-			<a href="#" onclick="deleteInventory(this)">
-				<i class="icon-trash"></i>
-			</a>
-		</div>
-	</div>
+    <div class="status">
+        <label>Status</label>
+        <div class="toggle-is-active" onClick="toggleIsActive(this);">
+            <i class="<?= $is_active ? 'icon-check' : 'icon-times' ?>"></i>
+            <input type="hidden" name="Inventory[is_active][]" 
+                value="<?= $is_active ?>" />
+        </div>
+    </div>
+    <div class="handle">
+        <label>Move</label>
+        <span><i class="icon-bars"></i></span>
+    </div>
+    <div class="delete">
+        <label>Delete</label>
+        <div>
+            <a href="#" onclick="deleteInventory(this)">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+    </div>
 </div>

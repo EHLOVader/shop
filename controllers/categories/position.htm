@@ -9,31 +9,31 @@
 
     <?= Form::open(['class'=>'layout sortable-container']) ?>
 
-		<div data-control="toolbar">
-			<button
-				class="btn btn-primary oc-icon-check update-positions"
-				disabled="disabled"
-				data-request="onUpdatePosition"
-				data-stripe-load-indicator>
-				Save Order
-			</button>
-		</div>
+        <div data-control="toolbar">
+            <button
+                class="btn btn-primary oc-icon-check update-positions"
+                disabled="disabled"
+                data-request="onUpdatePosition"
+                data-stripe-load-indicator>
+                Save Order
+            </button>
+        </div>
 
-    	<ul class="sortable">
-	    	<?php foreach ($categories as $category): ?>
-		    	<li<?php if (!$category->is_active || !$category->is_visible) echo ' class="disabled"' ?>>
-		    		<input type="hidden" name="Category[position][]" value="<?= $category->id ?>" />
-		    		<span class="left"><?= $category->name ?></span>
-		    		<span class="right">
-		    			<?php
-		    			if (!$category->is_active) echo '<span class="status-label">Inactive</span><i class="icon-times red"></i>';
-		    			elseif (!$category->is_visible) echo '<span class="status-label">Hidden</span><i class="icon-minus grey"></i>';
-		    			else echo '<span class="status-label">Active</span><i class="icon-check green"></i>';
-		    			?>
-		    		</span>
-		    	</li>
-		    <?php endforeach; ?>
-		</ul>
+        <ul class="sortable">
+            <?php foreach ($categories as $category): ?>
+                <li<?php if (!$category->is_active || !$category->is_visible) echo ' class="disabled"' ?>>
+                    <input type="hidden" name="Category[position][]" value="<?= $category->id ?>" />
+                    <span class="left"><?= $category->name ?></span>
+                    <span class="right">
+                        <?php
+                        if (!$category->is_active) echo '<span class="status-label">Inactive</span><i class="icon-times red"></i>';
+                        elseif (!$category->is_visible) echo '<span class="status-label">Hidden</span><i class="icon-minus grey"></i>';
+                        else echo '<span class="status-label">Active</span><i class="icon-check green"></i>';
+                        ?>
+                    </span>
+                </li>
+            <?php endforeach; ?>
+        </ul>
 
     <?= Form::close() ?>
 
@@ -41,6 +41,6 @@
 
 <script>
     $('.sortable').sortable({items: ':not(.disabled)'}).bind('sortupdate', function() {
-	    $('.update-positions').removeAttr('disabled');
-	});
+        $('.update-positions').removeAttr('disabled');
+    });
 </script>

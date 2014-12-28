@@ -146,5 +146,5 @@ class Category extends Model
                 return $discount;
         }
     }
-        
+
 }

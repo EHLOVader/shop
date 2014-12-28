@@ -19,15 +19,15 @@ function attachSortable()
  */
 function toggleIsActive(div)
 {
-	var isActive = $(div).find('input');
-	var icon = $(div).find('i');
-	if (isActive.val() == '0') {
-		isActive.val('1');
-		icon.removeClass('icon-times').addClass('icon-check');
-	} else {
-		isActive.val('0');
-		icon.removeClass('icon-check').addClass('icon-times');
-	}
+    var isActive = $(div).find('input');
+    var icon = $(div).find('i');
+    if (isActive.val() == '0') {
+        isActive.val('1');
+        icon.removeClass('icon-times').addClass('icon-check');
+    } else {
+        isActive.val('0');
+        icon.removeClass('icon-check').addClass('icon-times');
+    }
 }
 
 /**
@@ -35,13 +35,13 @@ function toggleIsActive(div)
  */
 function toggleNoInventoriesSign()
 {
-	if ($('ul.inventories .inventory').length == 0) {
-		$('.no-inventories').removeClass('hidden');
-		$('ul.inventories').addClass('hidden');	
-	} else {
-		$('.no-inventories').addClass('hidden');
-		$('ul.inventories').removeClass('hidden');
-	}
+    if ($('ul.inventories .inventory').length == 0) {
+        $('.no-inventories').removeClass('hidden');
+        $('ul.inventories').addClass('hidden'); 
+    } else {
+        $('.no-inventories').addClass('hidden');
+        $('ul.inventories').removeClass('hidden');
+    }
 }
 
 /**
@@ -86,7 +86,7 @@ function deleteInventory( button )
 
 $(function() {
 
-	// Fire up sortable
-	attachSortable();
+    // Fire up sortable
+    attachSortable();
 
 });

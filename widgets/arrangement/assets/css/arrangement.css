@@ -1,54 +1,54 @@
 .arrangement {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	margin: 0 -5px;
-	padding: 0;
-	overflow: hidden;
-	max-width: 768px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 0 -5px;
+    padding: 0;
+    overflow: hidden;
+    max-width: 768px;
 }
 .arrangement li {
-	list-style: none;
+    list-style: none;
 }
 .arrangement li {
-	float: left;
-	text-align: center;
-	position: relative;
+    float: left;
+    text-align: center;
+    position: relative;
 }
 .arrangement li .grid-inner {
-	border: 1px solid #CCC;
-	background: #F6F6F6;
+    border: 1px solid #CCC;
+    background: #F6F6F6;
 }
 li.sortable-placeholder {
-	background: none;
-	overflow: hidden;
-	position: relative;
+    background: none;
+    overflow: hidden;
+    position: relative;
 }
 li.sortable-placeholder .placeholder-inner {
-	border: 1px dashed #CCC;
-	background: none;
+    border: 1px dashed #CCC;
+    background: none;
 }
 .arrangement li .grid-inner, li.sortable-placeholder .placeholder-inner {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	bottom: 5px;
-	left: 5px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    left: 5px;
 }
 
 .arrangement .thumbnail img {
-	width: 100%;
-	height: auto;
+    width: 100%;
+    height: auto;
 }
 .arrangement .table {
-	display: table;
-	width: 100%;
-	height: 100%;
+    display: table;
+    width: 100%;
+    height: 100%;
 }
 .arrangement .cell {
-	display: table-cell;
-	vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .arrangement.span1  li { padding-bottom: 100%; width: 100%; }
@@ -64,13 +64,13 @@ li.sortable-placeholder .placeholder-inner {
 
 /*
 @media only screen and (min-width: 0px) and (max-width: 769px) {
-	.arrangement li {
-		padding: 35px !important;
-		width: 100% !important;
-	}
-	.arrangement .thumbnail img {
-		height: 100%;
-		width: auto;
-	}
+    .arrangement li {
+        padding: 35px !important;
+        width: 100% !important;
+    }
+    .arrangement .thumbnail img {
+        height: 100%;
+        width: auto;
+    }
 }
 */

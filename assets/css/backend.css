@@ -1,13 +1,13 @@
 .fancy-layout .control-tabs > div.tab-content > div.tab-pane > div.form-group {
-	padding: 10px 15px;
+    padding: 10px 15px;
 }
 
 /**
  * Gives list icons some size and room to breath
  */
 .list-icon {
-	font-size: 16px;
-	margin-right: 5px;
+    font-size: 16px;
+    margin-right: 5px;
     display: inline-block;
     width: 20px;
     text-align: center;

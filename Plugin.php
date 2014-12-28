@@ -32,7 +32,7 @@ class Plugin extends PluginBase
         return [
             'shop' => [
                 'label'         => 'Shop',
-                'url'           => Backend::url('bedard/shop/categories'),
+                'url'           => Backend::url('bedard/shop/products'),
                 'icon'          => 'icon-shopping-cart',
                 'permissions'   => ['bedard.shop.*'],
                 'order'         => 500,

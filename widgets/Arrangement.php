@@ -31,6 +31,6 @@ class Arrangement extends FormWidgetBase
     {
         $this->prepareVars();
 
-    	return $this->makePartial('arrangement');
+        return $this->makePartial('arrangement');
     }
 }

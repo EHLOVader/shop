@@ -1,97 +1,97 @@
 .widget-toolbar {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 .widget-toolbar .btn {
-	white-space: nowrap;
-	float: none;
-	display: inline-block;
-	margin-right: 10px;
+    white-space: nowrap;
+    float: none;
+    display: inline-block;
+    margin-right: 10px;
 }
 
 div.no-inventories.hidden {
-	display: none;
+    display: none;
 }
 
 ul.inventories {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	max-width: 900px;
-	width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: 900px;
+    width: 100%;
 }
 
 ul.inventories > li {
-	overflow: hidden;
-	margin-bottom: 15px;
+    overflow: hidden;
+    margin-bottom: 15px;
 }
 ul.inventories li.header {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 ul.inventories li.template {
-	display: none;
+    display: none;
 }
 ul.inventories li.inventory label {
-	display: none;
+    display: none;
 }
 
 ul.inventories .fields {
-	width: 70%;
-	float: left;
+    width: 70%;
+    float: left;
 }
 ul.inventories .actions {
-	width: 30%;
-	float: left;
+    width: 30%;
+    float: left;
 }
 
 ul.inventories > li > div > div {
-	display: inline-block;
-	float: left;
+    display: inline-block;
+    float: left;
 }
 
 ul.inventories .fields > div {
-	width: 33.3333%;
-	padding-right: 15px;
+    width: 33.3333%;
+    padding-right: 15px;
 }
 
 ul.inventories .actions > div {
-	width: 33.3333%;
-	text-align: center;
+    width: 33.3333%;
+    text-align: center;
 }
 ul.inventories .actions > div i {
-	font-size: 22px;
-	height: 40px;
-	line-height: 40px;
-	color: #444;
+    font-size: 22px;
+    height: 40px;
+    line-height: 40px;
+    color: #444;
 }
 ul.inventories .actions > div i:hover {
-	color: #000;
+    color: #000;
 }
 
 ul.inventories .handle span {
-	cursor: move;
+    cursor: move;
 }
 
 ul.inventories .delete a:hover {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 ul.inventories .toggle-is-active i {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 700px) {
-	ul.inventories li.header {
-		display: none;
-	}
-	ul.inventories li.inventory label {
-		display: block;
-	}
-	ul.inventories .fields, ul.inventories .actions {
-		width: 100%;
-	}
-	ul.inventories .fields > div {
-		width: 100%;
-		padding-right: 0;
-		padding-bottom: 5px;
-	}
+    ul.inventories li.header {
+        display: none;
+    }
+    ul.inventories li.inventory label {
+        display: block;
+    }
+    ul.inventories .fields, ul.inventories .actions {
+        width: 100%;
+    }
+    ul.inventories .fields > div {
+        width: 100%;
+        padding-right: 0;
+        padding-bottom: 5px;
+    }
 }
