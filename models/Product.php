@@ -77,10 +77,21 @@ class Product extends Model
         $query->where('is_active', TRUE);
     }
 
+    public function scopeIsInactive($query) {
+        // Selects inactive products
+        $query->where('is_active', FALSE);
+    }
+
     public function scopeIsVisible($query)
     {
         // Selects visible products
         $query->where('is_visible', TRUE);
+    }
+
+    public function scopeIsHidden($query)
+    {
+        // Selects hidden products
+        $query->where('is_visible', FALSE);
     }
 
     public function scopeIsActiveAndVisible($query)
