@@ -94,6 +94,18 @@ class Product extends Model
         $query->where('is_visible', FALSE);
     }
 
+    public function scopeInStock($query)
+    {
+        // Selects in stock products
+        $query->where('stock', '>', 0);
+    }
+
+    public function scopeOutOfStock($query)
+    {
+        // Selects out of stock products
+        $query->where('stock', 0);
+    }
+
     public function scopeIsActiveAndVisible($query)
     {
         // Selects active and visible products
@@ -121,16 +133,14 @@ class Product extends Model
         });
     }
 
-    public function scopeInStock($query)
+    public function scopeOnPage($query, $page, $perPage)
     {
-        // Selects in stock products
-        $query->where('stock', '>', 0);
+        $page = $page > 0
+            ? $page - 1
+            : 0;
+        $query->take($perPage)->skip($perPage * $page);
     }
-    public function scopeOutOfStock($query)
-    {
-        // Selects out of stock products
-        $query->where('stock', 0);
-    }
+
     /**
      * Returns a string of a product's "real" categories
      * @return  string
