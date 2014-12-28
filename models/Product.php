@@ -83,6 +83,25 @@ class Product extends Model
     {
         $query->isActive()->isVisible();
     }
+    public function scopeInCategory($query, $categoryId)
+    {
+        $query->isActiveAndVisible()
+            ->whereHas('categories', function($query) use ($categoryId) {
+                $query->where('id', $categoryId);
+            });
+    }
+    public function scopeIsDiscounted($query)
+    {
+        $query->whereHas('discounts', function($query) {
+            $query->isActive();
+        })
+        ->orWhereHas('categories', function($query) {
+            $query->whereHas('discounts', function($query) {
+                $query->isActive();
+            });
+        })
+        ->isActiveAndVisible();
+    }
 
     /**
      * Returns a string of a product's "real" categories

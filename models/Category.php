@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Product;
 use DB;
 use Flash;
@@ -87,12 +88,14 @@ class Category extends Model
     }
 
     /**
-     * Returns the number of products the category contains
-     * @return integer
+     * Returns the number of products in the category
+     * @return  integer
      */
     public function getProductCountAttribute()
     {
-        return count($this->products);
+        return $this->pseudo != 'sale'
+            ? count($this->products)
+            : Product::isDiscounted()->count();
     }
 
     /**
@@ -101,13 +104,17 @@ class Category extends Model
      */
     public function getArrangedProducts($page = 0)
     {
-        $categoryId = $this->id;
-        $products = $this->pseudo == 'all'
-            ? Product::isActiveAndVisible()
-            : Product::isActiveAndVisible()
-                ->whereHas('categories', function($query) use ($categoryId) {
-                    $query->where('id', $categoryId);
-                });
+        // Load products from "all"
+        if ($this->pseudo == 'all')
+            $products = Product::isActiveAndVisible();
+
+        // Load products from "sale"
+        elseif ($this->pseudo == 'sale')
+            $products = Product::isDiscounted();
+
+        // Load products from a specific category
+        else
+            $products = Product::inCategory($this->id);
 
         // Standard product arrangements
         if ($this->arrangement_method == 'alpha_asc')
