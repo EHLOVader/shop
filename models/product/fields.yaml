@@ -31,10 +31,6 @@ secondaryTabs:
 
     fields:
 
-        # inventory:
-        #     tab: Inventory
-        #     type: inventory
-
         description:
             tab: Information
             label: Description
@@ -95,7 +91,7 @@ secondaryTabs:
             span: right
         images:
             tab: Images
-            label: Featured Images
+            label: Images
             type: fileupload
             mode: image
             imageWidth: 200
