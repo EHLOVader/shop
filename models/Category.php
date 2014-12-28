@@ -30,22 +30,14 @@ class Category extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [];
-    public $hasMany = [];
-    public $belongsTo = [];
     public $belongsToMany = [
         'products' => ['Bedard\Shop\Models\Product', 'table' => 'bedard_shop_products_categories', 'scope' => 'isActive']
     ];
-    public $morphTo = [];
-    public $morphOne = [];
-    public $morphMany = [];
     public $morphToMany = [
         'discounts' => ['Bedard\Shop\Models\Discount', 'table' => 'bedard_shop_discountables',
-            'name' => 'discountable', 'foreignKey' => 'discount_id', 'scope' => 'isActive'
+                'name' => 'discountable', 'foreignKey' => 'discount_id', 'scope' => 'isActive'
         ],
     ];
-    public $attachOne = [];
-    public $attachMany = [];
 
     /**
      * @var array   Json encodes product arrangements
@@ -91,7 +83,7 @@ class Category extends Model
     }
     public function scopeNonPseudoDefaultOrder($query)
     {
-      $query->nonPseudo()->defaultOrder();
+        $query->nonPseudo()->defaultOrder();
     }
 
     /**
@@ -142,5 +134,17 @@ class Category extends Model
 
         return $products->get();
     }
-    
+
+    /**
+     * Return the first discount
+     * @return  Bedard\Shop\Models\Discount
+     */
+    public function getDiscountAttribute()
+    {
+        if (count($this->discounts) > 0) {
+            foreach ($this->discounts as $discount)
+                return $discount;
+        }
+    }
+        
 }
