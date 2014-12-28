@@ -62,12 +62,12 @@ class Plugin extends PluginBase
                         'url'           => Backend::url('bedard/shop/categories'),
                         'permissions'   => ['bedard.shop.access_categories']
                     ],
-                    // 'discounts' => [
-                    //     'label'         => 'Discounts',
-                    //     'icon'          => 'icon-clock-o',
-                    //     'url'           => Backend::url('bedard/shop/discounts'),
-                    //     'permissions'   => ['bedard.shop.access_discounts']
-                    // ],
+                    'discounts' => [
+                        'label'         => 'Discounts',
+                        'icon'          => 'icon-clock-o',
+                        'url'           => Backend::url('bedard/shop/discounts'),
+                        'permissions'   => ['bedard.shop.access_discounts']
+                    ],
                     // 'promotions' => [
                     //     'label'         => 'Promotions',
                     //     'icon'          => 'icon-code',

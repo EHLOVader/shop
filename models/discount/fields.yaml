@@ -1,0 +1,41 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    name:
+        label: Discount Name
+
+    start_date:
+        label: Start Date
+        type: datepicker
+        span: left
+
+    end_date:
+        label: End Date
+        type: datepicker
+        span: right
+
+    amount:
+        label: Amount
+        span: left
+
+    is_percentage:
+        label: Discount Method
+        type: dropdown
+        options:
+            1: Percentage
+            0: Exact Amount
+        default: 1
+        span: right
+
+    categories:
+        label: Select Categories
+        type: relation
+        span: left
+
+    products:
+        label: Select Products
+        type: relation
+        span: right
