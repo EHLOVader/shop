@@ -58,7 +58,7 @@ class Discount extends Model
         // Adjust our validation rules
         $this->addDynamicValidationRules();
 
-        // Make sure that the category applies to categories or products
+        // Make sure that the discount applies to categories or products
         $scope = $this->validateDiscountScope();
 
         // Lastly, check for collisions
