@@ -31,20 +31,26 @@ class Products extends Controller
 
         $this->addCss('/plugins/bedard/shop/assets/css/backend.css');
         $this->addCss('/plugins/bedard/shop/assets/css/tooltip.css');
-
-        $this->prepareVars();
     }
 
     /**
-     * Prepare controller variables
+     * Products Index
      */
-    public function prepareVars()
-    {
-        $this->vars['currency'] = PaySettings::get('currency');
-    }
-
     public function index()
     {
+        // Scoreboard queries
+        $this->vars['products']['total'] = Product::all()->count();
+        $this->vars['products']['isActive'] = Product::isActive()->count();
+        $this->vars['products']['isInactive'] = $this->vars['products']['total'] - $this->vars['products']['isActive'];
+        $this->vars['products']['inStock'] = Product::inStock()->count();
+        $this->vars['products']['outOfStock'] = $this->vars['products']['total'] - $this->vars['products']['inStock'];
+        $this->vars['products']['isDiscounted'] = Product::isDiscounted()->isActive()->count();
+        $this->vars['products']['isFullPrice'] = $this->vars['products']['isActive'] - $this->vars['products']['isDiscounted'];
+
+        // Load currency
+        $this->vars['currency'] = PaySettings::get('currency');
+
+        // Extend list controller
         $this->asExtension('ListController')->index();
     }
 
@@ -58,7 +64,7 @@ class Products extends Controller
 
     /**
      * Inventory management
-     * @param integer $productId
+     * @param   integer $productId
      */
     public function inventory($productId)
     {
