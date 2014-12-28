@@ -94,7 +94,7 @@ class Category extends Model
     {
         return $this->pseudo != 'sale'
             ? count($this->products)
-            : Product::isDiscounted()->count();
+            : Product::isDiscounted()->isActiveAndVisible()->count();
     }
 
     /**
@@ -104,15 +104,18 @@ class Category extends Model
     public function getArrangedProducts($page = 0)
     {
         // Load all active and visible products
-        $products = Product::isActiveAndVisible();
+        if ($this->pseudo == 'all')
+            $products = Product::isActiveAndVisible();
 
-        // Select discounted products
-        if ($this->pseudo == 'sale')
-            $products->isDiscounted();
+        // Select discounts by category
+        else {
+            $products = $this->pseudo == 'sale'
+                ? Product::isDiscounted()
+                : Product::inCategory($this->id);
 
-        // Select products by category ID
-        else
-            $products->inCategory($this->id);
+            // Only show active and visible
+            $products->isActiveAndVisible();
+        }
 
         // Standard product arrangements
         if ($this->arrangement_method == 'alpha_asc')
