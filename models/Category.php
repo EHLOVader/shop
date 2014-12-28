@@ -85,6 +85,10 @@ class Category extends Model
               ->orderBy('is_visible', 'desc')
               ->orderBy('position', 'asc');
     }
+    public function scopeNonPseudoDefaultOrder($query)
+    {
+      $query->nonPseudo()->defaultOrder();
+    }
 
     /**
      * Returns the number of products the category contains
