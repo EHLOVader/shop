@@ -77,7 +77,11 @@ class Product extends Model
     }
     public function scopeIsVisible($query)
     {
-        $query->where('is_active', TRUE);
+        $query->where('is_visible', TRUE);
+    }
+    public function scopeIsActiveAndVisible($query)
+    {
+        $query->isActive()->isVisible();
     }
 
     /**

@@ -31,7 +31,7 @@ class Category extends Model
      * @var array Relations
      */
     public $belongsToMany = [
-        'products' => ['Bedard\Shop\Models\Product', 'table' => 'bedard_shop_products_categories', 'scope' => 'isActive']
+        'products' => ['Bedard\Shop\Models\Product', 'table' => 'bedard_shop_products_categories', 'scope' => 'isActiveAndVisible']
     ];
     public $morphToMany = [
         'discounts' => ['Bedard\Shop\Models\Discount', 'table' => 'bedard_shop_discountables',
@@ -97,14 +97,14 @@ class Category extends Model
 
     /**
      * Returns the category's product arrangement
-     * @return Collection   Bedard\Shop\Models\Product
+     * @return  Collection  Bedard\Shop\Models\Product
      */
     public function getArrangedProducts($page = 0)
     {
         $categoryId = $this->id;
         $products = $this->pseudo == 'all'
-            ? Product::isVisible()
-            : Product::isVisible()
+            ? Product::isActiveAndVisible()
+            : Product::isActiveAndVisible()
                 ->whereHas('categories', function($query) use ($categoryId) {
                     $query->where('id', $categoryId);
                 });
