@@ -103,17 +103,16 @@ class Category extends Model
      */
     public function getArrangedProducts($page = 0)
     {
-        // Load products from "all"
-        if ($this->pseudo == 'all')
-            $products = Product::isActiveAndVisible();
+        // Load all active and visible products
+        $products = Product::isActiveAndVisible();
 
-        // Load products from "sale"
-        elseif ($this->pseudo == 'sale')
-            $products = Product::isDiscounted();
+        // Select discounted products
+        if ($this->pseudo == 'sale')
+            $products->isDiscounted();
 
-        // Load products from a specific category
+        // Select products by category ID
         else
-            $products = Product::inCategory($this->id);
+            $products->inCategory($this->id);
 
         // Standard product arrangements
         if ($this->arrangement_method == 'alpha_asc')

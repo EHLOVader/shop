@@ -73,36 +73,53 @@ class Product extends Model
      */
     public function scopeIsActive($query)
     {
+        // Selects active products
         $query->where('is_active', TRUE);
     }
+
     public function scopeIsVisible($query)
     {
+        // Selects visible products
         $query->where('is_visible', TRUE);
     }
+
     public function scopeIsActiveAndVisible($query)
     {
+        // Selects active and visible products
         $query->isActive()->isVisible();
     }
+
     public function scopeInCategory($query, $categoryId)
     {
-        $query->isActiveAndVisible()
-            ->whereHas('categories', function($query) use ($categoryId) {
-                $query->where('id', $categoryId);
-            });
-    }
-    public function scopeIsDiscounted($query)
-    {
-        $query->whereHas('discounts', function($query) {
-            $query->isActive();
-        })
-        ->orWhereHas('categories', function($query) {
-            $query->whereHas('discounts', function($query) {
-                $query->isActive();
-            });
-        })
-        ->isActiveAndVisible();
+        // Selects products by category ID
+        $query->whereHas('categories', function($categories) use ($categoryId) {
+            $categories->where('id', $categoryId);
+        });
     }
 
+    public function scopeIsDiscounted($query)
+    {
+        // Selects products currently discounted
+        $query->whereHas('discounts', function($discounts) {
+            $discounts->isActive();
+        })
+        ->orWhereHas('categories', function($categories) {
+            $categories->whereHas('discounts', function($discounts) {
+                $discounts->isActive();
+            });
+        });
+    }
+
+    public function scopeInStock($query)
+    {
+        // Selects in stock products
+        $query->where('stock', '>', 0);
+    }
+    public function scopeOutOfStock($query)
+    {
+        // Selects out of stock products
+        $query->where('stock', 0);
+    }
     /**
      * Returns a string of a product's "real" categories
      * @return  string
