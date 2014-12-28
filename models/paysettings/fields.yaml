@@ -1,0 +1,23 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    currency:
+        label: Currency
+        type: dropdown
+        span: left
+        options:
+            gbp: '<i class="icon-gbp" style="font-size: 16px; display: inline-block; min-width: 20px; text-align: center;"></i> British Pound'
+            eur: '<i class="icon-eur" style="font-size: 16px; display: inline-block; min-width: 20px; text-align: center;"></i> Euro'
+            rub: '<i class="icon-rub" style="font-size: 16px; display: inline-block; min-width: 20px; text-align: center;"></i> Russian Ruble'
+            usd: '<i class="icon-usd" style="font-size: 16px; display: inline-block; min-width: 20px; text-align: center;"></i> U.S. Dollar'
+
+    paypal_client_id:
+        label: PayPal Client ID
+        span: left
+
+    paypal_secret:
+        label: PayPal Secret
+        span: right

@@ -104,4 +104,23 @@ class Plugin extends PluginBase
             ]
         ];
     }
+
+    /**
+     * Registers plugin settings
+     * @return  array
+     */
+    public function registerSettings()
+    {
+        return [
+            'paysettings' => [
+                'label'         => 'Payment Settings',
+                'category'      => 'Shop',
+                'icon'          => 'icon-money',
+                'description'   => 'Configure payment settings.',
+                'class'         => 'Bedard\Shop\Models\PaySettings',
+                'order'         => 200,
+                'keywords'      => 'shop'
+            ]
+        ];
+    }
 }
