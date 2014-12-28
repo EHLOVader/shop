@@ -3,6 +3,7 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\Discount;
+use Bedard\Shop\Models\PaySettings;
 use Flash;
 
 /**
@@ -36,7 +37,7 @@ class Discounts extends Controller
      */
     public function prepareVars()
     {
-        $this->vars['currency'] = 'usd';
+        $this->vars['currency'] = PaySettings::get('currency');
     }
 
     /**

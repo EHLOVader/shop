@@ -1,12 +1,20 @@
 <?php
+
+// Product is disabled
 if (!$record->is_active)
     echo '<i class="list-icon icon-times red"></i>Disabled';
 
-elseif ($record->discount)
-    echo '<i class="list-icon icon-clock-o blue"></i>'.$record->discount->name;
+// Product is discounted
+elseif ($record->is_discounted) {
+    echo $record->is_visible
+        ? '<i class="list-icon icon-clock-o blue"></i>'.$record->discount->name
+        : '<i class="list-icon icon-clock-o grey"></i>'.$record->discount->name;
+}
 
+// Product is hidden
 elseif (!$record->is_visible)
     echo '<i class="list-icon icon-minus grey"></i>Hidden';
 
+// Product is active
 else
     echo '<i class="list-icon icon-check green"></i>Active';

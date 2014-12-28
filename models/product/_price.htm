@@ -1,0 +1,7 @@
+<?php
+$currencySymbol = $currency
+    ? '<i class="currency-icon icon-'.$currency.'"></i>' : '';
+
+echo $record->is_discounted
+    ? '<span data-tooltip="'.$record->full_price.'" class="discounted-price">'.$currencySymbol.$record->price.'</span>'
+    : $currencySymbol.$record->price;

@@ -1,9 +1,19 @@
 <?php
+// Category is not active
 if (!$record->is_active)
 	echo '<i class="list-icon icon-times red"></i>Inactive';
 
+// Category is discounted
+elseif ($record->discount) {
+    echo $record->is_visible
+        ? '<i class="list-icon icon-clock-o blue"></i>'.$record->discount->name
+        : '<i class="list-icon icon-clock-o grey"></i>'.$record->discount->name;
+}
+
+// Category is hidden
 elseif (!$record->is_visible)
 	echo '<i class="list-icon icon-minus grey"></i>Hidden';
 
+// Category is active
 else
 	echo '<i class="list-icon icon-check green"></i>Active';

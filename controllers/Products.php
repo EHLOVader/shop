@@ -2,8 +2,9 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
-use Bedard\Shop\Widgets\Inventories as InventoriesWidget;
+use Bedard\Shop\Models\PaySettings;
 use Bedard\Shop\Models\Product;
+use Bedard\Shop\Widgets\Inventories as InventoriesWidget;
 use Flash;
 
 /**
@@ -29,6 +30,17 @@ class Products extends Controller
         BackendMenu::setContext('Bedard.Shop', 'shop', 'products');
 
         $this->addCss('/plugins/bedard/shop/assets/css/backend.css');
+        $this->addCss('/plugins/bedard/shop/assets/css/tooltip.css');
+
+        $this->prepareVars();
+    }
+
+    /**
+     * Prepare controller variables
+     */
+    public function prepareVars()
+    {
+        $this->vars['currency'] = PaySettings::get('currency');
     }
 
     public function index()

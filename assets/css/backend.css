@@ -42,6 +42,13 @@
 }
 
 /**
+ * Discount coloring
+ */
+.discounted-price {
+    color: #95B753;
+}
+
+/**
  * Font colors
  */
 .green { color: #95B753  !important; }

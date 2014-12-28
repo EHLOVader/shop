@@ -15,16 +15,15 @@ columns:
         sortable: false
         searchable: true
 
-    full_price:
+    price:
         label: Price
-        # type: partial
-        # path: @/plugins/bedard/shop/models/product/_price.htm
+        type: partial
+        path: @/plugins/bedard/shop/models/product/_price.htm
 
     stock:
         label: Manage Inventory
         type: partial
         path: @/plugins/bedard/shop/models/product/_inventory.htm
-        class: list-link
 
     is_active:
         label: Status
