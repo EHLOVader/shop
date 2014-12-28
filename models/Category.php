@@ -1,6 +1,5 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Product;
 use DB;
 use Flash;
