@@ -15,7 +15,7 @@ columns:
         sortable: false
         searchable: true
 
-    price:
+    full_price:
         label: Price
         type: partial
         path: @/plugins/bedard/shop/models/product/_price.htm

@@ -1,8 +1,8 @@
 <?php
 
-// Product is disabled
+// Product is inactive
 if (!$record->is_active)
-    echo '<i class="list-icon icon-times red"></i>Disabled';
+    echo '<i class="list-icon icon-times red"></i>Inactive';
 
 // Product is discounted
 elseif ($record->is_discounted) {
