@@ -46,22 +46,14 @@ class Inventory extends Model
      */
     public function scopeIsActive($query)
     {
+        // Selects inventories that are active
         $query->where('is_active', true);
     }
 
-    /**
-     * Synchronizes the parent product's inventories with it's "stock" column
-     */
-    public $syncAfterSave = TRUE;
-    public function afterSave()
+    public function scopeInStock($query)
     {
-        if ($this->product && $this->syncAfterSave)
-            $this->product->syncInventories();
-    }
-    public $syncAfterDelete = TRUE;
-    public function afterDelete()
-    {
-        if ($this->product && $this->syncAfterDelete)
-            $this->product->syncInventories();
+        // Selects inventories that are active and in stock
+        $query->isActive()
+              ->where('quantity', '>', 0);
     }
 }

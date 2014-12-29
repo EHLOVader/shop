@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
 use Bedard\Shop\Models\Discount;
+use Bedard\Shop\Models\Settings;
 use DB;
 use Model;
 
@@ -39,7 +40,7 @@ class Product extends Model
      * @var array Relations
      */
     public $hasMany = [
-        'inventories' => ['Bedard\Shop\Models\Inventory', 'table' => 'bedard_shop_inventories', 'order' => 'position asc']
+        'inventories' => ['Bedard\Shop\Models\Inventory', 'table' => 'bedard_shop_inventories', 'scope' => 'isActive', 'order' => 'position asc']
     ];
     public $belongsToMany = [
         'categories' => ['Bedard\Shop\Models\Category', 'table' => 'bedard_shop_products_categories', 'scope' => 'nonPseudo']
@@ -77,15 +78,23 @@ class Product extends Model
         $query->where('is_active', TRUE);
     }
 
+    public function scopeIsVisible($query)
+    {
+        // Selects products that are visible from a category page
+        $query->where('is_active', TRUE)
+              ->isActive();
+
+        // Check the settings and see if out of stock products should be hidden
+        if (Settings::get('oos_products') == 0) {
+            $query->whereHas('inventories', function($inventory) {
+                $inventory->inStock();
+            });
+        }
+    }
+
     public function scopeIsInactive($query) {
         // Selects inactive products
         $query->where('is_active', FALSE);
-    }
-
-    public function scopeIsVisible($query)
-    {
-        // Selects visible products
-        $query->where('is_visible', TRUE);
     }
 
     public function scopeIsHidden($query)
@@ -97,7 +106,10 @@ class Product extends Model
     public function scopeInStock($query)
     {
         // Selects in stock products
-        $query->where('stock', '>', 0);
+        $query->whereHas('inventories', function($inventory) {
+                $inventory->inStock();
+            })
+            ->isActive();
     }
 
     public function scopeOutOfStock($query)
@@ -151,27 +163,6 @@ class Product extends Model
         foreach ($this->categories as $category)
             if (!$category->pseudo) $categories[] = $category->name;
         return implode(', ', $categories);
-    }
-
-    /**
-     * Runs a query to synchronize the "stock" column
-     */
-    public function syncInventories()
-    {
-        $sync = DB::statement('
-            UPDATE bedard_shop_products
-            SET stock = (
-                SELECT sum(quantity)
-                FROM bedard_shop_inventories
-                where product_id = '.$this->id.'
-                and is_active = 1
-            )
-            WHERE id = '.$this->id
-        );
-
-        // $this->syncCategories();
-        
-        return $sync;
     }
 
     /**
@@ -248,5 +239,18 @@ class Product extends Model
     public function getIsDiscountedAttribute()
     {
         return $this->discount != FALSE;
+    }
+
+    /**
+     * Returns the product's stock
+     * @return  integer
+     */
+    public function getStockAttribute()
+    {
+        $stock = 0;
+        foreach ($this->inventories as $inventory)
+            $stock += $inventory->quantity;
+
+        return $stock;
     }
 }

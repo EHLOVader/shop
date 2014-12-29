@@ -31,7 +31,7 @@ class Category extends Model
      * @var array Relations
      */
     public $belongsToMany = [
-        'products' => ['Bedard\Shop\Models\Product', 'table' => 'bedard_shop_products_categories', 'scope' => 'isActiveAndVisible']
+        'products' => ['Bedard\Shop\Models\Product', 'table' => 'bedard_shop_products_categories', 'scope' => 'isVisible']
     ];
     public $morphToMany = [
         'discounts' => ['Bedard\Shop\Models\Discount', 'table' => 'bedard_shop_discountables',
@@ -94,18 +94,19 @@ class Category extends Model
     {
         return $this->pseudo != 'sale'
             ? count($this->products)
-            : Product::isDiscounted()->isActiveAndVisible()->count();
+            : Product::isDiscounted()->isVisible()->count();
     }
 
     /**
      * Returns the category's product arrangement
+     * @param   integer $pageNumber
      * @return  Collection  Bedard\Shop\Models\Product
      */
     public function getArrangedProducts($page = 0)
     {
         // Load all active and visible products
         if ($this->pseudo == 'all')
-            $products = Product::isActiveAndVisible();
+            $products = Product::isVisible();
 
         // Select discounts by category
         else {
@@ -114,7 +115,7 @@ class Category extends Model
                 : Product::inCategory($this->id);
 
             // Only show active and visible
-            $products->isActiveAndVisible();
+            $products->isVisible();
         }
 
         // Standard product arrangements
@@ -135,9 +136,7 @@ class Category extends Model
 
         // If a page value was passed in, query only products on that page
         if ($page > 0) {
-            $limit = $this->arrangement_columns * $this->arrangement_rows;
-            $offset = $limit * ($page - 1);
-            $products->take($limit)->skip($offset);
+            $products->onPage($page, $this->productsPerPage);
         }
 
         return $products->get();
@@ -153,6 +152,15 @@ class Category extends Model
             foreach ($this->discounts as $discount)
                 return $discount;
         }
+    }
+
+    /**
+     * Returns the number of products per page
+     * @return  integer
+     */
+    public function getProductsPerPageAttribute()
+    {
+        return $this->arrangement_rows * $this->arrangement_columns;
     }
 
 }

@@ -39,13 +39,15 @@ class Products extends Controller
     public function index()
     {
         // Scoreboard queries
-        $this->vars['products']['total'] = Product::all()->count();
-        $this->vars['products']['isActive'] = Product::isActive()->count();
-        $this->vars['products']['isInactive'] = $this->vars['products']['total'] - $this->vars['products']['isActive'];
-        $this->vars['products']['inStock'] = Product::inStock()->count();
-        $this->vars['products']['outOfStock'] = $this->vars['products']['total'] - $this->vars['products']['inStock'];
-        $this->vars['products']['isDiscounted'] = Product::isDiscounted()->isActive()->count();
-        $this->vars['products']['isFullPrice'] = $this->vars['products']['isActive'] - $this->vars['products']['isDiscounted'];
+        $products['total'] = Product::all()->count();
+        $products['isActive'] = Product::isActive()->count();
+        $products['isInactive'] = $products['total'] - $products['isActive'];
+        $products['inStock'] = Product::inStock()->count();
+        $products['outOfStock'] = $products['isActive'] - $products['inStock'];
+        $products['isDiscounted'] = Product::isDiscounted()->isActive()->count();
+        $products['isFullPrice'] = $products['isActive'] - $products['isDiscounted'];
+
+        $this->vars['products'] = $products;
 
         // Load currency
         $this->vars['currency'] = PaySettings::get('currency');
@@ -55,11 +57,13 @@ class Products extends Controller
     }
 
     /**
-     * Extend the list query to eager load categories and discounts
+     * Extend the list query to eager load categories, discounts, and inventories
      */
     public function listExtendQuery($query, $definition = null)
     {
-        $query->with('categories.discounts')->with('discounts');
+        $query->with('categories.discounts')
+              ->with('discounts')
+              ->with('inventories');
     }
 
     /**

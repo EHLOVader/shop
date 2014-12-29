@@ -52,7 +52,7 @@ class Categories extends Controller
     {
         $query->defaultOrder()
             ->with('discounts')
-            ->with('products');
+            ->with('products.inventories');
     }
 
     /**
