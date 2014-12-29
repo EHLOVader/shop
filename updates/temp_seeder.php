@@ -96,6 +96,32 @@ class TempSeeder extends Seeder {
                 'is_active' => rand(0, 10) > 0 ? 1 : 0
             ]);
         }
+
+        /**
+         * DISCOUNT SEEDS
+         */
+        // Demo category discount
+        DB::table('bedard_shop_discounts')->insert([
+            'name' => 'Category Discount',
+            'amount' => 15,
+            'is_percentage' => 1
+        ]);
+        DB::table('bedard_shop_discountables')->insert([
+            'discount_id' => 1,
+            'discountable_id' => rand(3, 6),
+            'discountable_type' => 'Bedard\Shop\Models\Category'
+        ]);
+
+        DB::table('bedard_shop_discounts')->insert([
+            'name' => 'Product Discount',
+            'amount' => 5,
+            'is_percentage' => 0
+        ]);
+        DB::table('bedard_shop_discountables')->insert([
+            'discount_id' => 2,
+            'discountable_id' => rand(1, 20),
+            'discountable_type' => 'Bedard\Shop\Models\Product'
+        ]);
         
         // Enable foreign keys
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
