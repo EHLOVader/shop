@@ -1,0 +1,23 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    oos_products:
+        label: Out Of Stock Products
+        type: dropdown
+        options:
+            1: Visible
+            0: Hidden
+        default: 1
+        span: left
+
+    oos_inventories:
+        label: Out Of Stock Inventories
+        type: dropdown
+        options:
+            1: Visible
+            0: Hidden
+        default: 1
+        span: right

@@ -19,7 +19,7 @@ class Plugin extends PluginBase
             'name'        => 'Shop',
             'description' => 'A feature rich ecommerce platform.',
             'author'      => 'Scott Bedard',
-            'icon'        => 'icon-cart'
+            'icon'        => 'icon-shopping-cart'
         ];
     }
 
@@ -112,6 +112,15 @@ class Plugin extends PluginBase
     public function registerSettings()
     {
         return [
+            'settings' => [
+                'label'         => 'Settings',
+                'category'      => 'Shop',
+                'icon'          => 'icon-shopping-cart',
+                'description'   => 'Configure general shop settings.',
+                'class'         => 'Bedard\Shop\Models\Settings',
+                'order'         => 100,
+                'keywords'      => 'shop'
+            ],
             'paysettings' => [
                 'label'         => 'Payment Settings',
                 'category'      => 'Shop',

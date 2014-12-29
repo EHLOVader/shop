@@ -3,13 +3,13 @@
 use Model;
 
 /**
- * Payment Settings Model
+ * Settings Model
  */
-class PaySettings extends Model
+class Settings extends Model
 {
     public $implement = ['System.Behaviors.SettingsModel'];
 
-    public $settingsCode = 'bedard_shop_paysettings';
+    public $settingsCode = 'bedard_shop_settings';
 
     public $settingsFields = 'fields.yaml';
 }
