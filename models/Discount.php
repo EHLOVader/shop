@@ -208,7 +208,7 @@ class Discount extends Model
 
     /**
      * Floor percentage discounts
-     * @return  numeric
+     * @return  string (numeric)
      */
     public function getAmountAttribute()
     {

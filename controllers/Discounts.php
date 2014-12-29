@@ -19,7 +19,7 @@ class Discounts extends Controller
     public $listConfig = 'config_list.yaml';
 
     /**
-     * Discounts
+     * Discounts Constructor
      */
     public function __construct()
     {
@@ -28,16 +28,6 @@ class Discounts extends Controller
 
         $this->addCss('/plugins/bedard/shop/assets/css/backend.css');
         $this->addCss('/plugins/bedard/shop/assets/css/tooltip.css');
-
-        $this->prepareVars();
-    }
-
-    /**
-     * Prepare controller variables
-     */
-    public function prepareVars()
-    {
-        $this->vars['currency'] = PaySettings::get('currency');
     }
 
     /**
@@ -45,6 +35,7 @@ class Discounts extends Controller
      */
     public function index()
     {
+        $this->vars['currency'] = PaySettings::get('currency');
         $this->asExtension('ListController')->index();
     }
 

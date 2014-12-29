@@ -11,11 +11,11 @@ Documentation coming soon.
 
 
 #### Categories
-There are two *pseudo categories* that come with the plugin called "All" and "Sale". They behave like normal categories, but you may not add products directly to them, or delete them. All other category actions such as re-naming them or arranging their products are still available.
+There are two *pseudo categories* that come with this plugin called "All" and "Sale". They behave like normal categories, but you may not add products directly to them, or delete them. All other category actions such as re-naming them or arranging their products are still available.
 
-Products may be arranged to display however you would like. There are a few built in arrangements such as "newest first" or "alphabetized", but you may also apply a custom arrangement. To do this, simply drag and drop their product's thumbnail images and arrange them however you wish.
+Products may be arranged to display their products in whatever order you would like. There are a few built in arrangements such as "newest first" or "alphabetized", but you may also apply a custom arrangement. To do this, simply drag and drop their product's thumbnail images and arrange them however you wish.
 
-Categories that are hidden are still accessible via the URL or component parameter. The only difference with hidden categories is that they will not show up in the list of categories.
+Categories that are hidden are still accessible from components. The only difference with hidden categories is that they will not show up in the list of categories.
 
 
 #### Discounts

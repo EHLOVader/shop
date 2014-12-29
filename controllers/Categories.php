@@ -22,7 +22,7 @@ class Categories extends Controller
     public $bodyClass = 'compact-container';
 
     /**
-     * Categories Controller
+     * Categories Constructor
      */
     public function __construct()
     {
