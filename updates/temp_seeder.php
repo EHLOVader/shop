@@ -7,6 +7,7 @@ use DB;
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Inventory;
+use Bedard\Shop\Models\Code;
 
 class TempSeeder extends Seeder {
 
@@ -103,7 +104,7 @@ class TempSeeder extends Seeder {
         // Demo category discount
         DB::table('bedard_shop_discounts')->insert([
             'name' => 'Category Discount',
-            'amount' => 15,
+            'amount' => rand(10,25),
             'is_percentage' => 1
         ]);
         DB::table('bedard_shop_discountables')->insert([
@@ -114,13 +115,25 @@ class TempSeeder extends Seeder {
 
         DB::table('bedard_shop_discounts')->insert([
             'name' => 'Product Discount',
-            'amount' => 5,
+            'amount' => rand(5,8),
             'is_percentage' => 0
         ]);
         DB::table('bedard_shop_discountables')->insert([
             'discount_id' => 2,
             'discountable_id' => rand(1, 20),
             'discountable_type' => 'Bedard\Shop\Models\Product'
+        ]);
+
+        /**
+         * PROMO CODE
+         */
+        Code::create([
+            'code'  => 'Foo',
+            'message' => 'Thanks for entering "foo".',
+            'amount' => rand(10, 20),
+            'is_percentage' => 1,
+            'is_freeshipping' => 0,
+            'cart_value' => rand(20, 50)
         ]);
         
         // Enable foreign keys

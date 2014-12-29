@@ -6,17 +6,12 @@ fields:
 
     code:
         label: Code
-        comment: 'Codes may contain alphanumeric characters, hyphens, underscores, and spaces.'
+        comment: 'Codes may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
         span: left
-
-    cart_value:
-        label: Cart Value
-        comment: Required cart value for promo code to apply.
-        placeholder: '0.00'
-        span: right
 
     message:
         label: Message
+        span: right
 
     start_date:
         label: Start Date
@@ -32,8 +27,8 @@ fields:
         comment: Leave blank for an indefinite end date.
         span: right
 
-    value:
-        label: Value
+    amount:
+        label: Amount
         type: text
         placeholder: 0
         span: left
@@ -47,6 +42,19 @@ fields:
             0: Exact Amount
         default: 1
 
+    cart_value:
+        label: Cart Value
+        comment: Required cart value for promo code to apply.
+        placeholder: '0.00'
+        span: left
+
+    limit:
+        label: Maximum Uses
+        type: text
+        placeholder: 0
+        comment: Set to zero for unlimited uses.
+        span: right
+
     is_freeshipping:
         label: Shipping
         comment: Free shipping will apply only for domestic shipments.
@@ -57,9 +65,3 @@ fields:
             1: Free
         default: 0
 
-    limit:
-        label: Maximum Uses
-        type: text
-        placeholder: 0
-        comment: Set to zero for unlimited uses.
-        span: right

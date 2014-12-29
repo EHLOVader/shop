@@ -17,9 +17,8 @@ class CreateCodesTable extends Migration
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->decimal('cart_value', 10, 2)->unsigned();
-            $table->integer('uses')->unsigned();
-            $table->integer('limit')->unsigned();
             $table->decimal('amount', 10, 2)->unsigned();
+            $table->integer('limit')->unsigned();
             $table->boolean('is_percentage')->unsigned();
             $table->boolean('is_freeshipping')->unsigned();
             $table->timestamps();
