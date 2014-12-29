@@ -105,8 +105,7 @@ class Products extends Controller
                 if (!$record->delete()) $successful = FALSE;
             }
         }
-        if ($successful) Flash::success('Products successfully deleted.');
-        else Flash::error('An unknown error has occured, some products were not deleted.');
+        if ($successful) Flash::success('Successfully deleted products.');
         return $this->listRefresh();
     }
 }

@@ -2,7 +2,9 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
+use Bedard\Shop\Models\Code;
 use Bedard\Shop\Models\PaySettings;
+use Flash;
 
 /**
  * Codes Back-end Controller
@@ -43,5 +45,21 @@ class Codes extends Controller
     public function listExtendQuery($query, $definition = null)
     {
         //$query->with('carts');
+    }
+
+    /**
+     * Delete list rows
+     */
+    public function index_onDelete()
+    {
+        $successful = true;
+        if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
+            foreach ($checkedIds as $recordId) {
+                if (!$record = Code::find($recordId)) continue;
+                if (!$record->delete()) $successful = FALSE;
+            }
+        }
+        if ($successful) Flash::success('Successfully deleted codes.');
+        return $this->listRefresh();
     }
 }
