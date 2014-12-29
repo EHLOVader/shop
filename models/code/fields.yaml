@@ -3,6 +3,63 @@
 # ===================================
 
 fields:
-    id:
-        label: ID
-        disabled: true
+
+    code:
+        label: Code
+        comment: 'Codes may contain alphanumeric characters, hyphens, underscores, and spaces.'
+        span: left
+
+    cart_value:
+        label: Cart Value
+        comment: Required cart value for promo code to apply.
+        placeholder: '0.00'
+        span: right
+
+    message:
+        label: Message
+
+    start_date:
+        label: Start Date
+        type: datepicker
+        mode: datetime
+        comment: Leave blank for an immediate start date.
+        span: left
+
+    end_date:
+        label: End Date
+        type: datepicker
+        mode: datetime
+        comment: Leave blank for an indefinite end date.
+        span: right
+
+    value:
+        label: Value
+        type: text
+        placeholder: 0
+        span: left
+
+    is_percentage:
+        label: Method
+        span: right
+        type: dropdown
+        options:
+            1: Percentage
+            0: Exact Amount
+        default: 1
+
+    is_freeshipping:
+        label: Shipping
+        comment: Free shipping will apply only for domestic shipments.
+        span: left
+        type: dropdown
+        options:
+            0: Normal
+            1: Free
+        default: 0
+
+    limit:
+        label: Maximum Uses
+        type: text
+        placeholder: 0
+        comment: Set to zero for unlimited uses.
+        span: right
