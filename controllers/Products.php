@@ -31,6 +31,9 @@ class Products extends Controller
 
         $this->addCss('/plugins/bedard/shop/assets/css/backend.css');
         $this->addCss('/plugins/bedard/shop/assets/css/tooltip.css');
+
+        // Load currency
+        $this->vars['currency'] = PaySettings::get('currency');
     }
 
     /**
@@ -48,9 +51,6 @@ class Products extends Controller
         $products['isFullPrice'] = $products['isActive'] - $products['isDiscounted'];
 
         $this->vars['products'] = $products;
-
-        // Load currency
-        $this->vars['currency'] = PaySettings::get('currency');
 
         // Extend list controller
         $this->asExtension('ListController')->index();
@@ -98,7 +98,7 @@ class Products extends Controller
      */
     public function index_onDelete()
     {
-        $successful = true;
+        $successful = TRUE;
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             foreach ($checkedIds as $recordId) {
                 if (!$record = Product::find($recordId)) continue;
@@ -106,6 +106,7 @@ class Products extends Controller
             }
         }
         if ($successful) Flash::success('Products successfully deleted.');
+        else Flash::error('An unknown error has occured, some products were not deleted.');
         return $this->listRefresh();
     }
 }
