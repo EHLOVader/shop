@@ -85,7 +85,7 @@ class Products extends Controller
             $inventoriesWidget = new InventoriesWidget($this);
             $inventoriesWidget->alias = 'inventoriesWidget';
             $inventoriesWidget->bindToController();
-            $inventoriesWidget->setProduct($product);
+            $inventoriesWidget->setProductId($product->id);
         }
 
         else {

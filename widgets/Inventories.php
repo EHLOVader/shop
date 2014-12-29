@@ -10,9 +10,9 @@ use ValidationException;
 class Inventories extends WidgetBase
 {
     /**
-     * @var Product
+     * @var integer $productId
      */
-    private $product;
+    private $productId;
 
     /**
      * Widget Details
@@ -40,9 +40,9 @@ class Inventories extends WidgetBase
      * Load the product being managed
      * @param   Product $product
      */
-    public function setProduct(Product $product)
+    public function setProductId($productId)
     {
-        $this->product = $product;
+        $this->productId = $productId;
     }
 
     /**
@@ -52,8 +52,8 @@ class Inventories extends WidgetBase
     public function render()
     {
         // Throw an exception if we don't have a product
-        if (!$this->product)
-            throw new Exception('Product must be set before the inventories widget may be rendered.');
+        if (!$this->productId)
+            throw new Exception('Product ID must be set before the inventories widget may be rendered.');
 
         // Return the widget partial
         $this->prepareVars();
@@ -65,7 +65,9 @@ class Inventories extends WidgetBase
      */
     private function prepareVars()
     {
-        $this->vars['inventories'] = $this->product->inventories;
+        $this->vars['inventories'] = Inventory::where('product_id', $this->productId)
+            ->orderBy('position', 'asc')
+            ->get();
     }
 
     /**
@@ -74,7 +76,6 @@ class Inventories extends WidgetBase
      */
     private function refreshPartial()
     {
-        $this->product->load('inventories');
         $this->prepareVars();
         return [
             '.widget-body' => $this->makePartial('inventories')
@@ -114,7 +115,7 @@ class Inventories extends WidgetBase
         $this->validateInventoryNames($inventoryNames);
 
         // Attempt to create / update inventories
-        if (!$this->saveInventories($inventories))
+        if ($this->saveInventories($inventories) === FALSE)
             return Flash::error('An unknown error occured while attempting to update inventories.');
 
         // If we've made it this far, everything worked out
@@ -197,27 +198,21 @@ class Inventories extends WidgetBase
             // Load the inventory model via Find, First, or New
             $inventoryModel = $inventory['id']
                 ? Inventory::find($inventory['id'])
-                : Inventory::firstOrNew(['product_id' => $this->product->id, 'name' => $inventory['name']]);
+                : Inventory::firstOrNew(['product_id' => $this->productId, 'name' => $inventory['name']]);
 
             // Something went wrong finding / creating the model
             if (!$inventoryModel) return FALSE;
 
             // Update model values
-            $inventoryModel->product_id = $this->product->id;
+            $inventoryModel->product_id = $this->productId;
             $inventoryModel->name       = $inventory['name'];
             $inventoryModel->quantity   = $inventory['quantity'];
             $inventoryModel->modifier   = $inventory['modifier'];
             $inventoryModel->is_active  = $inventory['is_active'];
             $inventoryModel->position   = $i;
 
-            // Disable inventory syncing, we'll call this manually at the end
-            $inventoryModel->syncAfterSave = FALSE;
-
             // Attempt to save the model
             if (!$inventoryModel->save()) return FALSE;
         }
-
-        // Sync the inventories with their parent product
-        return $this->product->syncInventories();
     }
 }
