@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Code
+
+# Model Form Field configuration
+form: $/bedard/shop/models/code/fields.yaml
+
+# Model Class name
+modelClass: Bedard\Shop\Models\Code
+
+# Default redirect location
+defaultRedirect: bedard/shop/codes
+
+# Create page
+create:
+    title: Create Code
+    redirect: bedard/shop/codes/update/:id
+    redirectClose: bedard/shop/codes
+
+# Update page
+update:
+    title: Edit Code
+    redirect: bedard/shop/codes
+    redirectClose: bedard/shop/codes
+
+# Preview page
+preview:
+    title: Preview Code

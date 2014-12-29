@@ -17,7 +17,7 @@ class Plugin extends PluginBase
     {
         return [
             'name'        => 'Shop',
-            'description' => 'A feature rich ecommerce platform.',
+            'description' => 'An ecommerce platform for OctoberCMS.',
             'author'      => 'Scott Bedard',
             'icon'        => 'icon-shopping-cart'
         ];
@@ -68,12 +68,12 @@ class Plugin extends PluginBase
                         'url'           => Backend::url('bedard/shop/discounts'),
                         'permissions'   => ['bedard.shop.access_discounts']
                     ],
-                    // 'promotions' => [
-                    //     'label'         => 'Promotions',
-                    //     'icon'          => 'icon-code',
-                    //     'url'           => Backend::url('bedard/shop/promotions'),
-                    //     'permissions'   => ['bedard.shop.access_promotions']
-                    // ],
+                    'codes' => [
+                        'label'         => 'Codes',
+                        'icon'          => 'icon-code',
+                        'url'           => Backend::url('bedard/shop/codes'),
+                        'permissions'   => ['bedard.shop.access_codes']
+                    ],
                     // 'emails' => [
                     //     'label'         => 'Email',
                     //     'icon'          => 'icon-envelope-o',

@@ -4,5 +4,6 @@
   - create_products_table.php
   - create_inventories_table.php
   - create_discounts_table.php
+  - create_codes_table.php
   - seed_the_database.php
   - temp_seeder.php
