@@ -99,9 +99,10 @@ class Category extends Model
               ->where('is_visible', TRUE);
         if (!Settings::get('show_empty_categories')) {
             $query->whereHas('products', function($product) {
-                $product->inStock();
+                if (!Settings::get('show_oos_products'))
+                    $product->inStock();
             });
-            if (Product::isDiscounted()->count() > 0)
+            if (Product::isDiscounted()->isVisible()->count() > 0)
                 $query->orWhere('pseudo', 'sale');
         }
     }
