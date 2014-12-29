@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Models\Settings;
 use Bedard\Shop\Models\Product;
 use DB;
 use Flash;
@@ -73,17 +74,42 @@ class Category extends Model
      */
     public function scopeNonPseudo($query)
     {
+        // Filters out pseudo categories
         return $query->whereNull('pseudo');
     }
-    public function scopeDefaultOrder($query)
+
+    public function scopeBackendOrder($query)
     {
+        // Puts categories in backend order
         $query->orderBy('is_active', 'desc')
               ->orderBy('is_visible', 'desc')
               ->orderBy('position', 'asc');
     }
-    public function scopeNonPseudoDefaultOrder($query)
+
+    public function scopeNonPseudoBackendOrder($query)
     {
-        $query->nonPseudo()->defaultOrder();
+        // Filters out pseudos and orders categories
+        $query->nonPseudo()->backendOrder();
+    }
+
+    public function scopeIsVisible($query)
+    {
+        // Returns categories visible in the categories list
+        $query->where('is_active', TRUE)
+              ->where('is_visible', TRUE);
+        if (!Settings::get('show_empty_categories')) {
+            $query->whereHas('products', function($product) {
+                $product->inStock();
+            });
+            if (Product::isDiscounted()->count() > 0)
+                $query->orWhere('pseudo', 'sale');
+        }
+    }
+
+    public function scopeInOrder($query)
+    {
+        // Puts the categories in order
+        $query->orderBy('position', 'asc');
     }
 
     /**
@@ -99,7 +125,7 @@ class Category extends Model
 
     /**
      * Returns the category's product arrangement
-     * @param   integer $pageNumber
+     * @param   integer     $pageNumber
      * @return  Collection  Bedard\Shop\Models\Product
      */
     public function getArrangedProducts($page = 0)

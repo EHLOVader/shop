@@ -35,7 +35,7 @@ class Discount extends Model
             'name' => 'discountable', 'foreignKey' => 'discountable_id', 'order' => 'name'
         ],
         'categories' => ['Bedard\Shop\Models\Category', 'table' => 'bedard_shop_discountables',
-            'name' => 'discountable', 'foreignKey' => 'discountable_id', 'scope' => 'nonPseudoDefaultOrder'
+            'name' => 'discountable', 'foreignKey' => 'discountable_id', 'scope' => 'nonPseudoBackendOrder'
         ]
     ];
 

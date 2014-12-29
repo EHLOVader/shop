@@ -50,7 +50,7 @@ class Categories extends Controller
      */
     public function listExtendQuery($query, $definition = null)
     {
-        $query->defaultOrder()
+        $query->backendOrder()
             ->with('discounts')
             ->with('products.inventories');
     }
@@ -61,7 +61,7 @@ class Categories extends Controller
     public function position()
     {
         $this->pageTitle = "Manage Category Order";
-        $this->vars['categories'] = Category::defaultOrder()->get();
+        $this->vars['categories'] = Category::backendOrder()->get();
     }
 
     /**
