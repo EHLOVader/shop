@@ -4,7 +4,7 @@
 
 fields:
 
-    oos_products:
+    show_oos_products:
         label: Out Of Stock Products
         type: dropdown
         options:
@@ -13,7 +13,7 @@ fields:
         default: 1
         span: left
 
-    oos_inventories:
+    show_oos_inventories:
         label: Out Of Stock Inventories
         type: dropdown
         options:

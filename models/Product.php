@@ -85,7 +85,7 @@ class Product extends Model
               ->isActive();
 
         // Check the settings and see if out of stock products should be hidden
-        if (Settings::get('oos_products') == 0) {
+        if (Settings::get('show_oos_products') == 0) {
             $query->whereHas('inventories', function($inventory) {
                 $inventory->inStock();
             });
