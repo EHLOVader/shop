@@ -3,6 +3,42 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
-        searchable: true
+
+    code:
+        label: Code
+
+    start_date:
+        label: Start Date
+        type: partial
+        path: @/plugins/bedard/shop/models/code/_start.htm
+        searchable: false
+
+    end_date:
+        label: End Date
+        type: partial
+        path: @/plugins/bedard/shop/models/code/_end.htm
+        searchable: false
+
+    amount:
+        label: Amount
+        type: partial
+        path: @/plugins/bedard/shop/models/code/_amount.htm
+        searchable: false
+
+    cart_value:
+        label: Cart Value
+        type: partial
+        path: @/plugins/bedard/shop/models/code/_cart_value.htm
+        searchable: false
+
+    limit:
+        label: Usage
+        type: partial
+        path: @/plugins/bedard/shop/models/code/_usage.htm
+        searchable: false
+
+    status:
+        label: Status
+        type: partial
+        path: @/plugins/bedard/shop/models/code/_status.htm
+        searchable: false

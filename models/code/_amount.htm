@@ -1,0 +1,9 @@
+<?php
+if ($record->is_percentage)
+    echo $record->amount.'<span class="currency-percent">%</span>';
+
+else {
+    echo !empty($currency)
+        ? '<i class="currency-icon icon-'.$currency.'"></i>'.$record->amount
+        : $record->amount;
+}

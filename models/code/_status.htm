@@ -1,0 +1,9 @@
+<?php
+if ($record->is_upcoming)
+    echo '<i class="list-icon icon-calendar blue"></i>Upcoming';
+
+elseif ($record->is_running)
+    echo '<i class="list-icon icon-clock-o green"></i>Running';
+
+elseif ($record->is_complete)
+    echo '<i class="list-icon icon-times red"></i>Expired';
