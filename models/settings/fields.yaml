@@ -21,3 +21,12 @@ fields:
             0: Hidden
         default: 1
         span: right
+
+    show_empty_categories:
+        label: Empty Categories
+        type: dropdown
+        options:
+            1: Visible
+            0: Hidden
+        default: 1
+        span: left

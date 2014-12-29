@@ -132,4 +132,15 @@ class Plugin extends PluginBase
             ]
         ];
     }
+
+    /**
+     * Register plugin components
+     * @return  array
+     */
+    public function registerComponents()
+    {
+        return [
+            'Bedard\Shop\Components\CategoriesList' => 'categoriesList'
+        ];
+    }
 }
