@@ -22,7 +22,7 @@ class Products extends Controller
     public $bodyClass = 'compact-container';
 
     /**
-     * Products Controller
+     * Products Constructor
      */
     public function __construct()
     {
