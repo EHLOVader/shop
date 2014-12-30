@@ -36,7 +36,7 @@ class Category extends ComponentBase
     public $products;
 
     /**
-     * Category
+     * Component Details
      * @return  array
      */
     public function componentDetails()

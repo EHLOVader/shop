@@ -1,0 +1,10 @@
+{% if not __SELF__.exists %}
+
+    <h1>Product not found</h1>
+
+{% else %}
+
+    <h1>{{ __SELF__.name }}</h1>
+    <p>{{ __SELF__.description }}</p>
+
+{% endif %}
