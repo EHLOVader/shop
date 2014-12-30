@@ -18,9 +18,17 @@ class Category extends ComponentBase
     public $pagination;
 
     /**
-     * @var CategoryModel   The current category
+     * These variables are here for convenience. Rather than declare a public
+     * "category" variable, we can reference the information directly by calling
+     * "Category.name" rather than "Category.category.name"
+     * @var string
      */
-    public $category;
+    public $name;
+    public $description;
+    public $rows;
+    public $columns;
+    public $pseudo;
+    public $isVisible;
 
     /**
      * @var Collection      Bedard\Shop\Models\Product
@@ -73,7 +81,7 @@ class Category extends ComponentBase
      */
     public function getDefaultOptions()
     {
-        $categories = CategoryModel::isActive()->get();
+        $categories = CategoryModel::isActive()->orderBy('name', 'asc')->get();
         $options = [];
         foreach ($categories as $category) {
             $options[$category->slug] = $category->name;
@@ -92,28 +100,36 @@ class Category extends ComponentBase
             : $this->property('default');
 
         // Load the category
-        $this->category = CategoryModel::where('slug', $this->slug)
+        $category = CategoryModel::where('slug', $this->slug)
             ->with('products')
             ->first();
 
         // Stop here if no category was found
-        if (!$this->category) return;
+        if (!$category) return;
+
+        // Load the category variables
+        $this->name         = $category->name;
+        $this->description  = $category->description;
+        $this->rows         = $category->arrangement_rows;
+        $this->columns      = $category->arrangement_columns;
+        $this->pseudo       = (bool) $category->pseudo;
+        $this->isVisible    = (bool) $category->isVisible;
 
         // Calculate the pagination
-        $this->pagination = $this->calculatePagination();
+        $this->pagination = $this->calculatePagination($category);
 
         // Lastly, query the products
-        $this->products = $this->category->getArrangedProducts($this->pagination['current']);
+        $this->products = $category->getArrangedProducts($this->pagination['current']);
     }
 
     /**
      * Calculates the pagination for the category
      * @return  array
      */
-    private function calculatePagination()
+    private function calculatePagination(CategoryModel $category)
     {
         // Return all products when rows is set to zero
-        if (!$this->category->arrangement_rows) {
+        if (!$category->arrangement_rows) {
             return [
                 'current' => 0,
                 'last' => 0,
@@ -123,7 +139,7 @@ class Category extends ComponentBase
         }
 
         // Calculate the last page
-        $lastPage = ceil(count($this->category->products) / ($this->category->ProductsPerPage));
+        $lastPage = ceil(count($category->products) / ($category->ProductsPerPage));
 
         // Load the current page, using 1 if none was provided
         $currentPage = intval($this->property('page')) >= 1 ? intval($this->property('page')) : 1;
