@@ -132,7 +132,9 @@ class Category extends Model
 
     /**
      * Returns the category's product arrangement
-     * @param   integer     $pageNumber
+     * @param   integer     The page to load, zero loads all products
+     * @param   boolean     Eager loads thumbnail and thumbnail_alt
+     * @param   boolean     Eager loads product discounts
      * @return  Collection  Bedard\Shop\Models\Product
      */
     public function getArrangedProducts($page = 0, $withThumbnails = TRUE, $withDiscounts = TRUE)
