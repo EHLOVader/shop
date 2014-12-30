@@ -1,6 +1,8 @@
-<h1>Shop Categories</h1>
+<h1>Categories</h1>
 <ul>
     {% for Category in __SELF__.categories %}
-        <li><a href="{{ '/shop/categories/' ~ Category.slug }}">{{ Category.name }}</a></li>
+        <li>
+            <a href="/shop/categories/{{ Category.slug }}">{{ Category.name }}</a>
+        </li>
     {% endfor %}
 </ul>
