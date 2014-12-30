@@ -92,6 +92,12 @@ class Category extends Model
         $query->nonPseudo()->backendOrder();
     }
 
+    public function scopeIsActive($query)
+    {
+        // Returns categories that are active
+        $query->where('is_active', TRUE);
+    }
+    
     public function scopeIsVisible($query)
     {
         // Returns categories visible in the categories list
