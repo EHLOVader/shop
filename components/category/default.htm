@@ -1,0 +1,22 @@
+<h1>Products</h1>
+<ul> 
+    {% for Product in __SELF__.products %}
+        <li>
+            <a href="/shop/product/{{ Product.slug }}">{{ Product.name }}</a> - 
+            {% if Product.isDiscounted %}
+                <strike>{{ Product.full_price }}</strike>
+                <span style="color: green">{{ Product.price }}</span>
+            {% else %}
+                {{ Product.price }}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+<p>Page {{ __SELF__.pagination.current }} of {{ __SELF__.pagination.last }}</p>
+{% if __SELF__.pagination.previous %}
+    <a href="/shop/categories/{{ __SELF__.slug }}/{{ __SELF__.pagination.previous }}">&lt; Back</a>
+{% endif %}
+{% if __SELF__.pagination.next %}
+    <a href="/shop/categories/{{ __SELF__.slug }}/{{ __SELF__.pagination.next }}">Next &gt;</a>
+{% endif %}
