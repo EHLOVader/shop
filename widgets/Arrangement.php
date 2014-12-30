@@ -23,7 +23,7 @@ class Arrangement extends FormWidgetBase
 
     public function prepareVars()
     {
-        $this->vars['arrangedProducts'] = $this->model->getArrangedProducts();
+        $this->vars['arrangedProducts'] = $this->model->getArrangedProducts(0, TRUE, FALSE);
         $this->vars['cols'] = $this->model->arrangement_columns;
     }
 
