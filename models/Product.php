@@ -253,4 +253,13 @@ class Product extends Model
 
         return $stock;
     }
+
+    /**
+     * Helper method full_price
+     * @return  float
+     */
+    public function getFullPriceAttribute()
+    {
+        return $this->attributes['full_price'];
+    }
 }

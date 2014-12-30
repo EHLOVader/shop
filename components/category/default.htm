@@ -4,7 +4,7 @@
         <li>
             <a href="/shop/product/{{ Product.slug }}">{{ Product.name }}</a> - 
             {% if Product.isDiscounted %}
-                <strike>{{ Product.full_price }}</strike>
+                <strike>{{ Product.fullPrice }}</strike>
                 <span style="color: green">{{ Product.price }}</span>
             {% else %}
                 {{ Product.price }}
