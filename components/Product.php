@@ -13,27 +13,30 @@ class Product extends ComponentBase
     public $exists;
 
     /**
-     * These variables are here for convenience. Rather than declare a public
-     * "product" variable, we can reference the information directly by calling
-     * "Product.price" rather than "Product.product.price"
-     * @var string
+     * These variables exist to make the Twig markup a little cleaner. Rather
+     * then declaring a public product variable, we can call "Component.price"
+     * instead of "Component.product.price"
      */
-    public $name;
-    public $slug;
-    public $description;
-    public $price;
-    public $fullPrice;
-    public $ounces;
-    public $thumbnail;
-    public $thumbnailAlt;
-    public $isVisible;
-    public $isDiscounted;
+    public $name;           // string
+    public $slug;           // string
+    public $description;    // string
+    public $price;          // float
+    public $fullPrice;      // float
+    public $ounces;         // integer
+    public $isVisible;      // boolean
+    public $isDiscounted;   // boolean
 
     /**
      * The discount being applied                                             
      * @var Bedard\Shop\Models\Discount
      */
     public $discount;
+
+    /**
+     * Product images
+     * @var Collection
+     */
+    public $images;
 
     /**
      * The active inventories
@@ -85,6 +88,7 @@ class Product extends ComponentBase
             ->with('discounts')
             ->with('categories.discounts')
             ->with('inventories')
+            ->with('images')
             ->isActive()
             ->first();
 
@@ -99,12 +103,9 @@ class Product extends ComponentBase
         $this->price        = $product->price;
         $this->fullPrice    = $product->fullPrice;
         $this->isDiscounted = $product->isDiscounted;
-
-        // Load the discount
-        $this->discount = $product->discount;
-
-        // Load inventories
-        $this->inventories = $product->inventories;
+        $this->discount     = $product->discount;
+        $this->images       = $product->images;
+        $this->inventories  = $product->inventories;
 
         // Check if the product has multiple inventories
         $this->hasMultipleInventories = count($product->inventories) > 1;
