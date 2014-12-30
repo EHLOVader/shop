@@ -18,8 +18,8 @@ class Product extends ComponentBase
      * "Product.price" rather than "Product.product.price"
      * @var string
      */
-    public $slug;
     public $name;
+    public $slug;
     public $description;
     public $price;
     public $fullPrice;
@@ -34,6 +34,18 @@ class Product extends ComponentBase
      * @var Bedard\Shop\Models\Discount
      */
     public $discount;
+
+    /**
+     * The active inventories
+     * @var Collection  Bedard\Shop\Models\Inventory
+     */
+    public $inventories;
+
+    /**
+     * Returns true if the product has multiple inventories
+     * @var boolean
+     */
+    public $hasMultipleInventories;
 
     /**
      * Component Details
@@ -81,15 +93,21 @@ class Product extends ComponentBase
         if (!$this->exists) return;
 
         // Load product variables
-        $this->name = $product->name;
-        $this->slug = $product->slug;
-        $this->description = $product->description;
-        $this->price = $product->price;
-        $this->fullPrice = $product->fullPrice;
+        $this->name         = $product->name;
+        $this->slug         = $product->slug;
+        $this->description  = $product->description;
+        $this->price        = $product->price;
+        $this->fullPrice    = $product->fullPrice;
         $this->isDiscounted = $product->isDiscounted;
 
         // Load the discount
         $this->discount = $product->discount;
+
+        // Load inventories
+        $this->inventories = $product->inventories;
+
+        // Check if the product has multiple inventories
+        $this->hasMultipleInventories = count($product->inventories) > 1;
     }
 
 
