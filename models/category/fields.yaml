@@ -57,7 +57,7 @@ secondaryTabs:
             span: right
 
         arrangement_method:
-            tab: Product Arrangement
+            tab: Products
             label: Product Order
             type: dropdown
             options:
@@ -68,7 +68,7 @@ secondaryTabs:
                 custom: Custom
 
         arrangement_rows:
-            tab: Product Arrangement
+            tab: Products
             label: Rows
             type: dropdown
             options:
@@ -87,7 +87,7 @@ secondaryTabs:
             span: left
 
         arrangement_columns:
-            tab: Product Arrangement
+            tab: Products
             label: Columns
             type: dropdown
             options:
@@ -105,6 +105,6 @@ secondaryTabs:
             span: right
 
         arrangement_order:
-            tab: Product Arrangement
+            tab: Products
             label: Product Arrangement
             type: arrangement
