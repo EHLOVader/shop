@@ -6,29 +6,25 @@ use Request;
 
 class Category extends ComponentBase
 {
+    /**
+     * Determines if the product was found or not
+     * @var boolean
+     */
+    public $exists;
 
     /**
-     * @var string          The category slug
+     * These variables exist to make the Twig markup a little cleaner. Rather
+     * then declaring a public category variable, we can call "Component.name"
+     * instead of "Component.category.name"
      */
-    public $slug;
-
-    /**
-     * @var array           Pagination values [ current, last, previous, next ]
-     */
-    public $pagination;
-
-    /**
-     * These variables are here for convenience. Rather than declare a public
-     * "category" variable, we can reference the information directly by calling
-     * "Category.name" rather than "Category.category.name"
-     * @var string
-     */
-    public $name;
-    public $description;
-    public $rows;
-    public $columns;
-    public $pseudo;
-    public $isVisible;
+    public $slug;           // string
+    public $name;           // string
+    public $description;    // string
+    public $rows;           // integer
+    public $columns;        // integer
+    public $pseudo;         // string
+    public $isVisible;      // boolean
+    public $pagination;     // array [ current, last, previous, next ]
 
     /**
      * @var Collection      Bedard\Shop\Models\Product
@@ -105,7 +101,8 @@ class Category extends ComponentBase
             ->first();
 
         // Stop here if no category was found
-        if (!$category) return;
+        $this->exists = (bool) $category;
+        if (!$this->exists) return;
 
         // Load the category variables
         $this->name         = $category->name;
