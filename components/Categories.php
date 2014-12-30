@@ -3,7 +3,7 @@
 use Bedard\Shop\Models\Category;
 use Cms\Classes\ComponentBase;
 
-class CategoriesList extends ComponentBase
+class Categories extends ComponentBase
 {
 
     /**
@@ -18,7 +18,7 @@ class CategoriesList extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Category List',
+            'name'        => 'Categories List',
             'description' => 'Provides a list of visible categories'
         ];
     }
