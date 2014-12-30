@@ -139,9 +139,10 @@ class Product extends Model
             $discounts->isActive();
         })
         ->orWhereHas('categories', function($categories) {
-            $categories->whereHas('discounts', function($discounts) {
-                $discounts->isActive();
-            });
+            $categories->isActive()
+                ->whereHas('discounts', function($discounts) {
+                    $discounts->isActive();
+                });
         });
     }
 
@@ -188,12 +189,16 @@ class Product extends Model
             $bestPrice = $this->full_price;
             $bestDiscount = FALSE;
             foreach ($this->categories as $category) {
-                if ($discount = $category->discount) {
-                    $discountPrice = $this->calculatePrice($discount);
-                    if ($discountPrice < $bestPrice) {
-                        $bestPrice = $discountPrice;
-                        $bestDiscount = $discount;
-                    }
+                // First, make the this category is active and has a discount
+                if (!$category->is_active || !$discount = $category->discount) continue;
+
+                // Next calculat the value of this discount
+                $discountPrice = $this->calculatePrice($discount);
+
+                // Last, save the discount if it's providing the best value
+                if ($discountPrice < $bestPrice) {
+                    $bestPrice = $discountPrice;
+                    $bestDiscount = $discount;
                 }
             }
             $this->discountCache = $bestDiscount;
@@ -255,7 +260,7 @@ class Product extends Model
     }
 
     /**
-     * Helper method full_price
+     * Helper assessor for full_price
      * @return  float
      */
     public function getFullPriceAttribute()
