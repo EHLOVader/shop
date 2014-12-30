@@ -9,7 +9,7 @@ class CategoriesList extends ComponentBase
     /**
      * @var Collection  Bedard\Shop\Models\Category
      */
-    private $categories;
+    public $categories;
 
     /**
      * Categories List
@@ -24,15 +24,11 @@ class CategoriesList extends ComponentBase
     }
 
     /**
-     * Cache and return the categories list
-     * @return  Collection  Bedard\Shop\Models\Category
+     * Query the visible categories and put them in order
      */
-    public function categories()
+    public function onRun()
     {
-        if ($this->categories)
-            return $this->categories;
-        else 
-            return $this->categories = Category::isVisible()->inOrder()->get();
+        $this->categories = Category::isVisible()->inOrder()->get();
     }
     
 }
