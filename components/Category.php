@@ -112,6 +112,16 @@ class Category extends ComponentBase
      */
     private function calculatePagination()
     {
+        // Return all products when rows is set to zero
+        if (!$this->category->arrangement_rows) {
+            return [
+                'current' => 0,
+                'last' => 0,
+                'previous' => FALSE,
+                'next' => FALSE
+            ];
+        }
+
         // Calculate the last page
         $lastPage = ceil(count($this->category->products) / ($this->category->ProductsPerPage));
 
