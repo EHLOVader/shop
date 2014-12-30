@@ -81,7 +81,7 @@ class Product extends Model
     public function scopeIsVisible($query)
     {
         // Selects products that are visible from a category page
-        $query->where('is_active', TRUE)
+        $query->where('is_visible', TRUE)
               ->isActive();
 
         // Check the settings and see if out of stock products should be hidden
