@@ -21,7 +21,7 @@ class Cart extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = ['key'];
 
     /**
      * @var array Relations

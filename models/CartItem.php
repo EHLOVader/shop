@@ -21,7 +21,7 @@ class CartItem extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = ['cart_id', 'inventory_id'];
 
     /**
      * @var array Relations

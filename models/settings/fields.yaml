@@ -30,3 +30,14 @@ fields:
             0: Hidden
         default: 1
         span: left
+
+    cart_life:
+        label: Cart Life
+        span: right
+        type: dropdown
+        options:
+            1440: A Day
+            10080: A Week
+            302400: A Month
+            3628800: A Year
+        default: 1440

@@ -140,6 +140,7 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
+            'Bedard\Shop\Components\Cart'           => 'shopCart',
             'Bedard\Shop\Components\Categories'     => 'shopCategories',
             'Bedard\Shop\Components\Category'       => 'shopCategory',
             'Bedard\Shop\Components\Product'        => 'shopProduct'
