@@ -135,7 +135,7 @@ class Category extends Model
      * @param   integer     $pageNumber
      * @return  Collection  Bedard\Shop\Models\Product
      */
-    public function getArrangedProducts($page = 0)
+    public function getArrangedProducts($page = 0, $withThumbnails = TRUE, $withDiscounts = TRUE)
     {
         // Load all active and visible products
         if ($this->pseudo == 'all')
@@ -170,6 +170,18 @@ class Category extends Model
         // If a page value was passed in, query only products on that page
         if ($page > 0) {
             $products->onPage($page, $this->productsPerPage);
+        }
+
+        // Eager load thumbnails
+        if ($withThumbnails) {
+            $products->with('thumbnail')
+                     ->with('thumbnail_alt');
+        }
+
+        // Eager load discounts
+        if ($withDiscounts) {
+            $products->with('discounts')
+                     ->with('categories.discounts');
         }
 
         return $products->get();
