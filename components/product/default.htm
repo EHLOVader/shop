@@ -7,4 +7,11 @@
     <h1>{{ __SELF__.name }}</h1>
     <p>{{ __SELF__.description }}</p>
 
+    {% if __SELF__.isDiscounted %}
+        <strike>{{ __SELF__.fullPrice }}</strike>
+        <span style="color: green">{{ __SELF__.price }}</span>
+    {% else %}
+        {{ __SELF__.price }}
+    {% endif %}
+
 {% endif %}
