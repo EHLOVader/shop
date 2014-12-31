@@ -1,3 +1,41 @@
-<p>This is the default markup for component Cart</p>
+<h1>Your Cart</h1>
+{% if __SELF__.isEmpty %}
+    Your cart is empty, you should buy some of our awesome products ;)
+{% else %}
 
-<small>You can delete this file if you want</small>
+    <table style="border: 1px solid #eee; border-collapse: collapse; width: 100%;">
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Remove</th>
+        </tr>
+
+        {% for Item in __SELF__.items %}
+            <tr>
+
+                <td>{{ Item.productName }}</td>
+                <td>
+                    {% if Item.isDiscounted %}
+                        <strike>{{ Item.fullPrice }}</strike>
+                        <span style="color: green">{{ Item.price }}</span>
+                    {% else %}
+                        {{ Item.price }}
+                    {% endif %}
+                </td>
+                <td>
+                    <input name="bedard_shop_item[{{ Item.id }}]" type="number" min="0" max="{{ Item.stock }}" value="{{ Item.quantity }}" />
+                </td>
+                <td>
+                    <a href="#"
+                        data-request="onRemoveFromCart"
+                        data-request-data="bedard_shop_item_id: {{ Item.id }}">
+                        Remove
+                    </a>
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endif %}

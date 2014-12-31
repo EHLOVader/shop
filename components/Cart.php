@@ -7,9 +7,15 @@ use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Settings;
 use Cms\Classes\ComponentBase;
 use Cookie;
+use Request;
 
 class Cart extends ComponentBase
 {
+    /**
+     * True if the current request is to an ajax handler
+     * @var boolean
+     */
+    private $isAjax;
 
     /**
      * The user's shopping cart
@@ -33,6 +39,7 @@ class Cart extends ComponentBase
      * Items in the user's cart
      * @var Collection  Bedard\Shop\Models\CartItem
      */
+    public $items;
 
     /**
      * Component Details
@@ -69,6 +76,11 @@ class Cart extends ComponentBase
      */
     public function onInit()
     {
+        // Determine if this is an ajax handler
+        $handler = trim(Request::header('X_OCTOBER_REQUEST_HANDLER'));
+        $this->isAjax = preg_match('/^(?:\w+\:{2})?on[A-Z]{1}[\w+]*$/', $handler) && method_exists($this, $handler);
+
+        // Load the cart
         $this->loadCart();
     }
 
@@ -78,10 +90,18 @@ class Cart extends ComponentBase
     public function loadCart()
     {
         // Get our cart cookie
-        $this->cookie = Cookie::get('bedard_shop_cart');
+        if (!$this->cookie = Cookie::get('bedard_shop_cart'))
+            return FALSE;
 
-        if ($this->cookie) {
-            // Load the cart
+        // If this is an ajax request, just load the cart
+        if ($this->isAjax) {
+            $this->cart = CartModel::where('key', $this->cookie['key'])
+                ->whereNull('transaction_id')
+                ->find($this->cookie['id']);
+        }
+
+        // For regular requests, we've got some extra work to do
+        else {
             $this->cart = CartModel::where('key', $this->cookie['key'])
                 ->whereNull('transaction_id')
                 ->with('items.inventory.product.discounts')
@@ -91,15 +111,11 @@ class Cart extends ComponentBase
                 }])
                 ->find($this->cookie['id']);
 
-            // Sum the items in our cart
-            $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
-
-            // Store the items for easier twig access
+            // Store cart items, count them, and set the isEmpty flag
             $this->items = $this->cart->items;
+            $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
+            $this->isEmpty = (bool) !$this->itemCount;
         }
-
-        // Set the isEmpty flag
-        $this->isEmpty = (bool) !$this->itemCount;
     }
 
     /**
@@ -146,7 +162,8 @@ class Cart extends ComponentBase
     public function onAddToCart()
     {
         // Make a cart if we don't have one
-        if (!$this->cart) $this->makeCart();
+        if (!$this->cart)
+            $this->makeCart();
 
         // Load the post variables that may have come in
         $slug = post('bedard_shop_product');
@@ -176,10 +193,43 @@ class Cart extends ComponentBase
         if (!$cartItem->save())
             return $this->response('Failed to save cart item', FALSE);
 
-        // Refresh the cart
+        // Refresh the cart, and send back a success message
         $this->loadCart();
-
-        // Send back a response message
         return $this->response('Product added to cart');
+    }
+
+    /**
+     * Remove an item from the cart
+     * @post   integer bedard_shop_item_id (post)
+     */
+    public function onRemoveFromCart()
+    {
+        // Make sure we have a cart loaded
+        if (!$this->cart)
+            return $this->response('Cart not found', FALSE);
+
+        // Load the CartItem ID
+        if (!$itemId = post('bedard_shop_item_id'))
+            return $this->response('Missing "bedard_shop_item_id"', FALSE);
+
+        // Find the item being removed
+        $item = CartItem::where('cart_id', $this->cart->id)
+            ->find($itemId);
+
+        // If the item wasn't found, send back a failure message
+        if (!$item)
+            return $this->response('Item not found', FALSE);
+
+        // Cart items are never fully deleted, instead just set the quantity
+        // to zero. This way we have a record of what was "almost bought".
+        $item->quantity = 0;
+
+        // Attempt to save the item
+        if (!$item->save())
+            return $this->response('Failed to delete item', FALSE);
+
+        // Refresh the cart, and send back a success message
+        $this->loadCart();
+        return $this->response('Item deleted');
     }
 }
