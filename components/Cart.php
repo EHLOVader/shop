@@ -161,6 +161,7 @@ class Cart extends ComponentBase
             ->load(['items' => function($item) {
                 $item->inCart();
             }]);
+        $this->items = $this->cart->items;
 
         // Recalculate the totals
         $this->calculateCartValues();
