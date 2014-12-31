@@ -30,6 +30,11 @@ class Cart extends ComponentBase
     public $itemCount;
 
     /**
+     * Items in the user's cart
+     * @var Collection  Bedard\Shop\Models\CartItem
+     */
+
+    /**
      * Component Details
      * @return  array
      */
@@ -79,13 +84,18 @@ class Cart extends ComponentBase
             // Load the cart
             $this->cart = CartModel::where('key', $this->cookie['key'])
                 ->whereNull('transaction_id')
+                ->with('items.inventory.product.discounts')
+                ->with('items.inventory.product.categories.discounts')
                 ->with(['items' => function($item) {
                     $item->inCart();
                 }])
                 ->find($this->cookie['id']);
 
-            // Sum up the items in our cart
+            // Sum the items in our cart
             $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
+
+            // Store the items for easier twig access
+            $this->items = $this->cart->items;
         }
 
         // Set the isEmpty flag
