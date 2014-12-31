@@ -29,7 +29,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <input name="bedard_shop_item[{{ Item.id }}]" type="number" min="0" value="{{ Item.quantity }}" />
+                        <input name="bedard_shop_item[{{ Item.id }}]" type="number" min="0" max="{{ Item.stock }}" value="{{ Item.quantity }}" />
                     </td>
                     <td>
                         <a href="#"

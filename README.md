@@ -1,5 +1,5 @@
 # Shop Plugin
-This plugin is not completed yet. Feel free to install it and play around.
+This plugin is not completed yet, but feel free to install it and take a look around! If you'd like to see the shop components in action, take a look at [the example theme](https://github.com/scottbedard/shop-theme).
 
 
 #### Products
