@@ -51,6 +51,17 @@ class CartItem extends Model
     }
 
     /**
+     * Returns the name of the inventory, or false if there is none
+     * @return  string / false
+     */
+    public function getInventoryNameAttribute()
+    {
+        return !empty($this->inventory->name)
+            ? $this->inventory->name
+            : FALSE;
+    }
+
+    /**
      * Returns true if the product is discounted
      * @return  boolean
      */
