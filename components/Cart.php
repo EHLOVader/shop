@@ -18,6 +18,18 @@ class Cart extends ComponentBase
     private $cart;
 
     /**
+     * Determines if the cart is empty or not
+     * @var boolean
+     */
+    public $isEmpty;
+
+    /**
+     * The number of items in the cart
+     * @var integer
+     */
+    public $itemCount;
+
+    /**
      * Component Details
      * @return  array
      */
@@ -34,13 +46,24 @@ class Cart extends ComponentBase
      */
     public function onInit()
     {
+        // Get our cart cookie
         $this->cookie = Cookie::get('bedard_shop_cart');
 
         if ($this->cookie) {
+            // Load the cart
             $this->cart = CartModel::where('key', $this->cookie['key'])
                 ->whereNull('transaction_id')
+                ->with(['items' => function($item) {
+                    $item->inCart();
+                }])
                 ->find($this->cookie['id']);
+
+            // Sum up the items in our cart
+            $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
         }
+
+        // Set the isEmpty flag
+        $this->isEmpty = (bool) !$this->itemCount;
     }
 
     /**
