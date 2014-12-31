@@ -5,8 +5,8 @@
 fields:
 
     code:
-        label: Code
-        comment: 'Codes may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
+        label: Coupon Code
+        comment: 'Coupons may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
         span: left
 
     message:
@@ -44,7 +44,7 @@ fields:
 
     cart_value:
         label: Cart Value
-        comment: Required cart value for promo code to apply.
+        comment: Required cart value for the coupon to apply.
         placeholder: '0.00'
         span: left
 

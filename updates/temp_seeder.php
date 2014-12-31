@@ -7,7 +7,7 @@ use DB;
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Inventory;
-use Bedard\Shop\Models\Code;
+use Bedard\Shop\Models\Coupon;
 
 class TempSeeder extends Seeder {
 
@@ -127,7 +127,7 @@ class TempSeeder extends Seeder {
         /**
          * PROMO CODE
          */
-        Code::create([
+        Coupon::create([
             'code'  => 'Foo',
             'message' => 'Thanks for entering "foo".',
             'amount' => rand(10, 20),

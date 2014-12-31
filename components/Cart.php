@@ -226,7 +226,7 @@ class Cart extends ComponentBase
         $slug = post('bedard_shop_product');
         $inventoryId = post('bedard_shop_inventory');
         $quantity = post('bedard_shop_quantity') ?: 1;
-
+        
         // Load the inventory
         $inventory = $this->loadInventory($inventoryId, $slug);
 

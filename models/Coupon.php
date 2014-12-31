@@ -3,9 +3,9 @@
 use Model;
 
 /**
- * Code Model
+ * Coupon Model
  */
-class Code extends Model
+class Coupon extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
@@ -46,7 +46,7 @@ class Code extends Model
         'is_freeshipping'   => 'required|boolean'
     ];
     public $customMessages = [
-        'code.regex' => 'Codes may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
+        'code.regex' => 'Coupons may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
     ];
 
     /**
@@ -68,13 +68,13 @@ class Code extends Model
      */
     public function getIsUpcomingAttribute()
     {
-        // Returns true for upcoming codes
+        // Returns true for upcoming coupons
         return $this->start_date > date('Y-m-d H:i:s');
     }
     
     public function getIsRunningAttribute()
     {
-        // Returns true for running codes
+        // Returns true for running coupons
         $now = date('Y-m-d H:i:s');
         return 
             (!$this->start_date || $this->start_date <= $now) && (!$this->end_date || $this->end_date >= $now) &&
@@ -83,7 +83,7 @@ class Code extends Model
 
     public function getIsCompleteAttribute()
     {
-        // Returns true for completed codes
+        // Returns true for completed coupons
         return 
             ($this->end_date && $this->end_date < date('Y-m-d H:i:s')) ||
             ($this->limit > 0 && $this->uses >= $this->limit);
@@ -119,7 +119,7 @@ class Code extends Model
     }
 
     /**
-     * Returns the number of times the promo code has been used
+     * Returns the number of times the promo coupon has been used
      * @return  integer
      */
     public function getUsesAttribute()

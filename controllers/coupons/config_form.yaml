@@ -1,0 +1,27 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Coupon
+
+# Model Form Field configuration
+form: $/bedard/shop/models/coupon/fields.yaml
+
+# Model Class name
+modelClass: Bedard\Shop\Models\Coupon
+
+# Default redirect location
+defaultRedirect: bedard/shop/coupons
+
+# Create page
+create:
+    title: Create Coupon
+    redirect: bedard/shop/coupons/update/:id
+    redirectClose: bedard/shop/coupons
+
+# Update page
+update:
+    title: Edit Coupon
+    redirect: bedard/shop/coupons
+    redirectClose: bedard/shop/coupons

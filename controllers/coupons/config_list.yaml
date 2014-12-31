@@ -3,16 +3,16 @@
 # ===================================
 
 # Model List Column configuration
-list: $/bedard/shop/models/code/columns.yaml
+list: $/bedard/shop/models/coupon/columns.yaml
 
 # Model Class name
-modelClass: Bedard\Shop\Models\Code
+modelClass: Bedard\Shop\Models\Coupon
 
 # List Title
-title: Manage Codes
+title: Manage Coupons
 
 # Link URL for each record
-recordUrl: bedard/shop/codes/update/:id
+recordUrl: bedard/shop/coupons/update/:id
 
 # Message to display if the list is empty
 noRecordsMessage: backend::lang.list.no_records

@@ -2,14 +2,14 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
-use Bedard\Shop\Models\Code;
+use Bedard\Shop\Models\Coupon;
 use Bedard\Shop\Models\PaySettings;
 use Flash;
 
 /**
- * Codes Back-end Controller
+ * Coupons Back-end Controller
  */
-class Codes extends Controller
+class Coupons extends Controller
 {
     public $implement = [
         'Backend.Behaviors.FormController',
@@ -20,18 +20,18 @@ class Codes extends Controller
     public $listConfig = 'config_list.yaml';
 
     /**
-     * Codes Constructor
+     * Coupons Constructor
      */
     public function __construct()
     {
         parent::__construct();
-        BackendMenu::setContext('Bedard.Shop', 'shop', 'codes');
+        BackendMenu::setContext('Bedard.Shop', 'shop', 'coupons');
 
         $this->addCss('/plugins/bedard/shop/assets/css/backend.css');
     }
 
     /**
-     * Codes Index
+     * Coupons Index
      */
     public function index()
     {
@@ -55,11 +55,11 @@ class Codes extends Controller
         $successful = true;
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             foreach ($checkedIds as $recordId) {
-                if (!$record = Code::find($recordId)) continue;
+                if (!$record = Coupon::find($recordId)) continue;
                 if (!$record->delete()) $successful = FALSE;
             }
         }
-        if ($successful) Flash::success('Successfully deleted codes.');
+        if ($successful) Flash::success('Successfully deleted coupons.');
         return $this->listRefresh();
     }
 }

@@ -68,11 +68,11 @@ class Plugin extends PluginBase
                         'url'           => Backend::url('bedard/shop/discounts'),
                         'permissions'   => ['bedard.shop.access_discounts']
                     ],
-                    'codes' => [
-                        'label'         => 'Codes',
+                    'coupons' => [
+                        'label'         => 'Coupons',
                         'icon'          => 'icon-code',
-                        'url'           => Backend::url('bedard/shop/codes'),
-                        'permissions'   => ['bedard.shop.access_codes']
+                        'url'           => Backend::url('bedard/shop/coupons'),
+                        'permissions'   => ['bedard.shop.access_coupons']
                     ],
                     // 'emails' => [
                     //     'label'         => 'Email',
