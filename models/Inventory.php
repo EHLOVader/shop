@@ -49,8 +49,6 @@ class Inventory extends Model
     {
         // Selects inventories that are active
         $query->where('is_active', true);
-        // if (!Settings::get('show_oos_inventories'))
-        //     $query->where('quantity', '>', 0);
     }
 
     public function scopeInStock($query)
