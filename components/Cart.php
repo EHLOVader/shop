@@ -130,12 +130,14 @@ class Cart extends ComponentBase
                 }])
                 ->find($this->cookie['id']);
 
-            $this->items = $this->cart->items;
-            $this->calculateCartValues();
+            // Load the cart variables and refresh the cookie
+            if ($this->cart) {
+                $this->items = $this->cart->items;
+                $this->refreshCartCookie();
+            }
         }
 
-        // Refresh the cookie
-        $this->refreshCartCookie();
+        $this->calculateCartValues();
     }
 
     /**
@@ -172,12 +174,18 @@ class Cart extends ComponentBase
      */
     private function calculateCartValues()
     {
-        $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
-        $this->isEmpty = (bool) !$this->itemCount;
+        if ($this->cart) {
+            $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
+            $this->isEmpty = (bool) !$this->itemCount;
+            $this->total = $this->cart->total;
+            $this->fullTotal = $this->cart->fullTotal;
+            $this->isDiscounted = $this->cart->isDiscounted;
+        }
 
-        $this->total = $this->cart->total;
-        $this->fullTotal = $this->cart->fullTotal;
-        $this->isDiscounted = $this->cart->isDiscounted;
+        else {
+            $this->itemCount = 0;
+            $this->isEmpty = TRUE;
+        }
     }
     /**
      * Loads a product by inventory ID or product slug
