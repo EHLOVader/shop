@@ -238,6 +238,19 @@ class Product extends Model
     }
 
     /**
+     * Loop through the inventories and see if anything is in stock
+     * @return  boolean
+     */
+    public function getInStockAttribute()
+    {
+        foreach ($this->inventories as $inventory) {
+            if ($inventory->quantity > 0)
+                return TRUE;
+        }
+        return FALSE;
+    }
+
+    /**
      * Returns a boolean if the product is discounted or not
      * @return  boolean
      */

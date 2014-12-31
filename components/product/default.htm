@@ -14,19 +14,23 @@
         {{ __SELF__.price }}
     {% endif %}
 
-    {{ form_ajax('onAddToCart') }}
-        <input type="hidden" name="bedard_shop_product" value="{{ __SELF__.slug }}" />
-        <input type="hidden" name="bedard_shop_quantity" value="1" />
+    {% if __SELF__.inStock %}
+        {{ form_ajax('onAddToCart') }}
+            <input type="hidden" name="bedard_shop_product" value="{{ __SELF__.slug }}" />
+            <input type="hidden" name="bedard_shop_quantity" value="1" />
 
-        {% if __SELF__.hasMultipleInventories %}
-            <select name="bedard_shop_inventory">
-                {% for inventory in __SELF__.inventories %}
-                    <option value="{{ inventory.id }}">{{ inventory.name }}</option>
-                {% endfor %}
-            </select>
-        {% endif %}
+            {% if __SELF__.hasMultipleInventories %}
+                <select name="bedard_shop_inventory">
+                    {% for inventory in __SELF__.inventories %}
+                        <option value="{{ inventory.id }}">{{ inventory.name }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
 
-        <button type="submit">Add To Cart</button>
-    {{ form_close() }}
+            <button type="submit">Add To Cart</button>
+        {{ form_close() }}
+    {% else %}
+        <p>Out Of Stock</p>
+    {% endif %}
 
 {% endif %}

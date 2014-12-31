@@ -25,6 +25,7 @@ class Product extends ComponentBase
     public $ounces;         // integer
     public $isVisible;      // boolean
     public $isDiscounted;   // boolean
+    public $inStock;        // boolean
 
     /**
      * The discount being applied                                             
@@ -106,6 +107,7 @@ class Product extends ComponentBase
         $this->discount     = $product->discount;
         $this->images       = $product->images;
         $this->inventories  = $product->inventories;
+        $this->inStock      = $product->inStock;
 
         // Check if the product has multiple inventories
         $this->hasMultipleInventories = count($product->inventories) > 1;
