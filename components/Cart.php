@@ -42,9 +42,35 @@ class Cart extends ComponentBase
     }
 
     /**
-     * Initialize the shopping cart if one exists
+     * Response builder
+     * @param   string  $message    The message being sent back to the page
+     * @param   boolean $result     True / false on if the request was ok
+     * @param   boolean $error      Sets a 406 status code if something unexpected happened
+     */
+    private function response($message, $success = TRUE, $error = FALSE)
+    {
+        // Set the response message and status
+        $response['message'] = $message;
+        $response['success'] = $success;
+
+        // If we have a actual error, set the status code to 406
+        if ($error) $this->setStatusCode(406);
+
+        return $response;
+    }
+
+    /**
+     * Calls loadCart()
      */
     public function onInit()
+    {
+        $this->loadCart();
+    }
+
+    /**
+     * Loads / refreshes the current cart
+     */
+    public function loadCart()
     {
         // Get our cart cookie
         $this->cookie = Cookie::get('bedard_shop_cart');
@@ -120,23 +146,29 @@ class Cart extends ComponentBase
         // Load the inventory
         $inventory = $this->loadInventory($inventoryId, $slug);
 
-        if (!$inventory) {
-            // Inventory not found, set a 406 and bail
-            return;
-        }
+        // If no inventory was found, send back an error
+        // if (!$inventory) {
+            return $this->response('Inventory not found', FALSE);
+        // }
 
         // FirstOrCreate the cart item
         $cartItem = CartItem::firstOrCreate([
             'cart_id' => $this->cart->id,
             'inventory_id' => $inventory->id
         ]);
+
         $cartItem->quantity += $quantity;
 
-        // Prevent over-adding
+        // Don't let the use add more than we have
         if ($cartItem->quantity > $inventory->quantity)
             $cartItem->quantity = $inventory->quantity;
 
         // Save the results
         $cartItem->save();
+
+        // Refresh the cart
+        $this->loadCart();
+
+        return $this->response('Product added to cart');
     }
 }
