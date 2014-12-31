@@ -24,6 +24,15 @@ class Cart extends ComponentBase
     private $cart;
 
     /**
+     * These variables exist to make the Twig markup a little cleaner. Rather
+     * then declaring a public cart variable, we can call "Component.total"
+     * instead of "Component.cart.total"
+     */
+    public $total;
+    public $fullTotal;
+    public $isDiscounted;
+
+    /**
      * Determines if the cart is empty or not
      * @var boolean
      */
@@ -85,11 +94,21 @@ class Cart extends ComponentBase
     }
 
     /**
+     * Creates a new shopping cart and cookie
+     */
+    private function makeCart()
+    {
+        $this->cart = CartModel::create(['key' => str_random(40)]);
+        $this->refreshCartCookie();
+    }
+
+
+    /**
      * Loads / refreshes the current cart
      */
-    public function loadCart()
+    private function loadCart()
     {
-        // Get our cart cookie
+        // Look for a cart cookie
         if (!$this->cookie = Cookie::get('bedard_shop_cart'))
             return FALSE;
 
@@ -111,25 +130,42 @@ class Cart extends ComponentBase
                 }])
                 ->find($this->cookie['id']);
 
-            // Store cart items, count them, and set the isEmpty flag
             $this->items = $this->cart->items;
-            $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
-            $this->isEmpty = (bool) !$this->itemCount;
+            $this->calculateCartValues();
         }
+
+        // Refresh the cookie
+        $this->refreshCartCookie();
     }
 
     /**
-     * Creates a new shopping cart and cookie
+     * Refresh the cart cookie with a new expiration
      */
-    private function makeCart()
+    private function refreshCartCookie()
     {
-        $this->cart = CartModel::create(['key' => str_random(40)]);
         Cookie::queue('bedard_shop_cart', [
             'id'    => $this->cart->id,
             'key'   => $this->cart->key
         ], Settings::get('cart_life'));
     }
 
+    private function refreshCart()
+    {
+
+    }
+
+    /**
+     * Load the cart values
+     */
+    private function calculateCartValues()
+    {
+        $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
+        $this->isEmpty = (bool) !$this->itemCount;
+
+        $this->total = $this->cart->total;
+        $this->fullTotal = $this->cart->fullTotal;
+        $this->isDiscounted = $this->cart->isDiscounted;
+    }
     /**
      * Loads a product by inventory ID or product slug
      * @param   integer $inventoryId
@@ -177,17 +213,12 @@ class Cart extends ComponentBase
         if (!$inventory)
             return $this->response('Inventory not found', FALSE);
 
-        // FirstOrCreate the cart item
+        // FirstOrCreate the cart item, and add the quantity
         $cartItem = CartItem::firstOrCreate([
             'cart_id' => $this->cart->id,
             'inventory_id' => $inventory->id
         ]);
-
         $cartItem->quantity += $quantity;
-
-        // Don't let the use add more than we have
-        if ($cartItem->quantity > $inventory->quantity)
-            $cartItem->quantity = $inventory->quantity;
 
         // Attempt to save our results
         if (!$cartItem->save())
@@ -231,5 +262,27 @@ class Cart extends ComponentBase
         // Refresh the cart, and send back a success message
         $this->loadCart();
         return $this->response('Item deleted');
+    }
+
+    /**
+     * Updated the cart items
+     */
+    public function onUpdateCart()
+    {
+        // Make sure we have a cart loaded
+        if (!$this->cart)
+            return $this->response('Cart not found', FALSE);
+
+        // Load the cart items, and the desired quantities
+        $this->cart->load('items.inventory');
+        $quantities = post('bedard_shop_item');
+
+        // Update the inventories
+        foreach ($this->cart->items as $item) {
+            if (!array_key_exists($item->id, $quantities)) continue;
+            $item->quantity = $quantities[$item->id];
+        }
+
+        $this->cart->push();
     }
 }
