@@ -63,6 +63,19 @@ class Cart extends ComponentBase
     }
 
     /**
+     * Calls loadCart()
+     */
+    public function onInit()
+    {
+        // Determine if this is an ajax request
+        $handler = trim(Request::header('X_OCTOBER_REQUEST_HANDLER'));
+        $this->isAjax = preg_match('/^(?:\w+\:{2})?on[A-Z]{1}[\w+]*$/', $handler) && method_exists($this, $handler);
+
+        // Load the cart
+        $this->loadCart();
+    }
+
+    /**
      * Response builder
      * @param   string  $message    The message being sent back to the page
      * @param   boolean $result     True / false on if the request was ok
@@ -78,19 +91,6 @@ class Cart extends ComponentBase
         if ($error) $this->setStatusCode(406);
 
         return $response;
-    }
-
-    /**
-     * Calls loadCart()
-     */
-    public function onInit()
-    {
-        // Determine if this is an ajax handler
-        $handler = trim(Request::header('X_OCTOBER_REQUEST_HANDLER'));
-        $this->isAjax = preg_match('/^(?:\w+\:{2})?on[A-Z]{1}[\w+]*$/', $handler) && method_exists($this, $handler);
-
-        // Load the cart
-        $this->loadCart();
     }
 
     /**
