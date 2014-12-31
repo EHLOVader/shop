@@ -153,6 +153,18 @@ class Category extends Model
             $products->isVisible();
         }
 
+        // Eager load thumbnails
+        if ($withThumbnails) {
+            $products->with('thumbnail')
+                     ->with('thumbnail_alt');
+        }
+
+        // Eager load discounts
+        if ($withDiscounts) {
+            $products->with('discounts')
+                     ->with('categories.discounts');
+        }
+
         // Standard product arrangements
         if ($this->arrangement_method == 'alpha_asc')
             $products->orderBy('name', 'asc');
@@ -172,18 +184,6 @@ class Category extends Model
         // If a page value was passed in, query only products on that page
         if ($page > 0) {
             $products->onPage($page, $this->productsPerPage);
-        }
-
-        // Eager load thumbnails
-        if ($withThumbnails) {
-            $products->with('thumbnail')
-                     ->with('thumbnail_alt');
-        }
-
-        // Eager load discounts
-        if ($withDiscounts) {
-            $products->with('discounts')
-                     ->with('categories.discounts');
         }
 
         return $products->get();
