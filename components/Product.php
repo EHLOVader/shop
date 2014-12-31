@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Components;
 
 use Bedard\Shop\Models\Product as ProductModel;
+use Bedard\Shop\Models\Settings;
 use Cms\Classes\ComponentBase;
 
 class Product extends ComponentBase
@@ -43,7 +44,7 @@ class Product extends ComponentBase
      * The active inventories
      * @var Collection  Bedard\Shop\Models\Inventory
      */
-    public $inventories;
+    public $inventories = [];
 
     /**
      * Returns true if the product has multiple inventories
@@ -106,11 +107,16 @@ class Product extends ComponentBase
         $this->isDiscounted = $product->isDiscounted;
         $this->discount     = $product->discount;
         $this->images       = $product->images;
-        $this->inventories  = $product->inventories;
         $this->inStock      = $product->inStock;
 
         // Check if the product has multiple inventories
         $this->hasMultipleInventories = count($product->inventories) > 1;
+
+        // Load the inventories into their container
+        foreach ($product->inventories as $inventory) {
+            if (Settings::get('show_oos_inventories') || $inventory->quantity > 0)
+                $this->inventories[] = $inventory;
+        }
     }
 
 
