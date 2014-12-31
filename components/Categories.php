@@ -12,6 +12,10 @@ class Categories extends ComponentBase
     public $categories;
 
     /**
+     * @var integer     The number of visible categories
+     */
+
+    /**
      * Categories List
      * @return  array
      */
@@ -29,6 +33,7 @@ class Categories extends ComponentBase
     public function onRun()
     {
         $this->categories = Category::isVisible()->inOrder()->get();
+        $this->categoryCount = count($this->categories);
     }
     
 }
