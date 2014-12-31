@@ -14,7 +14,10 @@
         {{ __SELF__.price }}
     {% endif %}
 
-    {{ form_ajax('onAddToCart') }}
+    {{ form_ajax('onAddToCart', {
+        update: { 'view-cart': '#view-cart' },
+        success: 'alert("The item has been added to your cart.")'
+    }) }}
         <input type="hidden" name="bedard_shop_product" value="{{ __SELF__.slug }}" />
         <input type="hidden" name="bedard_shop_quantity" value="1" />
 
