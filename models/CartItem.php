@@ -27,7 +27,8 @@ class CartItem extends Model
      * @var array Relations
      */
     public $belongsTo = [
-        'cart' => ['Bedard\Shop\Models\Cart', 'table' => 'bedard_shop_carts']
+        'cart' => ['Bedard\Shop\Models\Cart', 'table' => 'bedard_shop_carts'],
+        'inventory' => ['Bedard\Shop\Models\Inventory', 'table' => 'bedard_shop_inventories']
     ];
 
     /**
@@ -39,5 +40,51 @@ class CartItem extends Model
         // zero. Therefor, to be in the cart the item must also have a quantity.
         $query->where('quantity', '>', 0);
     }
+
+    /**
+     * Returns the full price of the item
+     * @return  float
+     */
+    public function getFullPriceAttribute()
+    {
+        return number_format($this->inventory->fullPrice, 2);
+    }
+
+    /**
+     * Returns true if the product is discounted
+     * @return  boolean
+     */
+    public function getIsDiscountedAttribute()
+    {
+        return $this->inventory->product->isDiscounted;
+    }
+
+    /**
+     * Returns the price of the item
+     * @return  float
+     */
+    public function getPriceAttribute()
+    {
+        return number_format($this->inventory->price, 2);
+    }
+
+    /**
+     * Returns the product name
+     * @return  string
+     */
+    public function getProductNameAttribute()
+    {
+        return $this->inventory->product->name;
+    }
+
+    /**
+     * Returns the available inventory stock
+     * @return  integer
+     */
+    public function getStockAttribute()
+    {
+        return $this->inventory->quantity;
+    }
+
 
 }

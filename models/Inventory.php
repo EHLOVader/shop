@@ -59,4 +59,22 @@ class Inventory extends Model
         $query->isActive()
               ->where('quantity', '>', 0);
     }
+
+    /**
+     * Returns the full price of the inventory
+     * @return  float
+     */
+    public function getFullPriceAttribute()
+    {
+        return number_format($this->product->fullPrice + $this->attributes['modifier'], 2);
+    }
+
+    /**
+     * Returns the price of the inventory
+     * @return  float
+     */
+    public function getPriceAttribute()
+    {
+        return number_format($this->product->price + $this->attributes['modifier'], 2);
+    }
 }
