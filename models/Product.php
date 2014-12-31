@@ -135,15 +135,16 @@ class Product extends Model
     public function scopeIsDiscounted($query)
     {
         // Selects products currently discounted
-        $query->whereHas('discounts', function($discounts) {
-            $discounts->isActive();
-        })
-        ->orWhereHas('categories', function($categories) {
-            $categories->isActive()
-                ->whereHas('discounts', function($discounts) {
-                    $discounts->isActive();
-                });
-        });
+        $query->isActive()
+            ->whereHas('discounts', function($discounts) {
+                $discounts->isActive();
+            })
+            ->orWhereHas('categories', function($categories) {
+                $categories->isActive()
+                    ->whereHas('discounts', function($discounts) {
+                        $discounts->isActive();
+                    });
+            });
     }
 
     public function scopeOnPage($query, $page, $perPage)
