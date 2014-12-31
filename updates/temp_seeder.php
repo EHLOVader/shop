@@ -128,7 +128,7 @@ class TempSeeder extends Seeder {
          * PROMO CODE
          */
         Coupon::create([
-            'code'  => 'Foo',
+            'coupon' => 'Foo',
             'message' => 'Thanks for entering "foo".',
             'amount' => rand(10, 20),
             'is_percentage' => 1,

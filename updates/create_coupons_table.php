@@ -3,16 +3,16 @@
 use Schema;
 use October\Rain\Database\Updates\Migration;
 
-class CreateCodesTable extends Migration
+class CreateCouponsTable extends Migration
 {
 
     public function up()
     {
-        Schema::create('bedard_shop_codes', function($table)
+        Schema::create('bedard_shop_coupons', function($table)
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('code')->nullable()->unique();            
+            $table->string('coupon')->nullable()->unique();            
             $table->string('message')->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
@@ -27,7 +27,7 @@ class CreateCodesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('bedard_shop_codes');
+        Schema::dropIfExists('bedard_shop_coupons');
     }
 
 }

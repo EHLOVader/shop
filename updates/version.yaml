@@ -4,7 +4,7 @@
   - create_products_table.php
   - create_inventories_table.php
   - create_discounts_table.php
-  - create_codes_table.php
+  - create_coupons_table.php
   - create_carts_table.php
   - create_cart_items_table.php
   - seed_the_database.php

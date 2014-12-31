@@ -12,7 +12,7 @@ class Coupon extends Model
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'bedard_shop_codes';
+    public $table = 'bedard_shop_coupons';
 
     /**
      * @var array Guarded fields
@@ -35,7 +35,7 @@ class Coupon extends Model
      * Validation
      */
     public $rules = [
-        'code'              => 'required|regex:/^[a-zA-Z0-9\-\_\ ]+$/|unique:bedard_shop_codes',
+        'coupon'            => 'required|regex:/^[a-zA-Z0-9\-\_\ ]+$/|unique:bedard_shop_coupons',
         'message'           => 'max:255',
         'start_date'        => 'date',
         'end_date'          => 'date',
@@ -46,7 +46,7 @@ class Coupon extends Model
         'is_freeshipping'   => 'required|boolean'
     ];
     public $customMessages = [
-        'code.regex' => 'Coupons may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
+        'coupon.regex' => 'Coupons may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
     ];
 
     /**
