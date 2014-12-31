@@ -146,10 +146,9 @@ class Cart extends ComponentBase
         // Load the inventory
         $inventory = $this->loadInventory($inventoryId, $slug);
 
-        // If no inventory was found, send back an error
-        // if (!$inventory) {
+        // If no inventory was found, send back a failure message
+        if (!$inventory)
             return $this->response('Inventory not found', FALSE);
-        // }
 
         // FirstOrCreate the cart item
         $cartItem = CartItem::firstOrCreate([
@@ -163,12 +162,14 @@ class Cart extends ComponentBase
         if ($cartItem->quantity > $inventory->quantity)
             $cartItem->quantity = $inventory->quantity;
 
-        // Save the results
-        $cartItem->save();
+        // Attempt to save our results
+        if (!$cartItem->save())
+            return $this->response('Failed to save cart item', FALSE);
 
         // Refresh the cart
         $this->loadCart();
 
+        // Send back a response message
         return $this->response('Product added to cart');
     }
 }
