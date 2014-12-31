@@ -1,6 +1,6 @@
 <?php namespace Bedard\Shop\Components;
 
-use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Category as CategoryModel;
 use Cms\Classes\ComponentBase;
 
 class Categories extends ComponentBase
@@ -32,7 +32,7 @@ class Categories extends ComponentBase
      */
     public function onRun()
     {
-        $this->categories = Category::isVisible()->inOrder()->get();
+        $this->categories = CategoryModel::isVisible()->inOrder()->get();
         $this->categoryCount = count($this->categories);
     }
     
