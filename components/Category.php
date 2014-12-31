@@ -7,10 +7,16 @@ use Request;
 class Category extends ComponentBase
 {
     /**
-     * Determines if the product was found or not
+     * Determines if the category was found or not
      * @var boolean
      */
     public $exists;
+
+    /**
+     * Determines if the category is empty or not
+     * @var boolean
+     */
+    public $isEmpty;
 
     /**
      * These variables exist to make the Twig markup a little cleaner. Rather
@@ -117,6 +123,9 @@ class Category extends ComponentBase
 
         // Lastly, query the products
         $this->products = $category->getArrangedProducts($this->pagination['current']);
+
+        // Set the isEmpty flag
+        $this->isEmpty = count($this->products) == 0;
     }
 
     /**
