@@ -26,14 +26,18 @@ class CartItem extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [];
-    public $hasMany = [];
-    public $belongsTo = [];
-    public $belongsToMany = [];
-    public $morphTo = [];
-    public $morphOne = [];
-    public $morphMany = [];
-    public $attachOne = [];
-    public $attachMany = [];
+    public $belongsTo = [
+        'cart' => ['Bedard\Shop\Models\Cart', 'table' => 'bedard_shop_carts']
+    ];
+
+    /**
+     * Query Scopes
+     */
+    public function scopeInCart($query)
+    {
+        // CartItems are never actually deleted, their quantity gets  set to 
+        // zero. Therefor, to be in the cart the item must also have a quantity.
+        $query->where('quantity', '>', 0);
+    }
 
 }
