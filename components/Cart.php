@@ -149,9 +149,13 @@ class Cart extends ComponentBase
         ], Settings::get('cart_life'));
     }
 
-    private function refreshCart()
+    /**
+     * Reloads cart items and recalculates the cart values
+     */
+    private function refreshCartItems()
     {
-
+        $this->cart->load('items');
+        $this->calculateCartValues();
     }
 
     /**
@@ -225,7 +229,7 @@ class Cart extends ComponentBase
             return $this->response('Failed to save cart item', FALSE);
 
         // Refresh the cart, and send back a success message
-        $this->loadCart();
+        $this->refreshCartItems();
         return $this->response('Product added to cart');
     }
 
@@ -260,7 +264,7 @@ class Cart extends ComponentBase
             return $this->response('Failed to delete item', FALSE);
 
         // Refresh the cart, and send back a success message
-        $this->loadCart();
+        $this->refreshCartItems();
         return $this->response('Item deleted');
     }
 
@@ -283,6 +287,11 @@ class Cart extends ComponentBase
             $item->quantity = $quantities[$item->id];
         }
 
+        // Save the cart, and all it's items
         $this->cart->push();
+
+        // Refresh the cart, and send back a success message
+        $this->refreshCartItems();
+        return $this->response('Cart updated');
     }
 }
