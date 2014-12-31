@@ -43,11 +43,11 @@ class Discount extends Model
      * Validation
      */
     public $rules = [
-        'name'          => 'required',
-        'start_date'    => 'date',
-        'end_date'      => 'date',
-        'amount'        => 'required|numeric|min:0',
-        'is_percentage' => 'required|boolean'
+        // 'name'          => 'required',
+        // 'start_date'    => 'date',
+        // 'end_date'      => 'date',
+        // 'amount'        => 'required|numeric|min:0',
+        // 'is_percentage' => 'required|boolean'
     ];
 
     /**
@@ -55,14 +55,14 @@ class Discount extends Model
      */
     public function beforeValidate()
     {
-        // Adjust our validation rules
-        $this->addDynamicValidationRules();
+        // // Adjust our validation rules
+        // $this->addDynamicValidationRules();
 
-        // Make sure that the discount applies to categories or products
-        $scope = $this->validateDiscountScope();
+        // // Make sure that the discount applies to categories or products
+        // $scope = $this->validateDiscountScope();
 
-        // Lastly, check for collisions
-        $this->validateDiscountCollisions($scope);
+        // // Lastly, check for collisions
+        // $this->validateDiscountCollisions($scope);
     }
 
     /**
