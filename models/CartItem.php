@@ -62,6 +62,19 @@ class CartItem extends Model
     }
 
     /**
+     * Prevents invalid quantity values
+     * @param   integer
+     */
+    public function setQuantityAttribute($quantity)
+    {
+        if ($quantity < 0)
+            $quantity = 0;
+        if ($quantity > $this->inventory->quantity)
+            $quantity = $this->inventory->quantity;
+        $this->attributes['quantity'] = $quantity;
+    }
+
+    /**
      * Returns true if the product is discounted
      * @return  boolean
      */
