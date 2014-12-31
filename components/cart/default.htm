@@ -3,39 +3,59 @@
     Your cart is empty, you should buy some of our awesome products ;)
 {% else %}
 
-    <table style="border: 1px solid #eee; border-collapse: collapse; width: 100%;">
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Remove</th>
-        </tr>
-
-        {% for Item in __SELF__.items %}
+    {{ form_ajax('onUpdateCart') }}
+        <table style="border: 1px solid #eee; border-collapse: collapse; width: 100%;">
             <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Remove</th>
+            </tr>
+            {% for Item in __SELF__.items %}
+                <tr>
 
-                <td>{{ Item.productName }}</td>
+                    <td>
+                        {{ Item.productName }}
+                        {% if Item.inventoryName %}
+                            ({{ Item.inventoryName }})
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if Item.isDiscounted %}
+                            <strike>{{ Item.fullPrice }}</strike>
+                            <span style="color: green">{{ Item.price }}</span>
+                        {% else %}
+                            {{ Item.price }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <input name="bedard_shop_item[{{ Item.id }}]" type="number" min="0" value="{{ Item.quantity }}" />
+                    </td>
+                    <td>
+                        <a href="#"
+                            data-request="onRemoveFromCart"
+                            data-request-data="bedard_shop_item_id: {{ Item.id }}">
+                            Remove
+                        </a>
+                    </td>
+
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>promo code</td>
                 <td>
-                    {% if Item.isDiscounted %}
-                        <strike>{{ Item.fullPrice }}</strike>
-                        <span style="color: green">{{ Item.price }}</span>
+                    {% if __SELF__.isDiscounted %}
+                        <strike>{{ __SELF__.fullTotal }}</strike>
+                        <span style="color: green">{{ __SELF__.total }}</span>
                     {% else %}
-                        {{ Item.price }}
+                        {{ __SELF__.total }}
                     {% endif %}
                 </td>
                 <td>
-                    <input name="bedard_shop_item[{{ Item.id }}]" type="number" min="0" max="{{ Item.stock }}" value="{{ Item.quantity }}" />
+                    <button type="submit">Update</button>
                 </td>
-                <td>
-                    <a href="#"
-                        data-request="onRemoveFromCart"
-                        data-request-data="bedard_shop_item_id: {{ Item.id }}">
-                        Remove
-                    </a>
-                </td>
-
-            </tr>
-        {% endfor %}
-    </table>
+                <td></td>
+        </table>
+    {{ form_close() }}
 
 {% endif %}
