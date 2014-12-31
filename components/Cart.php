@@ -154,7 +154,15 @@ class Cart extends ComponentBase
      */
     private function refreshCartItems()
     {
-        $this->cart->load('items');
+        // Refresh the items in the cart, along with their discount information
+        $this->cart
+            ->load('items.inventory.product.discounts')
+            ->load('items.inventory.product.categories.discounts')
+            ->load(['items' => function($item) {
+                $item->inCart();
+            }]);
+
+        // Recalculate the totals
         $this->calculateCartValues();
     }
 
