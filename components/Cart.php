@@ -2,6 +2,7 @@
 
 use Bedard\Shop\Models\Cart as CartModel;
 use Bedard\Shop\Models\CartItem;
+use Bedard\Shop\Models\Coupon;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Settings;
@@ -36,19 +37,31 @@ class Cart extends ComponentBase
      * Determines if the cart is empty or not
      * @var boolean
      */
-    public $isEmpty;
+    public $isEmpty = TRUE;
 
     /**
      * The number of items in the cart
      * @var integer
      */
-    public $itemCount;
+    public $itemCount = 0;
 
     /**
      * Items in the user's cart
      * @var Collection  Bedard\Shop\Models\CartItem
      */
     public $items;
+
+    /**
+     * Determines if a coupon is applied or not
+     * @var boolean
+     */
+    public $hasCoupon;
+
+    /**
+     * The cart's coupon
+     * @var Bedard\Shop\Models\Coupon
+     */
+    public $coupon;
 
     /**
      * Component Details
@@ -123,6 +136,7 @@ class Cart extends ComponentBase
         else {
             $this->cart = CartModel::where('key', $this->cookie['key'])
                 ->whereNull('transaction_id')
+                ->with('coupon')
                 ->with('items.inventory.product.discounts')
                 ->with('items.inventory.product.categories.discounts')
                 ->with(['items' => function($item) {
@@ -158,6 +172,7 @@ class Cart extends ComponentBase
     {
         // Refresh the items in the cart, along with their discount information
         $this->cart
+            ->load('coupon')
             ->load('items.inventory.product.discounts')
             ->load('items.inventory.product.categories.discounts')
             ->load(['items' => function($item) {
@@ -180,11 +195,8 @@ class Cart extends ComponentBase
             $this->total = $this->cart->total;
             $this->fullTotal = $this->cart->fullTotal;
             $this->isDiscounted = $this->cart->isDiscounted;
-        }
-
-        else {
-            $this->itemCount = 0;
-            $this->isEmpty = TRUE;
+            $this->hasCoupon = (bool) $this->cart->coupon;
+            $this->coupon = $this->cart->coupon;
         }
     }
     /**
@@ -303,11 +315,34 @@ class Cart extends ComponentBase
             if (!array_key_exists($item->id, $quantities)) continue;
             $item->quantity = $quantities[$item->id];
         }
-
-        // Save the cart, and all it's items
         $this->cart->push();
 
-        // Refresh the cart, and send back a success message
+        // Check if a coupon code is being applied
+        if ($couponCode = post('bedard_shop_coupon')) {
+            $coupon = Coupon::where('coupon', $couponCode)
+                ->isActive()
+                ->first();
+            if ($coupon) {
+                $this->cart->coupon()->associate($coupon);
+                $this->cart->save();
+            } else
+                return $this->response('Coupon not found', FALSE);
+        }
+
+        // Save and refresh the cart, then send back a success message
+        $this->refreshCartItems();
+        return $this->response('Cart updated');
+    }
+
+    /**
+     * Removes a coupon from a cart
+     */
+    public function onRemoveCoupon()
+    {
+        if (!$this->cart)
+            return $this->response('Cart not found', FALSE);
+        $this->cart->coupon_id = NULL;
+        $this->cart->save();
         $this->refreshCartItems();
         return $this->response('Cart updated');
     }

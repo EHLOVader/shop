@@ -12,7 +12,7 @@ class CreateCouponsTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('coupon')->nullable()->unique();            
+            $table->string('name')->nullable()->unique();            
             $table->string('message')->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();

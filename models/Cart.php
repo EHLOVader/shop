@@ -32,6 +32,9 @@ class Cart extends Model
     /**
      * @var array   Relations
      */
+    public $belongsTo = [
+        'coupon' => ['Bedard\Shop\Models\Coupon', 'table' => 'bedard_shop_coupons']
+    ];
     public $hasMany = [
         'items' => ['Bedard\Shop\Models\CartItem', 'table' => 'bedard_shop_cart_items']
     ];
@@ -55,6 +58,14 @@ class Cart extends Model
             'fullTotal'     => number_format($fullTotal, 2),
             'isDiscounted'  => $total < $fullTotal
         ];
+    }
+
+    /**
+     * Query Scopes
+     */
+    public function scopeIsComplete($query)
+    {
+        $query->where('transaction_id', '<>', NULL);
     }
 
     /**

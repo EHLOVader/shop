@@ -4,7 +4,7 @@
 
 fields:
 
-    coupon:
+    name:
         label: Coupon Code
         comment: 'Coupons may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
         span: left

@@ -28,14 +28,14 @@ class Coupon extends Model
      * @var array Relations
      */
     public $hasMany = [
-        // 'carts' => ['Bedard\Shop\Models\Cart', 'table' => 'bedard_shop_carts']
+        'carts' => ['Bedard\Shop\Models\Cart', 'table' => 'bedard_shop_carts', 'scope' => 'isComplete']
     ];
 
     /**
      * Validation
      */
     public $rules = [
-        'coupon'            => 'required|regex:/^[a-zA-Z0-9\-\_\ ]+$/|unique:bedard_shop_coupons',
+        'name'              => 'required|regex:/^[a-zA-Z0-9\-\_\ ]+$/|unique:bedard_shop_coupons',
         'message'           => 'max:255',
         'start_date'        => 'date',
         'end_date'          => 'date',
@@ -46,7 +46,7 @@ class Coupon extends Model
         'is_freeshipping'   => 'required|boolean'
     ];
     public $customMessages = [
-        'coupon.regex' => 'Coupons may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
+        'name.regex' => 'Coupon codes may only contain alpha-numeric characters, spaces, hyphens, and underscores.'
     ];
 
     /**
@@ -60,7 +60,31 @@ class Coupon extends Model
 
         // If this is a percentage discount, add integer and max validation
         if ($this->is_percentage)
-            $this->rules['amount'] .= '|integer|max:100';
+            $this->rules['amount'] .= '|max:100';
+    }
+
+    /**
+     * Query Scopes
+     */
+    public function scopeIsActive($query)
+    {
+        // Checks if a coupon is active
+        $now = date('Y-m-d H:i:s');
+        $query
+            ->where(function($query) use ($now) {
+                $query->whereNull('start_date')
+                      ->orWhere('start_date', '<=', $now);
+            })
+            ->where(function($query) use ($now) {
+                $query->whereNull('end_date')
+                      ->orWhere('end_date', '>=', $now);
+            });
+
+        // Make sure the coupon hasn't already met it's limit
+        if ($this->limit > 0)
+            $query->has('carts', '<', $this->attributes['limit']);
+
+        return $query;
     }
 
     /**

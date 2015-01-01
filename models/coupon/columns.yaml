@@ -4,7 +4,7 @@
 
 columns:
 
-    coupon:
+    name:
         label: Coupon Code
 
     start_date:

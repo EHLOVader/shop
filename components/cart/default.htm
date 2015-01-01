@@ -42,7 +42,14 @@
                 </tr>
             {% endfor %}
             <tr>
-                <td>promo code</td>
+                <td>
+                    {% if __SELF__.hasCoupon %}
+                        Using coupon...
+                        <a href="#" data-request="onRemoveCoupon">Remove Coupon</a>
+                    {% else %}
+                        <input type="text" name="bedard_shop_coupon" placeholder="Enter coupon code..." />
+                    {% endif %}
+                </td>
                 <td>
                     {% if __SELF__.isDiscounted %}
                         <strike>{{ __SELF__.fullTotal }}</strike>
