@@ -1,11 +1,16 @@
 # To Do List
-The many features I plan on adding to this plugin...
+
+- PayPal payment processing
+
+- Stripe payment processing
+
+- Customer newsletter
+
+- Create report widgets for October dashboard
 
 - Allow for inventory "groups". Products need to be able to have multiple groups of inventories. For example, a shirt product might come in multiple sizes, but also in multiple colors as well.
 
 - USPS , FedEx, and UPS shipping calculators.
-
-- Stripe payment processing
 
 - Promotions (buy one get one free, refer a friend, etc...)
 
