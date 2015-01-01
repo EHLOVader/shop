@@ -1,4 +1,4 @@
 <?php
 echo !empty($currency)
-    ? '<i class="currency-icon icon-'.$currency.'"></i>'.$record->amount
-    : $record->amount;
+    ? '<i class="currency-icon icon-'.$currency.'"></i>'.$record->cart_value
+    : $record->cart_value;

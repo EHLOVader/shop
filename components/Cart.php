@@ -319,7 +319,7 @@ class Cart extends ComponentBase
 
         // Check if a coupon code is being applied
         if ($couponCode = post('bedard_shop_coupon')) {
-            $coupon = Coupon::where('coupon', $couponCode)
+            $coupon = Coupon::where('name', $couponCode)
                 ->isActive()
                 ->first();
             if ($coupon) {
