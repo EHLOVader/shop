@@ -13,55 +13,38 @@ use Request;
 class Cart extends ComponentBase
 {
     /**
-     * True if the current request is to an ajax handler
-     * @var boolean
+     * 
+     * @var boolean     True if the current request is to an ajax handler
      */
     private $isAjax;
 
     /**
-     * The user's shopping cart
      * @var Bedard\Shop\Models\Cart
      */
     private $cart;
+
+    /**
+     * @var Collection  Bedard\Shop\Models\CartItem
+     */
+    public $items;
+
+    /**
+     * @var Bedard\Shop\Models\Coupon
+     */
+    public $coupon;
 
     /**
      * These variables exist to make the Twig markup a little cleaner. Rather
      * then declaring a public cart variable, we can call "Component.total"
      * instead of "Component.cart.total"
      */
-    public $total;
-    public $fullTotal;
-    public $isDiscounted;
-
-    /**
-     * Determines if the cart is empty or not
-     * @var boolean
-     */
-    public $isEmpty = TRUE;
-
-    /**
-     * The number of items in the cart
-     * @var integer
-     */
-    public $itemCount = 0;
-
-    /**
-     * Items in the user's cart
-     * @var Collection  Bedard\Shop\Models\CartItem
-     */
-    public $items;
-
-    /**
-     * Determines if a coupon is applied or not
-     * @var boolean
-     */
-    public $hasCoupon;
-
-    /**
-     * The cart's coupon
-     * @var Bedard\Shop\Models\Coupon
-     */
-    public $coupon;
+    public $total;              // string (numeric)
+    public $fullTotal;          // string (numeric)
+    public $isDiscounted;       // boolean
+    public $isEmpty = TRUE;     // boolean
+    public $itemCount = 0;      // integer
+    public $hasCoupon;          // boolean
+    public $couponIsApplied;    // boolean
 
     /**
      * Component Details
