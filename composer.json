@@ -1,0 +1,15 @@
+{
+    "name": "bedard/shop",
+    "description": "An ecommerce platform for OctoberCMS.",
+    "homepage": "http://scottbedard.net",
+    "keywords": ["october", "cms", "bedard", "shop", "ecommerce"],
+    "authors": [
+        {
+            "name": "Scott Bedard",
+            "email": "scottbedard90@gmail.com"
+        }
+    ],
+    "require": {
+        "paypal/rest-api-sdk-php": "0.14.2"
+    }
+}
