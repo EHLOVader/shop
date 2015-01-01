@@ -44,12 +44,12 @@ class Plugin extends PluginBase
                         'url'           => Backend::url('bedard/shop/transactions'),
                         'permissions'   => ['bedard.shop.access_transactions']
                     ],
-                    // 'customers' => [
-                    //     'label'         => 'Customers',
-                    //     'icon'          => 'icon-users',
-                    //     'url'           => Backend::url('bedard/shop/customers'),
-                    //     'permissions'   => ['bedard.shop.access_customers']
-                    // ],
+                    'customers' => [
+                        'label'         => 'Customers',
+                        'icon'          => 'icon-users',
+                        'url'           => Backend::url('bedard/shop/customers'),
+                        'permissions'   => ['bedard.shop.access_customers']
+                    ],
                     'products' => [
                         'label'         => 'Products',
                         'icon'          => 'icon-cubes',
