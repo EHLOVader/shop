@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Transaction
+
+# Model Form Field configuration
+form: $/bedard/shop/models/transaction/fields.yaml
+
+# Model Class name
+modelClass: Bedard\Shop\Models\Transaction
+
+# Default redirect location
+defaultRedirect: bedard/shop/transactions
+
+# Create page
+create:
+    title: Create Transaction
+    redirect: bedard/shop/transactions/update/:id
+    redirectClose: bedard/shop/transactions
+
+# Update page
+update:
+    title: Edit Transaction
+    redirect: bedard/shop/transactions
+    redirectClose: bedard/shop/transactions
+
+# Preview page
+preview:
+    title: Preview Transaction
