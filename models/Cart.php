@@ -9,12 +9,6 @@ class Cart extends Model
 {
 
     /**
-     * Total values for the cart, and if it is discounted or not
-     * @var array   [ total, fullTotal, isDiscounted ]
-     */
-    private $cartTotal;
-
-    /**
      * @var string  The database table used by the model.
      */
     public $table = 'bedard_shop_carts';
@@ -40,27 +34,6 @@ class Cart extends Model
     ];
 
     /**
-     * Calculates the value of the cart, and checks if discounts are in effect
-     */
-    private function calculateTotals()
-    {
-        $fullTotal = $total = 0;
-        foreach ($this->items as $item) {
-            $fullTotal += $item->fullPrice * $item->quantity;
-            $total += $item->price * $item->quantity;
-        }
-
-        // TO DO: APPLY PROMO CODES TO $TOTAL
-        // 
-
-        $this->cartTotal = [
-            'total'         => number_format($total, 2),
-            'fullTotal'     => number_format($fullTotal, 2),
-            'isDiscounted'  => $total < $fullTotal
-        ];
-    }
-
-    /**
      * Query Scopes
      */
     public function scopeIsComplete($query)
@@ -69,36 +42,61 @@ class Cart extends Model
     }
 
     /**
+     * Checks if the coupon is being applied or not
+     * @return  boolean
+     */
+    public function getCouponIsAppliedAttribute()
+    {
+        return $this->totalBeforeCoupon > $this->total;
+    }
+
+    /**
      * Determine if the cart is at full price or not
      * @return  boolean
      */
     public function getIsDiscountedAttribute()
     {
-        if (!$this->cartTotal)
-            $this->calculateTotals();
-        return $this->cartTotal['isDiscounted'];
+        return $this->total < $this->fullTotal;
     }
 
     /**
-     * Calculate the total value of the cart before discounts or promotions
-     * @return  float
+     * Returns the total value of the cart before discounts or promotions
+     * @return  string (numeric)
      */
     public function getFullTotalAttribute()
     {
-        if (!$this->cartTotal)
-            $this->calculateTotals();
-        return $this->cartTotal['fullTotal'];
+        $fullTotal = 0;
+        foreach ($this->items as $item)
+            $fullTotal += $item->quantity * $item->fullPrice;
+        return number_format($fullTotal, 2);
     }
 
     /**
-     * Calculates the total value of the cart
-     * @return  float
+     * Returns the total value of the cart
+     * @return  string (numeric)
      */
     public function getTotalAttribute()
     {
-        if (!$this->cartTotal)
-            $this->calculateTotals();
-        return $this->cartTotal['total'];
+        $total = $this->totalBeforeCoupon;
+        if ($this->coupon && $this->coupon->cart_value <= $total) {
+            $total -= $this->coupon->is_percentage
+                ? $total * ($this->coupon->amount / 100)
+                : $this->coupon->amount;
+            if ($total < 0) $total = 0;
+        }
+        return number_format($total, 2);
+    }
+
+    /**
+     * Returns the total value of the cart before coupons are applied
+     * @return  string (numeric)
+     */
+    public function getTotalBeforeCouponAttribute()
+    {
+        $totalBeforeCoupon = 0;
+        foreach ($this->items as $item)
+            $totalBeforeCoupon += $item->quantity * $item->price;
+        return number_format($totalBeforeCoupon, 2);
     }
 
 }
