@@ -39,12 +39,14 @@ class Cart extends ComponentBase
      * instead of "Component.cart.total"
      */
     public $total;              // string (numeric)
+    public $totalBeforeCoupon;  // string (numeric)
     public $fullTotal;          // string (numeric)
     public $isDiscounted;       // boolean
     public $isEmpty = TRUE;     // boolean
     public $itemCount = 0;      // integer
     public $hasCoupon;          // boolean
     public $couponIsApplied;    // boolean
+    public $couponThreshold;    // string (numeric)
 
     /**
      * Component Details
@@ -176,10 +178,17 @@ class Cart extends ComponentBase
             $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
             $this->isEmpty = (bool) !$this->itemCount;
             $this->total = $this->cart->total;
+            $this->totalBeforeCoupon = $this->cart->totalBeforeCoupon;
             $this->fullTotal = $this->cart->fullTotal;
             $this->isDiscounted = $this->cart->isDiscounted;
             $this->hasCoupon = (bool) $this->cart->coupon;
-            $this->coupon = $this->cart->coupon;
+
+            // Load the coupon
+            if ($this->cart->coupon) {
+                $this->coupon = $this->cart->coupon;
+                $this->couponIsApplied = $this->cart->couponIsApplied;
+                $this->couponThreshold = $this->coupon->cart_value;
+            }
         }
     }
     /**
