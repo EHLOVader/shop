@@ -235,7 +235,7 @@ class Product extends Model
             ? $this->calculatePrice($this->discount)
             : $this->full_price;
 
-        return number_format($price, 2);
+        return $price;
     }
 
     /**

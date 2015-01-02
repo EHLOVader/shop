@@ -102,7 +102,7 @@ class Cart extends Model
         $fullTotal = 0;
         foreach ($this->items as $item)
             $fullTotal += $item->quantity * $item->fullPrice;
-        return number_format($fullTotal, 2);
+        return $fullTotal;
     }
 
     /**
@@ -118,7 +118,7 @@ class Cart extends Model
                 : $this->coupon->amount;
             if ($total < 0) $total = 0;
         }
-        return number_format($total, 2);
+        return $total;
     }
 
     /**
@@ -130,7 +130,7 @@ class Cart extends Model
         $totalBeforeCoupon = 0;
         foreach ($this->items as $item)
             $totalBeforeCoupon += $item->quantity * $item->price;
-        return number_format($totalBeforeCoupon, 2);
+        return $totalBeforeCoupon;
     }
 
 }

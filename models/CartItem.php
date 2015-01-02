@@ -89,7 +89,7 @@ class CartItem extends Model
      */
     public function getPriceAttribute()
     {
-        return number_format($this->inventory->price, 2);
+        return $this->inventory->price;
     }
 
     /**

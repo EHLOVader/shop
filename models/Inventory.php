@@ -73,7 +73,7 @@ class Inventory extends Model
      */
     public function getFullPriceAttribute()
     {
-        return number_format($this->product->fullPrice + $this->attributes['modifier'], 2);
+        return $this->product->fullPrice + $this->attributes['modifier'];
     }
 
     /**
@@ -82,6 +82,6 @@ class Inventory extends Model
      */
     public function getPriceAttribute()
     {
-        return number_format($this->product->price + $this->attributes['modifier'], 2);
+        return $this->product->fullPrice + $this->attributes['modifier'];
     }
 }
