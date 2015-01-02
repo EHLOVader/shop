@@ -63,8 +63,6 @@ trait CartTrait
                 ->find($this->cookie['id']);
         }
 
-        // 
-
         // Refresh the cookie
         if ($this->cart) {
             Cookie::queue('bedard_shop_cart', [
@@ -72,22 +70,6 @@ trait CartTrait
                 'key'   => $this->cart->key
             ], Settings::get('cart_life'));
         }
-    }
-
-    /**
-     * Reloads cart relationships
-     */
-    private function refreshCart()
-    {
-        $this->cart
-            ->load('items.inventory.product.discounts')
-            ->load('items.inventory.product.categories.discounts')
-            ->load(['items' => function($item) {
-                $item->inCart();
-            }]);
-
-        if (!is_null($this->cart->coupon_id))
-            $this->cart->load('coupon');
     }
 
 }

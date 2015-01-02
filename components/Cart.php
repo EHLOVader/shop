@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Components;
 
+use Bedard\Shop\Models\Cart as CartModel;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Coupon;
 use Bedard\Shop\Models\Inventory;
@@ -7,6 +8,7 @@ use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Settings;
 use Cms\Classes\ComponentBase;
 use Cookie;
+use DB;
 
 class Cart extends ComponentBase
 {
@@ -71,7 +73,7 @@ class Cart extends ComponentBase
             $this->items = $this->cart->items;
 
             $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
-            $this->isEmpty = (bool) !$this->itemCount;
+            $this->isEmpty = $this->itemCount == 0;
             $this->total = $this->cart->total;
             $this->totalBeforeCoupon = $this->cart->totalBeforeCoupon;
             $this->fullTotal = $this->cart->fullTotal;
@@ -138,9 +140,10 @@ class Cart extends ComponentBase
         if (!$cartItem->save())
             return $this->response('Failed to save cart item', FALSE);
 
-        // Refresh the cart, and send back a success message
-        $this->refreshCart();
-        $this->storeCartValues();
+        // Refresh the item count, and send back a response
+        $this->itemCount = CartItem::where('cart_id', $this->cart->id)
+            ->sum('quantity');
+        $this->isEmpty = $this->itemCount == 0;
         return $this->response('Product added to cart');
     }
 
@@ -175,7 +178,7 @@ class Cart extends ComponentBase
             return $this->response('Failed to delete item', FALSE);
 
         // Refresh the cart, and send back a success message
-        $this->refreshCart();
+        $this->loadCart(TRUE);
         $this->storeCartValues();
         return $this->response('Item deleted');
     }
@@ -198,7 +201,6 @@ class Cart extends ComponentBase
             if (!array_key_exists($item->id, $quantities)) continue;
             $item->quantity = $quantities[$item->id];
         }
-        $this->cart->push();
 
         // Check if a coupon code is being applied
         if ($couponCode = post('bedard_shop_coupon')) {
@@ -207,13 +209,16 @@ class Cart extends ComponentBase
                 ->first();
             if ($coupon) {
                 $this->cart->coupon()->associate($coupon);
-                $this->cart->save();
-            } else
+            } else {
+                $this->cart->push();
                 return $this->response('Coupon not found', FALSE);
+            }
         }
 
+        $this->cart->push();
+
         // Save and refresh the cart, then send back a success message
-        $this->refreshCart();
+        $this->loadCart(TRUE);
         $this->storeCartValues();
         return $this->response('Cart updated');
     }
@@ -225,10 +230,14 @@ class Cart extends ComponentBase
     {
         if (!$this->cart)
             return $this->response('Cart not found', FALSE);
+
+        if (!$this->cart->coupon_id)
+            return $this->response('No coupon to remove', FALSE);
+        
         $this->cart->coupon_id = NULL;
         $this->cart->save();
 
-        $this->refreshCart();
+        $this->loadCart(TRUE);
         $this->storeCartValues();
         return $this->response('Cart updated');
     }
