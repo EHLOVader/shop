@@ -7,16 +7,11 @@ use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Settings;
 use Cms\Classes\ComponentBase;
 use Cookie;
-use Request;
 
 class Cart extends ComponentBase
 {
     use \Bedard\Shop\Traits\CartTrait;
-
-    /**
-     * @var boolean     Determines if an ajax request is being made
-     */
-    private $isAjax;
+    use \Bedard\Shop\Traits\AjaxResponderTrait;
 
     /**
      * These variables exist to make the Twig markup a little cleaner. Rather
@@ -50,35 +45,13 @@ class Cart extends ComponentBase
      */
     public function onInit()
     {
-        // Determine if this is an ajax request or not
-        $handler = trim(Request::header('X_OCTOBER_REQUEST_HANDLER'));
-        $this->isAjax = preg_match('/^(?:\w+\:{2})?on[A-Z]{1}[\w+]*$/', $handler) && method_exists($this, $handler);
-
         // For ajax requests, don't load the relationships
-        $withRelationships = !$this->isAjax;
+        $withRelationships = !$this->isAjax();
 
         // Load the cart
         $this->loadCart($withRelationships);
         if ($withRelationships)
             $this->storeCartValues();
-    }
-
-    /**
-     * Response builder
-     * @param   string  $message    The message being sent back to the page
-     * @param   boolean $result     True / false on if the request was ok
-     * @param   boolean $error      Sets a 406 status code if something unexpected happened
-     */
-    private function response($message, $success = TRUE, $error = FALSE)
-    {
-        // Set the response message and status
-        $response['message'] = $message;
-        $response['success'] = $success;
-
-        // If we have a actual error, set the status code to 406
-        if ($error) $this->setStatusCode(406);
-
-        return $response;
     }
 
     /**
