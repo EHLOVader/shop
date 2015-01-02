@@ -199,7 +199,8 @@ class Cart extends ComponentBase
         // Update the inventories
         foreach ($this->cart->items as $item) {
             if (!array_key_exists($item->id, $quantities)) continue;
-            $item->quantity = $quantities[$item->id];
+            if ($item->quantity != $quantities[$item->id])
+                $item->quantity = $quantities[$item->id];
         }
 
         // Check if a coupon code is being applied
@@ -214,13 +215,17 @@ class Cart extends ComponentBase
                 return $this->response('Coupon not found', FALSE);
             }
         }
-
         $this->cart->push();
+
+        // Validate the item quantities
+        $invalidQuantities = $this->cart->validateItemQuantities();
 
         // Save and refresh the cart, then send back a success message
         $this->loadCart(TRUE);
         $this->storeCartValues();
-        return $this->response('Cart updated');
+        return $invalidQuantities
+            ? $this->response('Invalid quantities', FALSE)
+            : $this->response('Cart updated');
     }
 
     /**
@@ -233,7 +238,7 @@ class Cart extends ComponentBase
 
         if (!$this->cart->coupon_id)
             return $this->response('No coupon to remove', FALSE);
-        
+
         $this->cart->coupon_id = NULL;
         $this->cart->save();
 
