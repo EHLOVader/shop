@@ -1,6 +1,5 @@
 <?php namespace Bedard\Shop\Components;
 
-use Bedard\Shop\Models\Cart as CartModel;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Coupon;
 use Bedard\Shop\Models\Inventory;
@@ -12,26 +11,12 @@ use Request;
 
 class Cart extends ComponentBase
 {
+    use \Bedard\Shop\Traits\CartTrait;
+
     /**
-     * 
-     * @var boolean     True if the current request is to an ajax handler
+     * @var boolean     Determines if an ajax request is being made
      */
     private $isAjax;
-
-    /**
-     * @var Bedard\Shop\Models\Cart
-     */
-    private $cart;
-
-    /**
-     * @var Collection  Bedard\Shop\Models\CartItem
-     */
-    public $items;
-
-    /**
-     * @var Bedard\Shop\Models\Coupon
-     */
-    public $coupon;
 
     /**
      * These variables exist to make the Twig markup a little cleaner. Rather
@@ -65,12 +50,17 @@ class Cart extends ComponentBase
      */
     public function onInit()
     {
-        // Determine if this is an ajax request
+        // Determine if this is an ajax request or not
         $handler = trim(Request::header('X_OCTOBER_REQUEST_HANDLER'));
         $this->isAjax = preg_match('/^(?:\w+\:{2})?on[A-Z]{1}[\w+]*$/', $handler) && method_exists($this, $handler);
 
+        // For ajax requests, don't load the relationships
+        $withRelationships = !$this->isAjax;
+
         // Load the cart
-        $this->loadCart();
+        $this->loadCart($withRelationships);
+        if ($withRelationships)
+            $this->storeCartValues();
     }
 
     /**
@@ -92,105 +82,31 @@ class Cart extends ComponentBase
     }
 
     /**
-     * Creates a new shopping cart and cookie
-     */
-    private function makeCart()
-    {
-        $this->cart = CartModel::create(['key' => str_random(40)]);
-        $this->refreshCartCookie();
-    }
-
-
-    /**
-     * Loads / refreshes the current cart
-     */
-    private function loadCart()
-    {
-        // Look for a cart cookie
-        if (!$this->cookie = Cookie::get('bedard_shop_cart'))
-            return FALSE;
-
-        // If this is an ajax request, just load the cart
-        if ($this->isAjax) {
-            $this->cart = CartModel::where('key', $this->cookie['key'])
-                ->whereNull('transaction_id')
-                ->find($this->cookie['id']);
-        }
-
-        // For regular requests, we've got some extra work to do
-        else {
-            $this->cart = CartModel::where('key', $this->cookie['key'])
-                ->whereNull('transaction_id')
-                ->with('coupon')
-                ->with('items.inventory.product.discounts')
-                ->with('items.inventory.product.categories.discounts')
-                ->with(['items' => function($item) {
-                    $item->inCart();
-                }])
-                ->find($this->cookie['id']);
-
-            // Load the cart variables and refresh the cookie
-            if ($this->cart) {
-                $this->items = $this->cart->items;
-                $this->refreshCartCookie();
-            }
-        }
-
-        $this->calculateCartValues();
-    }
-
-    /**
-     * Refresh the cart cookie with a new expiration
-     */
-    private function refreshCartCookie()
-    {
-        Cookie::queue('bedard_shop_cart', [
-            'id'    => $this->cart->id,
-            'key'   => $this->cart->key
-        ], Settings::get('cart_life'));
-    }
-
-    /**
-     * Reloads cart items and recalculates the cart values
-     */
-    private function refreshCartItems()
-    {
-        // Refresh the items in the cart, along with their discount information
-        $this->cart
-            ->load('coupon')
-            ->load('items.inventory.product.discounts')
-            ->load('items.inventory.product.categories.discounts')
-            ->load(['items' => function($item) {
-                $item->inCart();
-            }]);
-        $this->items = $this->cart->items;
-
-        // Recalculate the totals
-        $this->calculateCartValues();
-    }
-
-    /**
      * Load the cart values
      */
-    private function calculateCartValues()
+    private function storeCartValues()
     {
         if ($this->cart) {
+            // Load the coupon
+            if (!is_null($this->cart->coupon_id) && $this->cart->coupon) {
+                $this->coupon = $this->cart->coupon;
+                $this->couponIsApplied = $this->cart->couponIsApplied;
+                $this->couponThreshold = $this->coupon->cart_value;
+            }
+
+            // Load the cart variables and refresh the cookie
+            $this->items = $this->cart->items;
+
             $this->itemCount = array_sum(array_column($this->cart->items->toArray(), 'quantity'));
             $this->isEmpty = (bool) !$this->itemCount;
             $this->total = $this->cart->total;
             $this->totalBeforeCoupon = $this->cart->totalBeforeCoupon;
             $this->fullTotal = $this->cart->fullTotal;
             $this->isDiscounted = $this->cart->isDiscounted;
-            $this->hasCoupon = (bool) $this->cart->coupon;
-
-            // Load the coupon
-            if ($this->cart->coupon) {
-                $this->coupon = $this->cart->coupon;
-                $this->couponIsApplied = $this->cart->couponIsApplied;
-                $this->couponThreshold = $this->coupon->cart_value;
-            }
+            $this->hasCoupon = (bool) $this->cart->coupon_id;
         }
     }
+
     /**
      * Loads a product by inventory ID or product slug
      * @param   integer $inventoryId
@@ -250,7 +166,8 @@ class Cart extends ComponentBase
             return $this->response('Failed to save cart item', FALSE);
 
         // Refresh the cart, and send back a success message
-        $this->refreshCartItems();
+        $this->refreshCart();
+        $this->storeCartValues();
         return $this->response('Product added to cart');
     }
 
@@ -285,7 +202,8 @@ class Cart extends ComponentBase
             return $this->response('Failed to delete item', FALSE);
 
         // Refresh the cart, and send back a success message
-        $this->refreshCartItems();
+        $this->refreshCart();
+        $this->storeCartValues();
         return $this->response('Item deleted');
     }
 
@@ -322,7 +240,8 @@ class Cart extends ComponentBase
         }
 
         // Save and refresh the cart, then send back a success message
-        $this->refreshCartItems();
+        $this->refreshCart();
+        $this->storeCartValues();
         return $this->response('Cart updated');
     }
 
@@ -335,7 +254,9 @@ class Cart extends ComponentBase
             return $this->response('Cart not found', FALSE);
         $this->cart->coupon_id = NULL;
         $this->cart->save();
-        $this->refreshCartItems();
+
+        $this->refreshCart();
+        $this->storeCartValues();
         return $this->response('Cart updated');
     }
 }
