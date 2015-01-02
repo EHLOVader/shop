@@ -46,18 +46,18 @@ class Cart extends Model
      * Ensures that cart quantities do not exceed their available inventories
      * @return  boolean
      */
-    public function validateItemQuantities()
+    public function fixQuantities()
     {
         // Check if any inventories were invalid
-        $validQuantities = TRUE;
+        $fixQuantities = FALSE;
         foreach ($this->items as $item) {
             if ($item->quantity > $item->inventory->quantity) {
-                $validQuantities = FALSE;
+                $fixQuantities = TRUE;
             }
         }
 
         // Run a query to fix invalid quantities
-        if (!$validQuantities) {
+        if ($fixQuantities) {
             $updated = DB::table('bedard_shop_cart_items AS item')
                 ->join('bedard_shop_inventories AS inventory', 'item.inventory_id', '=', 'inventory.id')
                 ->where('item.quantity', '>', DB::raw('`inventory`.`quantity`'))
@@ -72,7 +72,7 @@ class Cart extends Model
             }
         }
 
-        return $validQuantities;
+        return $fixQuantities;
     }
 
     /**

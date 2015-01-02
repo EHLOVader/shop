@@ -143,6 +143,8 @@ class Plugin extends PluginBase
             'Bedard\Shop\Components\Cart'           => 'shopCart',
             'Bedard\Shop\Components\Categories'     => 'shopCategories',
             'Bedard\Shop\Components\Category'       => 'shopCategory',
+            'Bedard\Shop\Components\PaypalCallback' => 'shopPaypalCallback',
+            'Bedard\Shop\Components\PaypalCheckout' => 'shopPaypalCheckout', 
             'Bedard\Shop\Components\Product'        => 'shopProduct'
         ];
     }
