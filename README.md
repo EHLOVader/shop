@@ -18,10 +18,6 @@ Products may contain multiple inventories, to manage them click the link in the 
 
 Inventories may be re-ordered by clicking the "move" handle, and dragging the inventory to a new position. To automatically hide out of stock inventories, set the "Out of Stock Inventories" field to "Hidden" in the Settings area.
 
-To do list...
-
-- Allow for "groups" of inventories belonging to a single product (For example, a product may come in many sizes, but also many colors...)
-
 
 #### Categories
 There are two *pseudo categories* that come with this plugin called "All" and "Sale". They behave like normal categories, but you may not add products directly to them, or delete them. All other category actions such as re-naming them or arranging their products are still available.
