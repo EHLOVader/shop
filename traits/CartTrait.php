@@ -64,6 +64,14 @@ trait CartTrait
         }
 
         // Refresh the cookie
+        $this->refreshCartCookie();
+    }
+
+    /**
+     * Refresh the cart cookie
+     */
+    private function refreshCartCookie()
+    {
         if ($this->cart) {
             Cookie::queue('bedard_shop_cart', [
                 'id'    => $this->cart->id,
