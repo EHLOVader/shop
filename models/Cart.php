@@ -78,7 +78,7 @@ class Cart extends Model
     public function getTotalAttribute()
     {
         $total = $this->totalBeforeCoupon;
-        if ($this->coupon && $this->coupon->cart_value <= $total) {
+        if (!is_null($this->attributes['coupon_id']) && $this->coupon && $this->coupon->cart_value <= $total) {
             $total -= $this->coupon->is_percentage
                 ? $total * ($this->coupon->amount / 100)
                 : $this->coupon->amount;
