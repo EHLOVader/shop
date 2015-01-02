@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use DB;
 use Model;
 
 /**
@@ -39,6 +40,39 @@ class Cart extends Model
     public function scopeIsComplete($query)
     {
         $query->where('transaction_id', '<>', NULL);
+    }
+
+    /**
+     * Ensures that cart quantities do not exceed their available inventories
+     * @return  boolean
+     */
+    public function validateItemQuantities()
+    {
+        // Check if any inventories were invalid
+        $validQuantities = TRUE;
+        foreach ($this->items as $item) {
+            if ($item->quantity > $item->inventory->quantity) {
+                $validQuantities = FALSE;
+            }
+        }
+
+        // Run a query to fix invalid quantities
+        if (!$validQuantities) {
+            $updated = DB::table('bedard_shop_cart_items AS item')
+                ->join('bedard_shop_inventories AS inventory', 'item.inventory_id', '=', 'inventory.id')
+                ->where('item.quantity', '>', DB::raw('`inventory`.`quantity`'))
+                ->where('item.cart_id', '=', $this->id)
+                ->update(['item.quantity' => DB::raw('`inventory`.`quantity`')]);
+
+            // If anything was changed, update the relationship
+            if ($updated > 0) {
+                $this->load(['items' => function($cartItem) {
+                    $cartItem->inCart();
+                }]);
+            }
+        }
+
+        return $validQuantities;
     }
 
     /**
