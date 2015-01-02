@@ -218,13 +218,13 @@ class Cart extends ComponentBase
         $this->cart->push();
 
         // Validate the item quantities
-        $invalidQuantities = $this->cart->validateItemQuantities();
+        $fixedQuantities = $this->cart->fixQuantities();
 
         // Save and refresh the cart, then send back a success message
         $this->loadCart(TRUE);
         $this->storeCartValues();
-        return $invalidQuantities
-            ? $this->response('Invalid quantities', FALSE)
+        return $fixedQuantities
+            ? $this->response('Fixed quantities', FALSE)
             : $this->response('Cart updated');
     }
 
