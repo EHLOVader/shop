@@ -13,7 +13,7 @@ class CreateTransactionsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('customer_id')->nullable()->unsigned();
-            $table->string('processor')->nullable();
+            $table->string('service')->nullable();
             $table->string('payment_id')->nullable()->nullable();
             $table->string('payment_code')->nullable()->nullable();
             $table->string('hash')->nullable();
