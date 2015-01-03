@@ -59,6 +59,16 @@ class Inventory extends Model
     }
 
     /**
+     * Prevents quantities from being set below zero
+     */
+    public function setQuantityAttribute($quantity)
+    {
+        $this->attributes['quantity'] = $quantity > 0
+            ? $quantity
+            : 0;
+    }
+
+    /**
      * Returns true if the inventory is in stock
      * @return  boolean
      */
