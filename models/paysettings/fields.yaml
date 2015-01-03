@@ -22,3 +22,12 @@ fields:
     paypal_secret:
         label: PayPal Secret
         span: right
+
+    paypal_mode:
+        label: PayPal Mode
+        span: left
+        type: dropdown
+        options:
+            live: Live
+            sandbox: Sandbox
+        default: life

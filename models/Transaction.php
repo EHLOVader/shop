@@ -21,7 +21,7 @@ class Transaction extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = ['service', 'payment_code', 'payment_id', 'hash'];
 
     /**
      * @var array Relations

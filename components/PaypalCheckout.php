@@ -1,20 +1,10 @@
 <?php namespace Bedard\Shop\Components;
 
+use Bedard\Shop\Classes\Paypal;
 use Bedard\Shop\Models\PaySettings;
-use Bedard\Shop\Models\Transaction as TransactionModel;
+use Bedard\Shop\Models\Transaction;
 use Cms\Classes\ComponentBase;
 use Exception;
-use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Api\Payer;
-use PayPal\Api\Details;
-use PayPal\Api\Amount;
-use PayPal\Api\Item;
-use PayPal\Api\ItemList;
-use PayPal\Api\Transaction;
-use PayPal\Api\Payment;
-use PayPal\Api\RedirectUrls;
-use PayPal\Exception\PPConnectionException;
 use Redirect;
 use Session;
 
@@ -111,112 +101,32 @@ class PaypalCheckout extends ComponentBase
         if ($this->cart->fixQuantities())
             return $this->response('Fixed quantities', FALSE);
 
-        // Set up the PayPal API
-        $api = new ApiContext(
-            new OAuthTokenCredential(
-                PaySettings::get('paypal_client_id'),
-                PaySettings::get('paypal_secret')
-            )
-        );
-        $api->setConfig([
-            'mode'                  => $this->property('api_mode'),
-            'http.ConnectionTimeOut'=> 30,
-            'log.logEnabled'        => FALSE,
-            'log.FileName'          => '',
-            'log.LogLevel'          => 'FINE',
-            'validation.level'      => 'log'
+        // Set up the PayPal API and cart
+        $paypal = new Paypal;
+        $paypal->createNewCart($this->cart);
+
+        // Set the callbacks
+        $paypal->setCallbackUrls([
+            'success'   => $this->property('callback_success'),
+            'canceled'  => $this->property('callback_canceled'),
+            'failed'    => $this->property('callback_failed'),
         ]);
 
-        // Start building up our conversation with PayPal
-        $payer          = new Payer();
-        $details        = new Details();
-        $amount         = new Amount();
-        $itemList       = new ItemList();
-        $transaction    = new Transaction();
-        $payment        = new Payment();
-        $redirectUrls   = new RedirectUrls();
+        // Load the checkout ID and url
+        $checkout = $paypal->checkout();
 
-        // Payer
-        $payer->setPayment_method('paypal');
-
-        // Details
-        $details
-            //->setShipping(0)
-            ->setTax('0.00')
-            ->setSubtotal($this->cart->total);
-
-        // Amount
-        $currency = strtoupper(PaySettings::get('currency'));
-        $amount->setCurrency($currency)
-            ->setTotal($this->cart->total)
-            ->setDetails($details);
-
-        // Item List
-        $items = [];
-        foreach ($this->cart->items as $cartItem) {
-            $item = new Item();
-            $item->setName($cartItem->productName)
-                ->setDescription($cartItem->inventoryName)
-                ->setCurrency($currency)
-                ->setQuantity($cartItem->quantity)
-                ->setPrice($cartItem->price);
-            $items[] = $item;
-        }
-
-
-        // Coupon
-        if (!is_null($this->cart->coupon_id) && $this->cart->coupon) {
-            $couponSavings = ($this->cart->totalBeforeCoupon - $this->cart->total) * -1;
-            $item = new Item();
-            $item->setName('Coupon "'.$this->cart->coupon->name.'"')
-                 ->setCurrency($currency)
-                 ->setQuantity(1)
-                 ->setPrice($couponSavings);
-            $items[] = $item;
-        }
-
-        $itemList->setItems($items);
-
-        // Transaction
-        $transaction->setAmount($amount)
-            ->setItemList($itemList)
-            ->setDescription('Checkout');
-
-        // Payment
-        $payment->setIntent('sale')
-            ->setPayer($payer)
-            ->setTransactions([$transaction]);
-
-        // Redirect Urls
-        $redirectUrls->setReturnUrl($this->property('callback_success'))
-            ->setCancelUrl($this->property('callback_canceled'));
-
-        $payment->setRedirectUrls($redirectUrls);
-
-        // Run the payment
-        try {
-            $payment->create($api);
-
-            // Generate a hash and store the transaction
-            $hash = md5($payment->getId());
+        // If everything worked out, store a hash in the database
+        if ($checkout['id']) {
+            $hash = md5($checkout['id']);
             Session::put('bedard_shop_paypal_hash', $hash);
-            $receipt = TransactionModel::create([
+            $receipt = Transaction::create([
                 'service'   => 'paypal',
-                'payment_id'=> $payment->getId(),
+                'payment_id'=> $checkout['id'],
                 'hash'      => $hash
             ]);
-
-        } catch (PPConnectionException $e) {
-            // Log the error?
-            return Redirect::to($this->property('callback_error'));
         }
 
-        // Send the user off to PayPal to make the payment
-        foreach ($payment->getLinks() as $link) {
-            if ($link->getRel() == 'approval_url')
-                return Redirect::to($link->getHref());
-        }
-
+        return Redirect::to($checkout['url']);
     }
 
 }

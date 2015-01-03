@@ -1,19 +1,16 @@
 <?php namespace Bedard\Shop\Components;
 
+use Bedard\Shop\Models\Transaction;
+use Bedard\Shop\Classes\Paypal;
 use Cms\Classes\ComponentBase;
-
-use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Api\Payment;
-use PayPal\Api\PaymentExecution;
-use PayPal\Exception\PPConnectionException;
-
 use Cookie;
 use Input;
 use Session;
 
 class PaypalCallback extends ComponentBase
 {
+    use \Bedard\Shop\Traits\AjaxResponderTrait;
+    use \Bedard\Shop\Traits\CartTrait;
 
     /**
      * Component Details
@@ -71,8 +68,21 @@ class PaypalCallback extends ComponentBase
     private function processSuccess()
     {
         $payerId = Input::get('PayerID');
+        $transaction = Transaction::where('payment_id', Input::get('paymentId'))
+            ->where('hash', Session::get('bedard_shop_paypal_hash'))
+            ->where('is_complete', FALSE)
+            ->first();
+        if (!$payerId || !$transaction)
+            return $this->response('Transaction not found', FALSE);
 
-        var_dump ($payerId);
+        // Load the cart with it's relationships
+        $this->loadCart(TRUE);
+        if (!$this->cart)
+            return $this->response('Cart not found', FALSE);
+
+        // Set up the API, and execute the payment
+        $paypal = new Paypal;
+        $paypal->executePayment($payerId, $transaction['payment_id']);
     }
 
     /**
