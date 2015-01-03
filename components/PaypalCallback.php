@@ -1,6 +1,8 @@
 <?php namespace Bedard\Shop\Components;
 
+use Bedard\Shop\Models\Customer;
 use Bedard\Shop\Models\Transaction;
+use Bedard\Shop\Classes\PaymentException;
 use Bedard\Shop\Classes\Paypal;
 use Cms\Classes\ComponentBase;
 use Cookie;
@@ -11,6 +13,12 @@ class PaypalCallback extends ComponentBase
 {
     use \Bedard\Shop\Traits\AjaxResponderTrait;
     use \Bedard\Shop\Traits\CartTrait;
+
+    /**
+     * Status variable for the order being successfully completed
+     * @var boolean
+     */
+    public $completed = FALSE;
 
     /**
      * Component Details
@@ -67,22 +75,40 @@ class PaypalCallback extends ComponentBase
      */
     private function processSuccess()
     {
+        // Grab our transaction details
         $payerId = Input::get('PayerID');
         $transaction = Transaction::where('payment_id', Input::get('paymentId'))
             ->where('hash', Session::get('bedard_shop_paypal_hash'))
             ->where('is_complete', FALSE)
             ->first();
         if (!$payerId || !$transaction)
-            return $this->response('Transaction not found', FALSE);
+            return $this->processFailed('Invalid response from PayPal.');
 
-        // Load the cart with it's relationships
+        // Load the cart being completed, along with it's relationships
         $this->loadCart(TRUE);
         if (!$this->cart)
-            return $this->response('Cart not found', FALSE);
+            return $this->processFailed('Cart not found.');
 
         // Set up the API, and execute the payment
-        $paypal = new Paypal;
-        $paypal->executePayment($payerId, $transaction['payment_id']);
+        try {
+            $paypal = new Paypal;
+            $paypal->executePayment($payerId, $transaction['payment_id']);
+        }
+        catch (PaymentException $e) {
+            return $this->processFailed('Failed to execute payment with PayPal.');
+        }
+
+        // First or Create the customer
+        // $customer = Customer::firstOrCreate([
+        //     'first_name' => $paypal->response->payer->payer_info->first_name,
+        //     'last_name' => $paypal->response->payer->payer_info->last_name,
+        //     'email' => $paypal->response->payer->payer_info->email
+        // ]);
+
+        // Complete the shopping cart
+        $this->cart->complete($transaction);
+        $this->completed = TRUE;
+        // Unset the cart component?
     }
 
     /**
@@ -90,15 +116,16 @@ class PaypalCallback extends ComponentBase
      */
     private function processCanceled()
     {
-        // Nothing for now
+        // Re-activate the cart
     }
 
     /**
      * Process failed callbacks
      */
-    private function processFailed()
+    private function processFailed($reason)
     {
-        var_dump ('failed');
+        // Log the failure
+        var_dump ('failed - '.$reason);
     }
 
 }

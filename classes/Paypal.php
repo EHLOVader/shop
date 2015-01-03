@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Classes;
 
+use Bedard\Shop\Classes\PaymentException;
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\PaySettings;
 
@@ -52,6 +53,11 @@ class Paypal
      * @var array   [ success, canceled, failed ]
      */
     public $callbackUrls;
+
+    /**
+     * Payment Response
+     */
+    public $response;
 
     /**
      * @var string
@@ -161,9 +167,9 @@ class Paypal
         $execution->setPayerId($payerId);
 
         try {
-            $response = $payment->execute($execution, $this->api);
+            $this->response = $payment->execute($execution, $this->api);
         } catch (PPConnectionException $e) {
-            // Log the payment error
+            throw new PaymentException($e->getMessage());
         }
     }
 
