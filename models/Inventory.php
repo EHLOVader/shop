@@ -92,6 +92,6 @@ class Inventory extends Model
      */
     public function getPriceAttribute()
     {
-        return $this->product->fullPrice + $this->attributes['modifier'];
+        return $this->product->price + $this->attributes['modifier'];
     }
 }
