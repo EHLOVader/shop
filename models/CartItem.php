@@ -47,7 +47,7 @@ class CartItem extends Model
      */
     public function getFullPriceAttribute()
     {
-        return number_format($this->inventory->fullPrice, 2);
+        return $this->inventory->fullPrice;
     }
 
     /**
