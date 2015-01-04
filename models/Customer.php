@@ -21,7 +21,7 @@ class Customer extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = ['first_name', 'last_name', 'email'];
 
     /**
      * @var array Relations

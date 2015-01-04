@@ -97,13 +97,13 @@ class PaypalCallback extends ComponentBase
         catch (PaymentException $e) {
             return $this->processFailed('Failed to execute payment with PayPal.');
         }
-
+        
         // First or Create the customer
-        // $customer = Customer::firstOrCreate([
-        //     'first_name' => $paypal->response->payer->payer_info->first_name,
-        //     'last_name' => $paypal->response->payer->payer_info->last_name,
-        //     'email' => $paypal->response->payer->payer_info->email
-        // ]);
+        $customer = Customer::firstOrCreate([
+            'first_name' => $paypal->response->payer->payer_info->first_name,
+            'last_name' => $paypal->response->payer->payer_info->last_name,
+            'email' => $paypal->response->payer->payer_info->email
+        ]);
 
         // Complete the shopping cart
         $this->cart->complete($transaction);
