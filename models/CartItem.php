@@ -32,6 +32,12 @@ class CartItem extends Model
     ];
 
     /**
+     * Jsonable backup fields
+     * These fields exist so we can view cart items "at the time of sale".
+     */
+     protected $jsonable = ['backup_inventory', 'backup_product'];
+
+    /**
      * Query Scopes
      */
     public function scopeInCart($query)

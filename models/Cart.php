@@ -81,9 +81,14 @@ class Cart extends Model
      */
     public function complete(Transaction $transaction)
     {
-        // Update item inventories
         foreach ($this->items as $item) {
+            // Update the inventory quantity
             $item->inventory->quantity -= $item->quantity;
+            $item->inventory->save();
+
+            // Backup the cart item
+            $item->backup_product = $item->inventory->product->toArray();
+            $item->backup_inventory = $item->inventory->toArray();
             $item->save();
         }
 
