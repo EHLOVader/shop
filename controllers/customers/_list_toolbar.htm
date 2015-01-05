@@ -1,3 +1,32 @@
 <div data-control="toolbar">
-    <a href="<?= Backend::url('bedard/shop/customers/create') ?>" class="btn btn-primary oc-icon-plus">New Customer</a>
+
+    <div class="scoreboard">
+        <div data-control="toolbar">
+            <div class="scoreboard-item control-chart" data-control="chart-pie">
+                <ul>
+                    <li data-color="#95b753">Repeat Customers <span><?= $repeatCustomers ?></span></li>
+                    <li data-color="#e5a91a">New Customers <span><?= $newCustomers ?></span></li>
+                </ul>
+            </div>
+
+            <div class="scoreboard-item title-value">
+                <h4>Repeat Customers This Month</h4>
+                <p class="<?= $customersClass ?>"><?= $customersCurrent ?></p>
+                <p class="description">previous month: <?= $customersPrevious ?></p>
+            </div>
+
+            <div class="scoreboard-item title-value">
+                <h4>New Customers This Month</h4>
+                <p class="<?= $newCustomersClass ?>"><?= $newCustomersCurrent ?></p>
+                <p class="description">previous month: <?= $newCustomersPrevious ?></p>
+            </div>
+
+            <div class="scoreboard-item title-value">
+                <h4>Total Customers</h4>
+                <p><?= $totalCustomers ?></p>
+            </div>
+
+        </div>
+    </div>
+    
 </div>

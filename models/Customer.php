@@ -27,7 +27,9 @@ class Customer extends Model
      * @var array Relations
      */
     public $hasOne = [];
-    public $hasMany = [];
+    public $hasMany = [
+        'transactions' => ['Bedard\Shop\Models\Transaction', 'table' => 'bedard_shop_transactions', 'scope' => 'isComplete']
+    ];
     public $belongsTo = [];
     public $belongsToMany = [];
     public $morphTo = [];

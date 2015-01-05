@@ -3,6 +3,34 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
+
+    name:
+        label: Name
+        select: concat(first_name, ' ', last_name)
         searchable: true
+
+    email:
+        label: Email
+        searchable: true
+
+    order_count:
+        label: Orders
+        select: (SELECT count(*) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id)
+
+    order_average:
+        label: Average Order
+        select: FORMAT((SELECT AVG(amount) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id), 2)
+
+    order_total:
+        label: Total Orders
+        select: FORMAT((SELECT SUM(amount) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id), 2)
+
+    updated_at:
+        label: Last Order
+        type: timesince
+
+    created_at:
+        label: Customer Since
+        type: partial
+        path: @/plugins/bedard/shop/models/customer/_created.htm
+        searchable: false
