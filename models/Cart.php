@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Models\Customer;
 use Bedard\Shop\Models\Transaction;
 use DB;
 use Model;
@@ -79,7 +80,7 @@ class Cart extends Model
     /**
      * Marks a shopping cart as complete, and updates item inventories
      */
-    public function complete(Transaction $transaction)
+    public function complete(Transaction $transaction, Customer $customer)
     {
         foreach ($this->items as $item) {
             // Update the inventory quantity
@@ -94,6 +95,8 @@ class Cart extends Model
 
         // Update the transaction
         $transaction->amount = $this->total;
+        $transaction->customer_id = $customer->id;
+        $transaction->is_complete = TRUE;
         $transaction->save();
 
         // Attach the transaction
