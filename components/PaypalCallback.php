@@ -106,7 +106,7 @@ class PaypalCallback extends ComponentBase
         ]);
 
         // Complete the shopping cart
-        $this->cart->complete($transaction);
+        $this->cart->complete($transaction, $customer);
         $this->completed = TRUE;
         // Unset the cart component?
     }
