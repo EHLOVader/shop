@@ -26,17 +26,12 @@ class Transaction extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [];
-    public $hasMany = [];
     public $belongsTo = [
         'customer' => ['Bedard\Shop\Models\Customer', 'table' => 'bedard_shop_customers']
     ];
-    public $belongsToMany = [];
-    public $morphTo = [];
-    public $morphOne = [];
-    public $morphMany = [];
-    public $attachOne = [];
-    public $attachMany = [];
+    public $hasOne = [
+        'cart' => ['Bedard\Shop\Models\Cart', 'table' => 'bedard_shop_carts']
+    ];
 
     /**
      * Query Scopes
@@ -45,5 +40,23 @@ class Transaction extends Model
     {
         // Returns only transactions that have been completed
         $query->where('is_complete', TRUE);
+    }
+
+    /**
+     * Returns the customer's email address
+     * @return  string
+     */
+    public function getCustomerEmailAttribute()
+    {
+        return $this->customer->email;
+    }
+
+    /**
+     * Returns the customer's full name
+     * @return  string
+     */
+    public function getCustomerNameAttribute()
+    {
+        return $this->customer->first_name.' '.$this->customer->last_name;
     }
 }
