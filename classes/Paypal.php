@@ -224,7 +224,7 @@ class Paypal
         }
 
         // Add the coupon as an item
-        if (!is_null($this->cart->coupon_id) && $this->cart->coupon) {
+        if (!is_null($this->cart->coupon_id) && $this->cart->couponIsApplied) {
             $couponSavings = ($this->cart->totalBeforeCoupon - $this->cart->total) * -1;
 
             $item = new Item();

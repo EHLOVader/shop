@@ -99,8 +99,10 @@ class Cart extends Model
         $transaction->is_complete = TRUE;
         $transaction->save();
 
-        // Attach the transaction
+        // Attach the transaction and see if a coupon can be used
         $this->transaction_id = $transaction->id;
+        if (!$this->couponIsApplied)
+            $this->coupon_id = NULL;
         $this->save();
     }
 
@@ -147,7 +149,7 @@ class Cart extends Model
                 : $this->coupon->amount;
             if ($total < 0) $total = 0;
         }
-        return $total;
+        return round($total, 2);
     }
 
     /**
