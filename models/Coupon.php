@@ -148,7 +148,7 @@ class Coupon extends Model
      */
     public function getUsesAttribute()
     {
-        return 0;
+        return count($this->carts);
     }
 
 }
