@@ -105,6 +105,9 @@ class PaypalCallback extends ComponentBase
             'email' => $paypal->response->payer->payer_info->email
         ]);
 
+        // Save the shipping info
+        $transaction->shipping_address = $paypal->shipping_address;
+
         // Complete the shopping cart
         $this->cart->complete($transaction, $customer);
         $this->completed = TRUE;
@@ -122,7 +125,7 @@ class PaypalCallback extends ComponentBase
     /**
      * Process failed callbacks
      */
-    private function processFailed($reason)
+    private function processFailed($reason = 'Unknown')
     {
         // Log the failure
         var_dump ('failed - '.$reason);

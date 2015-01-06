@@ -60,6 +60,11 @@ class Paypal
     public $response;
 
     /**
+     * The user's shipping address
+     */
+    public $shipping_address;
+
+    /**
      * @var string
      */
     public $currency;
@@ -171,6 +176,9 @@ class Paypal
         } catch (PPConnectionException $e) {
             throw new PaymentException($e->getMessage());
         }
+
+        // Store the user's shipping details
+        $this->shipping_address =  $this->response->payer->payer_info->shipping_address->toArray();
     }
 
     /**

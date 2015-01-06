@@ -34,6 +34,11 @@ class Transaction extends Model
     ];
 
     /**
+     * Jsonable shipping address
+     */
+    public $jsonable = ['shipping_address'];
+
+    /**
      * Query Scopes
      */
     public function scopeIsComplete($query)
