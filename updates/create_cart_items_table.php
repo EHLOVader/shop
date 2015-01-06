@@ -16,7 +16,8 @@ class CreateCartItemsTable extends Migration
             $table->foreign('cart_id')->references('id')->on('bedard_shop_carts')->onDelete('cascade');
             $table->integer('inventory_id')->nullable()->unsigned();
             $table->integer('quantity')->unsigned();
-            $table->decimal('backup_price', 10, 2)->unsigned();
+            $table->decimal('backup_price', 10, 2)->nullable()->unsigned();
+            $table->decimal('backup_full_price', 10, 2)->nullable()->unsigned();
             $table->string('backup_inventory')->nullable();
             $table->string('backup_product')->nullable();
             $table->timestamps();

@@ -41,7 +41,7 @@ class Cart extends Model
      */
     public function scopeIsComplete($query)
     {
-        $query->where('transaction_id', '<>', NULL);
+        $query->whereNotNull('transaction_id');
     }
 
     /**
@@ -90,6 +90,8 @@ class Cart extends Model
             // Backup the cart item
             $item->backup_product = $item->inventory->product->toArray();
             $item->backup_inventory = $item->inventory->toArray();
+            $item->backup_price = $item->price;
+            $item->backup_full_price = $item->fullPrice;
             $item->save();
         }
 

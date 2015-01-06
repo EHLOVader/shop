@@ -35,7 +35,7 @@ class CartItem extends Model
      * Jsonable backup fields
      * These fields exist so we can view cart items "at the time of sale".
      */
-     protected $jsonable = ['backup_inventory', 'backup_product'];
+    protected $jsonable = ['backup_inventory', 'backup_product'];
 
     /**
      * Query Scopes
@@ -53,7 +53,9 @@ class CartItem extends Model
      */
     public function getFullPriceAttribute()
     {
-        return $this->inventory->fullPrice;
+        return !is_null($this->backup_full_price)
+            ? $this->backup_full_price
+            : $this->inventory->fullPrice;
     }
 
     /**
@@ -95,7 +97,9 @@ class CartItem extends Model
      */
     public function getPriceAttribute()
     {
-        return $this->inventory->price;
+        return !is_null($this->backup_price)
+            ? $this->backup_price
+            : $this->inventory->price;
     }
 
     /**
