@@ -22,6 +22,8 @@ columns:
     amount:
         label: Amount
         select: (SELECT amount FROM bedard_shop_carts WHERE transaction_id = bedard_shop_transactions.id LIMIT 1)
+        type: partial
+        path: @/plugins/bedard/shop/models/transaction/_total.htm
 
     coupon:
         label: Coupon
@@ -30,3 +32,5 @@ columns:
 
     payment:
         label: Payment
+        type: partial
+        path: @/plugins/bedard/shop/models/transaction/_payment.htm

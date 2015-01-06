@@ -28,7 +28,7 @@ class Customers extends Controller
         $this->addCss('/plugins/bedard/shop/assets/css/backend.css');
 
         // Load currency
-        $this->vars['currency'] = PaySettings::get('currency');
+        $this->vars['currency'] = PaySettings::get('currency_symbol');
     }
 
     /**

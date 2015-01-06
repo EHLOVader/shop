@@ -35,7 +35,7 @@ class Discounts extends Controller
      */
     public function index()
     {
-        $this->vars['currency'] = PaySettings::get('currency');
+        $this->vars['currency'] = PaySettings::get('currency_symbol');
         $this->asExtension('ListController')->index();
     }
 

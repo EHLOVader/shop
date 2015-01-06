@@ -1,8 +1,12 @@
 <?php
-$symbol = isset($currency)
-    ? '<i class="currency-icon icon-'.$currency.'"></i>'
-    : '';
+$price = isset($currency)
+    ? $currency.number_format($record->price, 2)
+    : number_format($record->price, 2);
+
+$fullPrice = isset($currency)
+    ? $currency.number_format($record->full_price, 2)
+    : number_format($record->full_price, 2);
 
 echo $record->is_discounted
-    ? '<span data-tooltip="'.$record->full_price.'" class="discounted-price">'.$symbol.$record->price.'</span>'
-    : $symbol.$record->price;
+    ? '<span data-tooltip="'.$fullPrice.'" class="discounted-price">'.$price.'</span>'
+    : $price;

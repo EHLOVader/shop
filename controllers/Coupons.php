@@ -35,7 +35,7 @@ class Coupons extends Controller
      */
     public function index()
     {
-        $this->vars['currency'] = PaySettings::get('currency');
+        $this->vars['currency'] = PaySettings::get('currency_symbol');
         $this->asExtension('ListController')->index();
     }
 
@@ -44,7 +44,7 @@ class Coupons extends Controller
      */
     public function listExtendQuery($query, $definition = null)
     {
-        //$query->with('carts');
+        $query->with('carts');
     }
 
     /**
