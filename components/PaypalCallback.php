@@ -105,8 +105,9 @@ class PaypalCallback extends ComponentBase
             'email' => $paypal->response->payer->payer_info->email
         ]);
 
-        // Save the shipping info
+        // Save the shipping info and payment code
         $transaction->shipping_address = $paypal->shipping_address;
+        $transaction->payment_code = $paypal->payment_code;
 
         // Complete the shopping cart
         $this->cart->complete($transaction, $customer);

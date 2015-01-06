@@ -1,0 +1,99 @@
+<div class="control-breadcrumb">
+    <ul>
+        <li><a href="<?= Backend::url('bedard/shop/transactions'); ?>">Orders</a></li>
+        <?php
+        echo (isset($transaction->id))
+            ? '<li><a href="'.Backend::url('bedard/shop/transactions/details/'.$transaction->id).'">Order #'.$transaction->id.'</a></li>'
+            : '<li>Unknown order</li>';
+        ?>
+    </ul>
+</div>
+
+<?php if (!$this->fatalError): ?>
+
+    <div class="transaction">
+        <h3>Order #<?= $transaction->id ?></h3>
+        <table class="details">
+            <tr>
+                <td>Customer</td>
+                <td><?= $transaction->customer->first_name.' '.$transaction->customer->last_name ?></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><?= $transaction->customer->email ?></td>
+            </tr>
+            <tr>
+                <td>Amount</td>
+                <td><?= $currency.$transaction->amount ?></td>
+            </tr>
+            <tr>
+                <td>Payment</td>
+                <td>
+                    <?php
+                    if ($transaction->service == 'paypal') {
+                        ?>
+                        <a href="https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=<?= $transaction->payment_code ?>">
+                            <i class="payment-icon icon-cc-paypal"></i><?= $transaction->payment_code ?>
+                        </a>
+                        <?php
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>
+                    <div><?= $transaction->shipping_address['recipient_name'] ?></div>
+                    <?php if (isset($transaction->shipping_address['line1'])) echo '<div>'.$transaction->shipping_address['line1'].'</div>'; ?>
+                    <?php if (isset($transaction->shipping_address['line2'])) echo '<div>'.$transaction->shipping_address['line2'].'</div>'; ?>
+                    <div>
+                        <?php if (isset($transaction->shipping_address['city'])) echo $transaction->shipping_address['city']; ?>
+                        <?php if (isset($transaction->shipping_address['state'])) echo $transaction->shipping_address['state']; ?>,
+                        <?php if (isset($transaction->shipping_address['postal_code'])) echo $transaction->shipping_address['postal_code']; ?>
+                    </div>
+                    <?php if (isset($transaction->shipping_address['country_code']))
+                        echo '<div>'.$transaction->shipping_address['country_code'].'</div>'; ?>
+                </td>
+            </tr>
+        </table>
+
+        <h3>Purchased Items</h3>
+        <table class="items">
+            <tr>
+                <th>Product</th>
+                <th>Inventory</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            <?php
+            foreach ($transaction->cart->items as $item) {
+                if ($item->quantity == 0) continue;
+                ?>
+                <tr>
+                    <td><?= $item->productName ?></td>
+                    <td><?= $item->inventoryName ?></td>
+                    <td>
+                        <?php
+                        if ($item->isDiscounted) {
+                            echo '<strike>'.$currency.number_format($item->full_price, 2).'</strike>&nbsp;'.
+                                 '<span class="green">'.$currency.number_format($item->price, 2).'</span>';
+                        } else {
+                            echo $currency.number_format($item->price, 2);
+                        }
+                        ?>
+                    </td>
+                    <td><?= $item->quantity ?></td>
+                </tr>
+                <?php
+            }
+            ?>
+        </table>
+
+    </div>
+
+<?php else: ?>
+    <div class="inventory-control">
+        <p class="flash-message static error"><?= e($this->fatalError) ?></p>
+        <p><a href="<?= Backend::url('bedard/shop/transactions') ?>" class="btn btn-default">Return to orders list</a></p>
+    </div>
+<?php endif ?>

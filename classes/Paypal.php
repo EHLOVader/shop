@@ -60,6 +60,11 @@ class Paypal
     public $response;
 
     /**
+     * Payment Code
+     */
+    public $payment_code;
+
+    /**
      * The user's shipping address
      */
     public $shipping_address;
@@ -175,6 +180,15 @@ class Paypal
             $this->response = $payment->execute($execution, $this->api);
         } catch (PPConnectionException $e) {
             throw new PaymentException($e->getMessage());
+        }
+
+        // Capture the transaction ID
+        foreach ($payment->transactions as $ppTransaction) {
+            foreach ($ppTransaction->getRelatedResources() as $resource) {
+                $this->payment_code = $resource->sale->id;
+                break;
+            }
+            break;
         }
 
         // Store the user's shipping details

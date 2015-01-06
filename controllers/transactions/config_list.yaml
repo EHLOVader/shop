@@ -12,7 +12,7 @@ modelClass: Bedard\Shop\Models\Transaction
 title: Manage Transactions
 
 # Link URL for each record
-recordUrl: bedard/shop/transactions/update/:id
+recordUrl: bedard/shop/transactions/details/:id
 
 # Message to display if the list is empty
 noRecordsMessage: backend::lang.list.no_records
