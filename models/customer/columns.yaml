@@ -19,13 +19,13 @@ columns:
 
     order_average:
         label: Average Order
-        select: FORMAT((SELECT AVG(amount) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id), 2)
+        select: (SELECT AVG(amount) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id)
         type: partial
         path: @/plugins/bedard/shop/models/customer/_average.htm
 
     order_total:
         label: Total Orders
-        select: FORMAT((SELECT SUM(amount) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id), 2)
+        select: (SELECT SUM(amount) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id)
         type: partial
         path: @/plugins/bedard/shop/models/customer/_total.htm
 
