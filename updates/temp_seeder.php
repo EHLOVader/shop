@@ -9,6 +9,11 @@ use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Coupon;
 
+use Bedard\Shop\Models\Cart;
+use Bedard\Shop\Models\CartItem;
+use Bedard\Shop\Models\Transaction;
+use Bedard\Shop\Models\Customer;
+
 class TempSeeder extends Seeder {
 
     public function run()
@@ -138,6 +143,47 @@ class TempSeeder extends Seeder {
         
         // Enable foreign keys
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        /**
+         * Mock carts
+         */
+        $fnames = ['John', 'Mary', 'Alex', 'Mark', 'Sally'];
+        $lnames = ['Smith', 'Johnson', 'Jones', 'Doe'];
+        for ($i = 0; $i < 15; $i++) {
+            $cart = Cart::create([]);
+            $inventories = [];
+            for ($j = 0; $j < rand(5, 15); $j++) $inventories[] = rand(1, 95);
+            foreach ($inventories as $inventory) {
+                $item = CartItem::firstOrCreate([
+                    'cart_id' => $cart->id,
+                    'inventory_id' => $inventory,
+                    'quantity' => rand(1, 2)
+                ]);
+            }
+            $first = $fnames[rand(0, 4)];
+            $last = $lnames[rand(0,3)];
+            $customer = Customer::firstOrCreate([
+                'first_name' => $first,
+                'last_name' => $last,
+                'email' => strtolower("$first.$last@example.com")
+            ]);
+            $transaction = Transaction::create([]);
+            $cart->complete($transaction, $customer);
+
+            $transaction->shipping_address = [
+                'recipient_name' => "$first $last",
+                'line1' => '123 Foo Street',
+                'city' => 'Beverly Hills',
+                'state' => 'CA',
+                'postal_code' => '90210',
+                'country_code' => 'US'
+            ];
+            $transaction->payment_id = '12345';
+            $transaction->service = 'paypal';
+            $transaction->payment_code = 'FAKE-PAYPAL-ID';
+            $transaction->save();
+        }
+        
     }
 
 }
