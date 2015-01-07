@@ -1,7 +1,5 @@
 # To Do List
 
-- PayPal payment processing
-
 - Stripe payment processing
 
 - Customer newsletter
