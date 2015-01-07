@@ -274,11 +274,13 @@ class Product extends Model
     }
 
     /**
-     * Helper assessor for full_price
+     * Helper assessor for full_price camel casing from components
      * @return  float
      */
     public function getFullPriceAttribute()
     {
-        return $this->attributes['full_price'];
+        return isset($this->attributes['full_price'])
+            ? $this->attributes['full_price']
+            : FALSE;
     }
 }

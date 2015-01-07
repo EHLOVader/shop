@@ -104,6 +104,7 @@ class Category extends ComponentBase
         // Load the category
         $category = CategoryModel::where('slug', $this->slug)
             ->with('products')
+            ->isActive()
             ->first();
 
         // Stop here if no category was found
