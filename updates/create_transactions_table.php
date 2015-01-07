@@ -19,7 +19,11 @@ class CreateTransactionsTable extends Migration
             $table->string('hash')->nullable();
             $table->decimal('amount', 10, 2)->unsigned();
             $table->text('shipping_address')->nullable();
-            $table->boolean('is_complete')->unsigned()->default(FALSE);
+            $table->string('shipping_courier')->nullable();
+            $table->string('shipping_method')->nullable();
+            $table->decimal('shipping_amount')->unsigned();
+            $table->timestamp('shipped')->nullable();
+            $table->boolean('is_complete')->unsigned();
             $table->timestamps();
         });
     }
