@@ -44,7 +44,7 @@ trait CartTrait
         // Load the cart with relationships
         if ($withRelationships) {
             $this->cart = CartModel::where('key', $this->cookie['key'])
-                ->whereNull('transaction_id')
+                ->whereNull('order_id')
                 ->with('items.inventory.product.discounts')
                 ->with('items.inventory.product.categories.discounts')
                 ->with(['items' => function($item) {
@@ -59,7 +59,7 @@ trait CartTrait
         // Load the cart without relationships
         else {
             $this->cart = CartModel::where('key', $this->cookie['key'])
-                ->whereNull('transaction_id')
+                ->whereNull('order_id')
                 ->find($this->cookie['id']);
         }
 

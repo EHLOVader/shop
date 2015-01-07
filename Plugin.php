@@ -32,17 +32,17 @@ class Plugin extends PluginBase
         return [
             'shop' => [
                 'label'         => 'Shop',
-                'url'           => Backend::url('bedard/shop/transactions'),
+                'url'           => Backend::url('bedard/shop/orders'),
                 'icon'          => 'icon-shopping-cart',
                 'permissions'   => ['bedard.shop.*'],
                 'order'         => 500,
 
                 'sideMenu' => [
-                    'transactions' => [
+                    'orders' => [
                         'label'         => 'Orders',
                         'icon'          => 'icon-clipboard',
-                        'url'           => Backend::url('bedard/shop/transactions'),
-                        'permissions'   => ['bedard.shop.access_transactions']
+                        'url'           => Backend::url('bedard/shop/orders'),
+                        'permissions'   => ['bedard.shop.access_orders']
                     ],
                     'customers' => [
                         'label'         => 'Customers',

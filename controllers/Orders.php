@@ -3,13 +3,13 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\PaySettings;
-use Bedard\Shop\Models\Transaction;
+use Bedard\Shop\Models\Order;
 use Flash;
 
 /**
- * Transactions Back-end Controller
+ * Orders Back-end Controller
  */
-class Transactions extends Controller
+class Orders extends Controller
 {
     public $implement = [
         'Backend.Behaviors.FormController',
@@ -20,20 +20,20 @@ class Transactions extends Controller
     public $listConfig = 'config_list.yaml';
 
     /**
-     * Transactions Constructor
+     * Orders Constructor
      */
     public function __construct()
     {
         parent::__construct();
-        BackendMenu::setContext('Bedard.Shop', 'shop', 'transactions');;
+        BackendMenu::setContext('Bedard.Shop', 'shop', 'orders');;
 
         $this->addCss('/plugins/bedard/shop/assets/css/backend.css');
-        $this->addCss('/plugins/bedard/shop/assets/css/transaction.css');
+        $this->addCss('/plugins/bedard/shop/assets/css/order.css');
         $this->vars['currency'] = PaySettings::get('currency_symbol');
     }
 
     /**
-     * Transactions Index
+     * Orders Index
      */
     public function index()
     {
@@ -52,19 +52,19 @@ class Transactions extends Controller
     }
 
     /**
-     * Transaction Details
-     * @param   integer $transaction_id
+     * Order Details
+     * @param   integer $order_id
      */
-    public function details( $transaction_id = 0 )
+    public function details( $order_id = 0 )
     {
         $this->pageTitle = 'Order Details';
 
-        $this->vars['transaction'] = Transaction::with('customer')
+        $this->vars['order'] = Order::with('customer')
             ->with('cart.items')
-            ->find($transaction_id);
+            ->find($order_id);
 
-        if (!$this->vars['transaction'])
-            $this->fatalError = 'A transaction with an ID of '.$transaction_id.' could not be found.';
+        if (!$this->vars['order'])
+            $this->fatalError = 'A order with an ID of '.$order_id.' could not be found.';
     }
 
     /**
@@ -75,7 +75,7 @@ class Transactions extends Controller
         $successful = TRUE;
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             foreach ($checkedIds as $recordId) {
-                if (!$record = Transaction::find($recordId)) continue;
+                if (!$record = Order::find($recordId)) continue;
                 if (!$record->touchShipped()) $successful = FALSE;
             }
         }

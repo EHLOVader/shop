@@ -3,16 +3,16 @@
 # ===================================
 
 # Model List Column configuration
-list: $/bedard/shop/models/transaction/columns.yaml
+list: $/bedard/shop/models/order/columns.yaml
 
 # Model Class name
-modelClass: Bedard\Shop\Models\Transaction
+modelClass: Bedard\Shop\Models\Order
 
 # List Title
-title: Manage Transactions
+title: Manage Orders
 
 # Link URL for each record
-recordUrl: bedard/shop/transactions/details/:id
+recordUrl: bedard/shop/orders/details/:id
 
 # Message to display if the list is empty
 noRecordsMessage: backend::lang.list.no_records

@@ -1,9 +1,9 @@
 <div class="control-breadcrumb">
     <ul>
-        <li><a href="<?= Backend::url('bedard/shop/transactions'); ?>">Orders</a></li>
+        <li><a href="<?= Backend::url('bedard/shop/orders'); ?>">Orders</a></li>
         <?php
-        echo (isset($transaction->id))
-            ? '<li><a href="'.Backend::url('bedard/shop/transactions/details/'.$transaction->id).'">Order #'.$transaction->id.'</a></li>'
+        echo (isset($order->id))
+            ? '<li><a href="'.Backend::url('bedard/shop/orders/details/'.$order->id).'">Order #'.$order->id.'</a></li>'
             : '<li>Unknown order</li>';
         ?>
     </ul>
@@ -11,29 +11,29 @@
 
 <?php if (!$this->fatalError): ?>
 
-    <div class="transaction">
-        <h3>Order #<?= $transaction->id ?></h3>
+    <div class="order">
+        <h3>Order #<?= $order->id ?></h3>
         <table class="details">
             <tr>
                 <td>Customer</td>
-                <td><?= $transaction->customer->first_name.' '.$transaction->customer->last_name ?></td>
+                <td><?= $order->customer->first_name.' '.$order->customer->last_name ?></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><?= $transaction->customer->email ?></td>
+                <td><?= $order->customer->email ?></td>
             </tr>
             <tr>
                 <td>Amount</td>
-                <td><?= $currency.$transaction->amount ?></td>
+                <td><?= $currency.$order->amount ?></td>
             </tr>
             <tr>
                 <td>Payment</td>
                 <td>
                     <?php
-                    if ($transaction->service == 'paypal') {
+                    if ($order->service == 'paypal') {
                         ?>
-                        <a href="https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=<?= $transaction->payment_code ?>">
-                            <i class="payment-icon icon-cc-paypal"></i><?= $transaction->payment_code ?>
+                        <a href="https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=<?= $order->payment_code ?>">
+                            <i class="payment-icon icon-cc-paypal"></i><?= $order->payment_code ?>
                         </a>
                         <?php
                     }
@@ -43,16 +43,16 @@
             <tr>
                 <td>Address</td>
                 <td>
-                    <div><?= $transaction->shipping_address['recipient_name'] ?></div>
-                    <?php if (isset($transaction->shipping_address['line1'])) echo '<div>'.$transaction->shipping_address['line1'].'</div>'; ?>
-                    <?php if (isset($transaction->shipping_address['line2'])) echo '<div>'.$transaction->shipping_address['line2'].'</div>'; ?>
+                    <div><?= $order->shipping_address['recipient_name'] ?></div>
+                    <?php if (isset($order->shipping_address['line1'])) echo '<div>'.$order->shipping_address['line1'].'</div>'; ?>
+                    <?php if (isset($order->shipping_address['line2'])) echo '<div>'.$order->shipping_address['line2'].'</div>'; ?>
                     <div>
-                        <?php if (isset($transaction->shipping_address['city'])) echo $transaction->shipping_address['city']; ?>
-                        <?php if (isset($transaction->shipping_address['state'])) echo $transaction->shipping_address['state']; ?>,
-                        <?php if (isset($transaction->shipping_address['postal_code'])) echo $transaction->shipping_address['postal_code']; ?>
+                        <?php if (isset($order->shipping_address['city'])) echo $order->shipping_address['city']; ?>
+                        <?php if (isset($order->shipping_address['state'])) echo $order->shipping_address['state']; ?>,
+                        <?php if (isset($order->shipping_address['postal_code'])) echo $order->shipping_address['postal_code']; ?>
                     </div>
-                    <?php if (isset($transaction->shipping_address['country_code']))
-                        echo '<div>'.$transaction->shipping_address['country_code'].'</div>'; ?>
+                    <?php if (isset($order->shipping_address['country_code']))
+                        echo '<div>'.$order->shipping_address['country_code'].'</div>'; ?>
                 </td>
             </tr>
         </table>
@@ -66,7 +66,7 @@
                 <th>Quantity</th>
             </tr>
             <?php
-            foreach ($transaction->cart->items as $item) {
+            foreach ($order->cart->items as $item) {
                 if ($item->quantity == 0) continue;
                 ?>
                 <tr>
@@ -94,6 +94,6 @@
 <?php else: ?>
     <div class="inventory-control">
         <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-        <p><a href="<?= Backend::url('bedard/shop/transactions') ?>" class="btn btn-default">Return to orders list</a></p>
+        <p><a href="<?= Backend::url('bedard/shop/orders') ?>" class="btn btn-default">Return to orders list</a></p>
     </div>
 <?php endif ?>

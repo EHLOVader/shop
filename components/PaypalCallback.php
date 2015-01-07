@@ -1,7 +1,7 @@
 <?php namespace Bedard\Shop\Components;
 
 use Bedard\Shop\Models\Customer;
-use Bedard\Shop\Models\Transaction;
+use Bedard\Shop\Models\Order;
 use Bedard\Shop\Classes\PaymentException;
 use Bedard\Shop\Classes\Paypal;
 use Cms\Classes\ComponentBase;
@@ -75,13 +75,13 @@ class PaypalCallback extends ComponentBase
      */
     private function processSuccess()
     {
-        // Grab our transaction details
+        // Grab our order details
         $payerId = Input::get('PayerID');
-        $transaction = Transaction::where('payment_id', Input::get('paymentId'))
+        $order = Order::where('payment_id', Input::get('paymentId'))
             ->where('hash', Session::get('bedard_shop_paypal_hash'))
             ->where('is_complete', FALSE)
             ->first();
-        if (!$payerId || !$transaction)
+        if (!$payerId || !$order)
             return $this->processFailed('Invalid response from PayPal.');
 
         // Load the cart being completed, along with it's relationships
@@ -92,7 +92,7 @@ class PaypalCallback extends ComponentBase
         // Set up the API, and execute the payment
         try {
             $paypal = new Paypal;
-            $paypal->executePayment($payerId, $transaction['payment_id']);
+            $paypal->executePayment($payerId, $order['payment_id']);
         }
         catch (PaymentException $e) {
             return $this->processFailed('Failed to execute payment with PayPal.');
@@ -106,11 +106,11 @@ class PaypalCallback extends ComponentBase
         ]);
 
         // Save the shipping info and payment code
-        $transaction->shipping_address = $paypal->shipping_address;
-        $transaction->payment_code = $paypal->payment_code;
+        $order->shipping_address = $paypal->shipping_address;
+        $order->payment_code = $paypal->payment_code;
 
         // Complete the shopping cart
-        $this->cart->complete($transaction, $customer);
+        $this->cart->complete($order, $customer);
         $this->completed = TRUE;
         // Unset the cart component?
     }

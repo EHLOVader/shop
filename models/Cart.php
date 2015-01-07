@@ -1,7 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
 use Bedard\Shop\Models\Customer;
-use Bedard\Shop\Models\Transaction;
+use Bedard\Shop\Models\Order;
 use DB;
 use Model;
 
@@ -41,7 +41,7 @@ class Cart extends Model
      */
     public function scopeIsComplete($query)
     {
-        $query->whereNotNull('transaction_id');
+        $query->whereNotNull('order_id');
     }
 
     /**
@@ -80,7 +80,7 @@ class Cart extends Model
     /**
      * Marks a shopping cart as complete, and updates item inventories
      */
-    public function complete(Transaction $transaction, Customer $customer)
+    public function complete(Order $order, Customer $customer)
     {
         foreach ($this->items as $item) {
             // Update the inventory quantity
@@ -95,14 +95,14 @@ class Cart extends Model
             $item->save();
         }
 
-        // Update the transaction
-        $transaction->amount = $this->total;
-        $transaction->customer_id = $customer->id;
-        $transaction->is_complete = TRUE;
-        $transaction->save();
+        // Update the order
+        $order->amount = $this->total;
+        $order->customer_id = $customer->id;
+        $order->is_complete = TRUE;
+        $order->save();
 
-        // Attach the transaction and see if a coupon can be used
-        $this->transaction_id = $transaction->id;
+        // Attach the order and see if a coupon can be used
+        $this->order_id = $order->id;
         if (!$this->couponIsApplied)
             $this->coupon_id = NULL;
         $this->save();

@@ -3,15 +3,15 @@
 use Model;
 
 /**
- * Transaction Model
+ * Order Model
  */
-class Transaction extends Model
+class Order extends Model
 {
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'bedard_shop_transactions';
+    public $table = 'bedard_shop_orders';
 
     /**
      * @var array Guarded fields
@@ -43,7 +43,7 @@ class Transaction extends Model
      */
     public function scopeIsComplete($query)
     {
-        // Returns only transactions that have been completed
+        // Returns only orders that have been completed
         $query->where('is_complete', TRUE);
     }
 

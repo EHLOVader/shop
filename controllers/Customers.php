@@ -37,8 +37,8 @@ class Customers extends Controller
     public function index()
     {
         // Count our repeat / new customers
-        $this->vars['repeatCustomers']  = Customer::has('transactions', '>', 1)->count();
-        $this->vars['newCustomers'] = Customer::has('transactions', '<=', 1)->count();
+        $this->vars['repeatCustomers']  = Customer::has('orders', '>', 1)->count();
+        $this->vars['newCustomers'] = Customer::has('orders', '<=', 1)->count();
         $this->vars['totalCustomers'] = $this->vars['repeatCustomers'] + $this->vars['newCustomers'];
 
         // Determine how many new customers we've had this month and last
@@ -56,7 +56,7 @@ class Customers extends Controller
             : 'negative';
 
         // Determine the repeat customers we've had this month and last
-        $this->vars['customersCurrent'] = Customer::has('transactions', '>', 1)
+        $this->vars['customersCurrent'] = Customer::has('orders', '>', 1)
             ->where('updated_at', '>=', Carbon::now()->startOfMonth())
             ->count();
 
@@ -74,10 +74,10 @@ class Customers extends Controller
     }
 
     /**
-     * Extend the list query to eager load transactions
+     * Extend the list query to eager load orders
      */
     public function listExtendQuery($query, $definition = null)
     {
-        $query->with('transactions');
+        $query->with('orders');
     }
 }

@@ -1,0 +1,43 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+
+    created_at:
+        label: Date
+        type: partial
+        path: @/plugins/bedard/shop/models/order/_created.htm
+
+    # updated_at:
+    #     label: Time Since
+    #     type: timesince
+
+    customer_name:
+        label: Customer
+        select: (SELECT concat(first_name, last_name) FROM bedard_shop_customers WHERE id = bedard_shop_orders.customer_id LIMIT 1)
+
+    customer_email:
+        label: Email
+        select: (SELECT email FROM bedard_shop_customers WHERE id = bedard_shop_orders.customer_id LIMIT 1)
+
+    amount:
+        label: Amount
+        select: (SELECT amount FROM bedard_shop_carts WHERE order_id = bedard_shop_orders.id LIMIT 1)
+        type: partial
+        path: @/plugins/bedard/shop/models/order/_total.htm
+
+    coupon:
+        label: Coupon
+        type: partial
+        path: @/plugins/bedard/shop/models/order/_coupon.htm
+
+    payment:
+        label: Payment
+        type: partial
+        path: @/plugins/bedard/shop/models/order/_payment.htm
+
+    shipped:
+        label: Shipped
+        type: partial
+        path: @/plugins/bedard/shop/models/order/_shipped.htm

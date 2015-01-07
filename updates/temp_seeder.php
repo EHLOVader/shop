@@ -11,7 +11,7 @@ use Bedard\Shop\Models\Coupon;
 
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
-use Bedard\Shop\Models\Transaction;
+use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\Customer;
 
 class TempSeeder extends Seeder {
@@ -167,10 +167,10 @@ class TempSeeder extends Seeder {
                 'last_name' => $last,
                 'email' => strtolower("$first.$last@example.com")
             ]);
-            $transaction = Transaction::create([]);
-            $cart->complete($transaction, $customer);
+            $order = Order::create([]);
+            $cart->complete($order, $customer);
 
-            $transaction->shipping_address = [
+            $order->shipping_address = [
                 'recipient_name' => "$first $last",
                 'line1' => '123 Foo Street',
                 'city' => 'Beverly Hills',
@@ -178,10 +178,10 @@ class TempSeeder extends Seeder {
                 'postal_code' => '90210',
                 'country_code' => 'US'
             ];
-            $transaction->payment_id = '12345';
-            $transaction->service = 'paypal';
-            $transaction->payment_code = 'FAKE-PAYPAL-ID';
-            $transaction->save();
+            $order->payment_id = '12345';
+            $order->service = 'paypal';
+            $order->payment_code = 'FAKE-PAYPAL-ID';
+            $order->save();
         }
         
     }

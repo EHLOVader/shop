@@ -7,7 +7,7 @@
   - create_coupons_table.php
   - create_carts_table.php
   - create_cart_items_table.php
-  - create_transactions_table.php
+  - create_orders_table.php
   - create_customers_table.php
   - seed_the_database.php
   - temp_seeder.php

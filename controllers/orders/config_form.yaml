@@ -1,0 +1,15 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Order
+
+# Model Form Field configuration
+form: $/bedard/shop/models/order/fields.yaml
+
+# Model Class name
+modelClass: Bedard\Shop\Models\Order
+
+# Default redirect location
+defaultRedirect: bedard/shop/orders

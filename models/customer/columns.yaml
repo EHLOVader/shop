@@ -15,17 +15,17 @@ columns:
 
     order_count:
         label: Orders
-        select: (SELECT count(*) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id)
+        select: (SELECT count(*) FROM bedard_shop_orders WHERE customer_id = bedard_shop_customers.id)
 
     order_average:
         label: Average Order
-        select: (SELECT AVG(amount) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id)
+        select: (SELECT AVG(amount) FROM bedard_shop_orders WHERE customer_id = bedard_shop_customers.id)
         type: partial
         path: @/plugins/bedard/shop/models/customer/_average.htm
 
     order_total:
         label: Total Orders
-        select: (SELECT SUM(amount) FROM bedard_shop_transactions WHERE customer_id = bedard_shop_customers.id)
+        select: (SELECT SUM(amount) FROM bedard_shop_orders WHERE customer_id = bedard_shop_customers.id)
         type: partial
         path: @/plugins/bedard/shop/models/customer/_total.htm
 

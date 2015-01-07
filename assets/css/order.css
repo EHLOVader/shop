@@ -1,9 +1,9 @@
-.transaction .details, .transaction .items {
+.order .details, .order .items {
     width: 100%;
     max-width: 600px;
     border-collapse: collapse;
 }
-.transaction .details td, .transaction .items th, .transaction .items td {
+.order .details td, .order .items th, .order .items td {
     padding: 5px;
     border: 1px solid #e0e0e0;
 }

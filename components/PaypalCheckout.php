@@ -2,7 +2,7 @@
 
 use Bedard\Shop\Classes\Paypal;
 use Bedard\Shop\Models\PaySettings;
-use Bedard\Shop\Models\Transaction;
+use Bedard\Shop\Models\Order;
 use Cms\Classes\ComponentBase;
 use Exception;
 use Redirect;
@@ -119,7 +119,7 @@ class PaypalCheckout extends ComponentBase
         if ($checkout['id']) {
             $hash = md5($checkout['id']);
             Session::put('bedard_shop_paypal_hash', $hash);
-            $receipt = Transaction::create([
+            $receipt = Order::create([
                 'service'   => 'paypal',
                 'payment_id'=> $checkout['id'],
                 'hash'      => $hash

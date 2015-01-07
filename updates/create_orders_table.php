@@ -3,12 +3,12 @@
 use Schema;
 use October\Rain\Database\Updates\Migration;
 
-class CreateTransactionsTable extends Migration
+class CreateOrdersTable extends Migration
 {
 
     public function up()
     {
-        Schema::create('bedard_shop_transactions', function($table)
+        Schema::create('bedard_shop_orders', function($table)
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -30,7 +30,7 @@ class CreateTransactionsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('bedard_shop_transactions');
+        Schema::dropIfExists('bedard_shop_orders');
     }
 
 }
