@@ -1,7 +1,5 @@
 # To Do List
 
-- PayPal payment processing
-
 - Stripe payment processing
 
 - Customer newsletter
@@ -10,7 +8,7 @@
 
 - Allow for inventory "groups". Products need to be able to have multiple groups of inventories. For example, a shirt product might come in multiple sizes, but also in multiple colors as well.
 
-- USPS , FedEx, and UPS shipping calculators.
+- "Estimated", USPS , FedEx, and UPS shipping calculators.
 
 - Promotions (buy one get one free, refer a friend, etc...)
 

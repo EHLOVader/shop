@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use DB;
 use Model;
 
 /**
@@ -78,11 +79,11 @@ class Coupon extends Model
             ->where(function($query) use ($now) {
                 $query->whereNull('end_date')
                       ->orWhere('end_date', '>=', $now);
+            })
+            ->where(function($query) {
+                $query->where('limit', 0)
+                      ->orHas('carts', '<', DB::raw('`bedard_shop_coupons`.`limit`'));
             });
-
-        // Make sure the coupon hasn't already met it's limit
-        if ($this->limit > 0)
-            $query->has('carts', '<', $this->attributes['limit']);
 
         return $query;
     }
