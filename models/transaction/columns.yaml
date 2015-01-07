@@ -15,9 +15,11 @@ columns:
 
     customer_name:
         label: Customer
+        select: (SELECT concat(first_name, last_name) FROM bedard_shop_customers WHERE id = bedard_shop_transactions.customer_id LIMIT 1)
 
     customer_email:
         label: Email
+        select: (SELECT email FROM bedard_shop_customers WHERE id = bedard_shop_transactions.customer_id LIMIT 1)
 
     amount:
         label: Amount
