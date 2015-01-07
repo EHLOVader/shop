@@ -208,24 +208,25 @@ class Cart extends ComponentBase
             $coupon = Coupon::where('name', $couponCode)
                 ->isActive()
                 ->first();
-            if ($coupon) {
+            if ($coupon)
                 $this->cart->coupon()->associate($coupon);
-            } else {
-                $this->cart->push();
-                return $this->response('Coupon not found', FALSE);
-            }
         }
+
+        // Save the cart, fix the quantities, and update cart items
         $this->cart->push();
-
-        // Validate the item quantities
         $fixedQuantities = $this->cart->fixQuantities();
-
-        // Save and refresh the cart, then send back a success message
         $this->loadCart(TRUE);
         $this->storeCartValues();
-        return $fixedQuantities
-            ? $this->response('Fixed quantities', FALSE)
-            : $this->response('Cart updated');
+
+        // Coupon not found
+        if ($couponCode && !$coupon)
+            return $this->response('Coupon not found', FALSE);
+
+        elseif ($fixedQuantities)
+            return $this->response('Fixed quantities', FALSE);
+
+        else
+            return $this->response('Cart updated');
     }
 
     /**
