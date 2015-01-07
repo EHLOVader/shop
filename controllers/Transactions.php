@@ -4,6 +4,7 @@ use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\PaySettings;
 use Bedard\Shop\Models\Transaction;
+use Flash;
 
 /**
  * Transactions Back-end Controller
@@ -64,5 +65,22 @@ class Transactions extends Controller
 
         if (!$this->vars['transaction'])
             $this->fatalError = 'A transaction with an ID of '.$transaction_id.' could not be found.';
+    }
+
+    /**
+     * Mark selected records as shipped
+     */
+    public function index_onMarkAsShipped()
+    {
+        $successful = TRUE;
+        if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
+            foreach ($checkedIds as $recordId) {
+                if (!$record = Transaction::find($recordId)) continue;
+                if (!$record->touchShipped()) $successful = FALSE;
+            }
+        }
+        if ($successful) Flash::success('Successfully marked orders as shipped.');
+        else Flash::error('An unknown error has occured.');
+        return $this->listRefresh();
     }
 }

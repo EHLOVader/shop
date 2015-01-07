@@ -48,6 +48,15 @@ class Transaction extends Model
     }
 
     /**
+     * Touches the shipped timestamp
+     */
+    public function touchShipped()
+    {
+        $this->shipped = $this->freshTimestamp();
+        return $this->save();
+    }
+
+    /**
      * Returns the customer's email address
      * @return  string
      */

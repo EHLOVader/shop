@@ -1,3 +1,17 @@
 <div data-control="toolbar">
-    <a href="<?= Backend::url('bedard/shop/transactions/create') ?>" class="btn btn-primary oc-icon-plus">New Transaction</a>
+
+    <button
+        class="btn btn-default oc-icon-truck"
+        disabled="disabled"
+        onclick="$(this).data('request-data', {
+            checked: $('.control-list').listWidget('getChecked')
+        })"
+        data-request="onMarkAsShipped"
+        data-trigger-type="enable"
+        data-trigger=".control-list input[type=checkbox]"
+        data-trigger-condition="checked"
+        data-stripe-load-indicator>
+        Mark as shipped
+    </button>
+
 </div>

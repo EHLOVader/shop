@@ -1,0 +1,6 @@
+<?php
+if (!is_null($record->shipped))
+    echo '<i class="list-icon icon-check green"></i>'.date('M jS, Y', strtotime($record->shipped));
+
+else
+    echo '<i class="list-icon icon-minus"></i>Not Shipped';

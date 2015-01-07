@@ -34,3 +34,8 @@ columns:
         label: Payment
         type: partial
         path: @/plugins/bedard/shop/models/transaction/_payment.htm
+
+    shipped:
+        label: Shipped
+        type: partial
+        path: @/plugins/bedard/shop/models/transaction/_shipped.htm
