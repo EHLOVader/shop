@@ -86,10 +86,10 @@ class Discount extends Model
     private function validateDiscountScope()
     {
         // Count the categories and products that are selected
-        $checkedCategories = is_array(post('Discount')['categories'])
+        $checkedCategories = !empty(post('Discount')['categories'])
             ? count(post('Discount')['categories'])
             : 0;
-        $checkedProducts = is_array(post('Discount')['products'])
+        $checkedProducts = !empty(post('Discount')['products'])
             ? count(post('Discount')['products'])
             : 0;
 
