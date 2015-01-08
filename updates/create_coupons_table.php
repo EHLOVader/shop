@@ -18,7 +18,7 @@ class CreateCouponsTable extends Migration
             $table->timestamp('end_date')->nullable();
             $table->decimal('cart_value', 10, 2)->unsigned()->default(0);
             $table->decimal('amount', 10, 2)->unsigned()->default(0);
-            $table->integer('limit')->unsigned();
+            $table->integer('limit')->unsigned()->default(0);
             $table->boolean('is_percentage')->unsigned()->default(0);
             $table->boolean('is_freeshipping')->unsigned()->default(0);
             $table->timestamps();
