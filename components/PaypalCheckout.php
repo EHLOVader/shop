@@ -40,17 +40,6 @@ class PaypalCheckout extends ComponentBase
     public function defineProperties()
     {
         return [
-            'api_mode' => [
-                'title'             => 'API Mode',
-                'description'       => 'PayPal API mode',
-                'type'              => 'dropdown',
-                'options' => [
-                    'live'      => 'Live',
-                    'sandbox'   => 'Sandbox'
-                ],
-                'default'               => 'live',
-                'showExternalParam' => FALSE
-            ],
             'callback_success' => [
                 'title'             => 'Success URL',
                 'description'       => 'Callback URL for successful checkouts.',
