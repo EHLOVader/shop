@@ -15,14 +15,14 @@ class CreateCategoriesTable extends Migration
             $table->string('name', 64)->nullable();
             $table->string('slug', 64)->unique()->nullable();
             $table->string('description')->nullable();
-            $table->integer('position')->unsigned();
+            $table->integer('position')->unsigned()->default(0);
             $table->string('arrangement_method', 10)->default('newest')->nullable();
             $table->text('arrangement_order')->nullable();
             $table->integer('arrangement_rows')->default(2)->unsigned();
             $table->integer('arrangement_columns')->default(6)->unsigned();
             $table->string('pseudo', 4)->nullable();
-            $table->boolean('is_active')->unsigned();
-            $table->boolean('is_visible')->unsigned();
+            $table->boolean('is_active')->unsigned()->default(0);
+            $table->boolean('is_visible')->unsigned()->default(0);
             $table->timestamps();
         });
     }

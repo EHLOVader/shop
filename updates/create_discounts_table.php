@@ -15,16 +15,16 @@ class CreateDiscountsTable extends Migration
             $table->string('name')->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
-            $table->decimal('amount', 10, 2)->unsigned();
-            $table->boolean('is_percentage')->unsigned();
+            $table->decimal('amount', 10, 2)->unsigned()->default(0);
+            $table->boolean('is_percentage')->unsigned()->default(0);
             $table->timestamps();
         });
 
         Schema::create('bedard_shop_discountables', function($table)
         {
             $table->enging = 'InnoDB';
-            $table->integer('discount_id')->unsigned();
-            $table->integer('discountable_id')->unsigned();
+            $table->integer('discount_id')->unsigned()->default(0);
+            $table->integer('discountable_id')->unsigned()->default(0);
             $table->string('discountable_type')->nullable();
             $table->primary(['discount_id', 'discountable_id']);
             $table->foreign('discount_id')->references('id')->on('bedard_shop_discounts')->onDelete('cascade');

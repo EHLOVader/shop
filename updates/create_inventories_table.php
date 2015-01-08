@@ -15,10 +15,10 @@ class CreateInventoriesTable extends Migration
             $table->integer('product_id')->nullable()->unsigned();
             $table->foreign('product_id')->references('id')->on('bedard_shop_products')->onDelete('cascade');
             $table->string('name')->nullable();
-            $table->integer('quantity')->unsigned();
-            $table->decimal('modifier');
-            $table->integer('position')->unsigned();
-            $table->boolean('is_active')->unsigned();
+            $table->integer('quantity')->unsigned()->default(0);
+            $table->decimal('modifier')->unsigned()->default(0);
+            $table->integer('position')->unsigned()->default(0);
+            $table->boolean('is_active')->unsigned()->default(0);
             $table->timestamps();
         });
     }

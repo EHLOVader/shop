@@ -16,11 +16,11 @@ class CreateCouponsTable extends Migration
             $table->string('message')->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
-            $table->decimal('cart_value', 10, 2)->unsigned();
-            $table->decimal('amount', 10, 2)->unsigned();
+            $table->decimal('cart_value', 10, 2)->unsigned()->default(0);
+            $table->decimal('amount', 10, 2)->unsigned()->default(0);
             $table->integer('limit')->unsigned();
-            $table->boolean('is_percentage')->unsigned();
-            $table->boolean('is_freeshipping')->unsigned();
+            $table->boolean('is_percentage')->unsigned()->default(0);
+            $table->boolean('is_freeshipping')->unsigned()->default(0);
             $table->timestamps();
         });
     }

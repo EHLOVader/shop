@@ -17,13 +17,13 @@ class CreateOrdersTable extends Migration
             $table->string('payment_id')->nullable()->nullable();
             $table->string('payment_code')->nullable()->nullable();
             $table->string('hash')->nullable();
-            $table->decimal('amount', 10, 2)->unsigned();
+            $table->decimal('amount', 10, 2)->unsigned()->default(0);
             $table->text('shipping_address')->nullable();
             $table->string('shipping_courier')->nullable();
             $table->string('shipping_method')->nullable();
-            $table->decimal('shipping_amount')->unsigned();
+            $table->decimal('shipping_amount')->unsigned()->default(0);
             $table->timestamp('shipped')->nullable();
-            $table->boolean('is_complete')->unsigned();
+            $table->boolean('is_complete')->unsigned()->default(0);
             $table->timestamps();
         });
     }
