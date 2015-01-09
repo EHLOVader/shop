@@ -69,7 +69,6 @@ class TempSeeder extends Seeder {
                 'name' => $seed,
                 'slug' => str_replace(' ', '-', $seed),
                 'full_price' => rand(10, 20),
-                'ounces' => rand(0, 10),
                 'description' => "Some awesome $seed... You should totaly buy it.",
                 'is_active' => rand(0, 10) > 0 ? 1 : 0,
                 'is_visible' => rand(0, 10) > 0 ? 1 : 0

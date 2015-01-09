@@ -16,7 +16,6 @@ class CreateProductsTable extends Migration
             $table->string('slug')->unique()->nullable();
             $table->text('description')->nullable();
             $table->decimal('full_price', 10, 2)->unsigned()->default(0);
-            $table->integer('ounces')->unsigned()->default(0);
             $table->boolean('is_active')->unsigned()->default(0);
             $table->boolean('is_visible')->unsigned()->default(0);
             $table->timestamps();
