@@ -10,6 +10,7 @@ use Model;
  */
 class Product extends Model
 {
+    use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
@@ -56,6 +57,19 @@ class Product extends Model
     ];
     public $attachMany = [
         'images' => ['System\Models\File']
+    ];
+
+    /**
+     * Validation
+     */
+    public $rules = [
+        'name' => 'required',
+        'slug' => 'required|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+        'full_price' => 'regex:/^(0+)?\d{0,10}(\.\d{0,2})?$/'
+    ];
+
+    public $customMessages = [
+        'full_price.regex' => 'The price must be a valid monetary value.'
     ];
     
     /**

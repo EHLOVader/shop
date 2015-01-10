@@ -75,7 +75,6 @@ secondaryTabs:
             imageWidth: 200
             imageHeight: 200
             span: left
-            required: true
         thumbnail_alt:
             tab: Images
             label: Thumbnail Alternate
