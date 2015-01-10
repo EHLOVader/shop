@@ -23,7 +23,6 @@ class Product extends ComponentBase
     public $description;    // string
     public $price;          // float
     public $fullPrice;      // float
-    public $ounces;         // integer
     public $isVisible;      // boolean
     public $isDiscounted;   // boolean
     public $inStock;        // boolean
