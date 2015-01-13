@@ -141,6 +141,9 @@ class Cart extends ComponentBase
         if (!$cartItem->save())
             return $this->response('Failed to save cart item', FALSE);
 
+        // Forget the calculated shipping
+        $this->forgetShipping();
+
         // Refresh the item count, and send back a response
         $this->itemCount = CartItem::where('cart_id', $this->cart->id)
             ->sum('quantity');
@@ -178,6 +181,9 @@ class Cart extends ComponentBase
         if (!$item->save())
             return $this->response('Failed to delete item', FALSE);
 
+        // Forget the calculated shipping
+        $this->forgetShipping();
+
         // Refresh the cart, and send back a success message
         $this->loadCart(TRUE);
         $this->storeCartValues();
@@ -192,9 +198,6 @@ class Cart extends ComponentBase
         // Make sure we have a cart loaded
         if (!$this->cart)
             return $this->response('Cart not found', FALSE);
-
-        // Forget any calculated shipping
-        Session::forget('bedard_shop_shipping');
 
         // Load the cart items, and the desired quantities
         $this->cart->load('items.inventory');
@@ -221,6 +224,9 @@ class Cart extends ComponentBase
         $fixedQuantities = $this->cart->fixQuantities();
         $this->loadCart(TRUE);
         $this->storeCartValues();
+
+        // Forget the calculated shipping
+        $this->forgetShipping();
 
         // Coupon not found
         if ($couponCode && !$coupon)

@@ -4,6 +4,7 @@ use Bedard\Shop\Models\Cart as CartModel;
 use Bedard\Shop\Models\Settings;
 use Cookie;
 use Request;
+use Session;
 
 trait CartTrait
 {
@@ -78,6 +79,14 @@ trait CartTrait
                 'key'   => $this->cart->key
             ], Settings::get('cart_life'));
         }
+    }
+
+    /**
+     * Forget any calculated shipping
+     */
+    private function forgetShipping()
+    {
+        Session::forget('bedard_shop_shipping');
     }
 
 }
