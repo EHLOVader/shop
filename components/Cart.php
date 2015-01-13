@@ -9,6 +9,7 @@ use Bedard\Shop\Models\Settings;
 use Cms\Classes\ComponentBase;
 use Cookie;
 use DB;
+use Session;
 
 class Cart extends ComponentBase
 {
@@ -191,6 +192,9 @@ class Cart extends ComponentBase
         // Make sure we have a cart loaded
         if (!$this->cart)
             return $this->response('Cart not found', FALSE);
+
+        // Forget any calculated shipping
+        Session::forget('bedard_shop_shipping');
 
         // Load the cart items, and the desired quantities
         $this->cart->load('items.inventory');
