@@ -109,18 +109,18 @@ class Paypal
     /**
      * Sets up new shopping cart objects
      */
-    public function createNewCart(Cart $cart)
+    public function createNewCart(Cart $cart, $shipping = 0)
     {
         // Cart
         $this->cart = $cart;
 
         // Build up our paypal shopping cart
         $this->setPayer();
-        $this->setDetails();
+        $this->setDetails($shipping);
 
         $items = $this->addItems();
         $this->setItems($items);
-        $this->setAmount();
+        $this->setAmount($shipping);
         $this->setTransaction();
         $this->setPayment();
     }
@@ -207,10 +207,11 @@ class Paypal
     /**
      * Sets the Details object
      */
-    private function setDetails()
+    private function setDetails($shipping = 0)
     {
         $this->details = new Details();
-        $this->details//->setShipping(0)
+        $this->details
+            ->setShipping($shipping)
             ->setTax('0.00')
             ->setSubtotal($this->cart->total);
     }
@@ -218,11 +219,11 @@ class Paypal
     /**
      * Sets the PayPal amount object
      */
-    private function setAmount()
+    private function setAmount($shipping = 0)
     {
         $this->amount = new Amount();
         $this->amount->setCurrency($this->currency)
-            ->setTotal($this->cart->total)
+            ->setTotal($this->cart->total + $shipping)
             ->setDetails($this->details);
     }
 

@@ -9,7 +9,6 @@ use Bedard\Shop\Models\Settings;
 use Cms\Classes\ComponentBase;
 use Cookie;
 use DB;
-use Session;
 
 class Cart extends ComponentBase
 {

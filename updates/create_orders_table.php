@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->text('shipping_address')->nullable();
             $table->string('shipping_courier')->nullable();
             $table->string('shipping_method')->nullable();
-            $table->decimal('shipping_amount')->unsigned()->default(0);
+            $table->decimal('shipping_cost')->unsigned()->default(0);
             $table->timestamp('shipped')->nullable();
             $table->boolean('is_complete')->unsigned()->default(0);
             $table->timestamps();

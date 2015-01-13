@@ -45,21 +45,21 @@ class PaypalCheckout extends ComponentBase
                 'description'       => 'Callback URL for successful checkouts.',
                 'validationPattern' => '^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$',
                 'validationMessage' => 'Invalid callback URL.',
-                'showExternalParam' => FALSE
+                'showExternalParam' => false
             ],
             'callback_canceled' => [
                 'title'             => 'Canceled URL',
                 'description'       => 'Callback URL for canceled checkouts.',
                 'validationPattern' => '^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$',
                 'validationMessage' => 'Invalid callback URL.',
-                'showExternalParam' => FALSE
+                'showExternalParam' => false
             ],
             'callback_failed' => [
                 'title'             => 'Failed URL',
                 'description'       => 'Callback URL for failed PayPal requests.',
                 'validationPattern' => '^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$',
                 'validationMessage' => 'Invalid callback URL.',
-                'showExternalParam' => FALSE
+                'showExternalParam' => false
             ]
         ];
     }
@@ -82,17 +82,27 @@ class PaypalCheckout extends ComponentBase
     public function onPaypalCheckout()
     {
         // Load the cart with it's relationships
-        $this->loadCart(TRUE);
+        $this->loadCart(true);
         if (!$this->cart)
-            return $this->response('Cart not found', FALSE);
+            return $this->response('Cart not found', false);
 
         // Validate the cart item quantities
         if ($this->cart->fixQuantities())
-            return $this->response('Fixed quantities', FALSE);
+            return $this->response('Fixed quantities', false);
+
+        // Check if we have a shipping value
+        if ($shipping = post('bedard_shop_shipping')) {
+            $shipping = json_decode($shipping, true);
+            $shippingCost = $shipping['cost'];
+            $shippingMethod = $shipping['name'];
+        } else {
+            $shippingCost = 0;
+            $shippingMethod = null;
+        }
 
         // Set up the PayPal API and cart
         $paypal = new Paypal;
-        $paypal->createNewCart($this->cart);
+        $paypal->createNewCart($this->cart, $shippingCost);
 
         // Set the callbacks
         $paypal->setCallbackUrls([
@@ -109,9 +119,11 @@ class PaypalCheckout extends ComponentBase
             $hash = md5($checkout['id']);
             Session::put('bedard_shop_paypal_hash', $hash);
             $receipt = Order::create([
-                'service'   => 'paypal',
-                'payment_id'=> $checkout['id'],
-                'hash'      => $hash
+                'service'           => 'paypal',
+                'payment_id'        => $checkout['id'],
+                'hash'              => $hash,
+                'shipping_method'   => $shippingMethod,
+                'shipping_cost'     => $shippingCost
             ]);
         }
 
