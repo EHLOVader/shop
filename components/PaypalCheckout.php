@@ -119,6 +119,7 @@ class PaypalCheckout extends ComponentBase
             $hash = md5($checkout['id']);
             Session::put('bedard_shop_paypal_hash', $hash);
             $receipt = Order::create([
+                'cart_id'           => $this->cart->id,
                 'service'           => 'paypal',
                 'payment_id'        => $checkout['id'],
                 'hash'              => $hash,

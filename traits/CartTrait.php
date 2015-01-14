@@ -3,6 +3,7 @@
 use Bedard\Shop\Models\Cart as CartModel;
 use Bedard\Shop\Models\Settings;
 use Cookie;
+use DB;
 use Request;
 use Session;
 
@@ -82,11 +83,18 @@ trait CartTrait
     }
 
     /**
-     * Forget any calculated shipping
+     * Restarts the checkout process
      */
-    private function forgetShipping()
+    private function restartCheckoutProcess()
     {
+        // Forget the shipping rates
         Session::forget('bedard_shop_shipping');
+
+        // Kill any orders that were started
+        $delete = DB::table('bedard_shop_orders')
+            ->where('is_complete', 0)
+            ->where('cart_id', $this->cart->id)
+            ->delete();
     }
 
 }

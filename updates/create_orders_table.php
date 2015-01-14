@@ -12,6 +12,7 @@ class CreateOrdersTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->integer('cart_id')->unsigned()->default(0);
             $table->integer('customer_id')->nullable()->unsigned();
             $table->string('service')->nullable();
             $table->string('payment_id')->nullable()->nullable();

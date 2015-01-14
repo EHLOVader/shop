@@ -140,8 +140,8 @@ class Cart extends ComponentBase
         if (!$cartItem->save())
             return $this->response('Failed to save cart item', FALSE);
 
-        // Forget the calculated shipping
-        $this->forgetShipping();
+        // Restart the checkout process
+        $this->restartCheckoutProcess();
 
         // Refresh the item count, and send back a response
         $this->itemCount = CartItem::where('cart_id', $this->cart->id)
@@ -180,8 +180,8 @@ class Cart extends ComponentBase
         if (!$item->save())
             return $this->response('Failed to delete item', FALSE);
 
-        // Forget the calculated shipping
-        $this->forgetShipping();
+        // Restart the checkout process
+        $this->restartCheckoutProcess();
 
         // Refresh the cart, and send back a success message
         $this->loadCart(TRUE);
@@ -224,8 +224,8 @@ class Cart extends ComponentBase
         $this->loadCart(TRUE);
         $this->storeCartValues();
 
-        // Forget the calculated shipping
-        $this->forgetShipping();
+        // Restart the checkout process
+        $this->restartCheckoutProcess();
 
         // Coupon not found
         if ($couponCode && !$coupon)
