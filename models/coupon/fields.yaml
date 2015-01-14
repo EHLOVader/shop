@@ -54,14 +54,3 @@ fields:
         placeholder: 0
         comment: Set to zero for unlimited uses.
         span: right
-
-    is_freeshipping:
-        label: Shipping
-        comment: Free shipping will apply only for domestic shipments.
-        span: left
-        type: dropdown
-        options:
-            0: Normal
-            1: Free
-        default: 0
-

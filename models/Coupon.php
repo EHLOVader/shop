@@ -43,8 +43,7 @@ class Coupon extends Model
         'amount'            => 'numeric|min:0',
         'limit'             => 'integer|min:0',
         'cart_value'        => 'numeric|min:0',
-        'is_percentage'     => 'required|boolean',
-        'is_freeshipping'   => 'required|boolean'
+        'is_percentage'     => 'required|boolean'
     ];
     public $customMessages = [
         'name.regex' => 'Coupon codes may only contain alpha-numeric characters, spaces, hyphens, and underscores.'

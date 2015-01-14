@@ -136,7 +136,6 @@ class TempSeeder extends Seeder {
             'message' => 'Thanks for entering "foo".',
             'amount' => rand(10, 20),
             'is_percentage' => 1,
-            'is_freeshipping' => 0,
             'cart_value' => rand(20, 50)
         ]);
         
