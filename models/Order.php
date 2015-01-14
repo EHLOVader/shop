@@ -21,7 +21,7 @@ class Order extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = ['service', 'payment_code', 'payment_id', 'hash', 'shipping_cost', 'shipping_method'];
+    protected $fillable = ['service', 'payment_code', 'payment_id', 'hash', 'shipping_address', 'shipping_cost', 'shipping_method'];
 
     /**
      * @var array Relations

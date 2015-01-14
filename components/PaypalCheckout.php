@@ -99,7 +99,7 @@ class PaypalCheckout extends ComponentBase
             $shippingCost = 0;
             $shippingMethod = null;
         }
-
+        
         // Set up the PayPal API and cart
         $paypal = new Paypal;
         $paypal->createNewCart($this->cart, $shippingCost);
@@ -122,6 +122,7 @@ class PaypalCheckout extends ComponentBase
                 'service'           => 'paypal',
                 'payment_id'        => $checkout['id'],
                 'hash'              => $hash,
+                'shipping_address'  => Session::get('bedard_shop_address') ?: null,
                 'shipping_method'   => $shippingMethod,
                 'shipping_cost'     => $shippingCost
             ]);

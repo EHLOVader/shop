@@ -106,7 +106,8 @@ class PaypalCallback extends ComponentBase
         ]);
 
         // Save the shipping info and payment code
-        $order->shipping_address = $paypal->shipping_address;
+        if (is_null($order->shipping_address))
+            $order->shipping_address = $paypal->shipping_address;
         $order->payment_code = $paypal->payment_code;
 
         // Complete the shopping cart

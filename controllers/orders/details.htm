@@ -43,7 +43,9 @@
             <tr>
                 <td>Address</td>
                 <td>
-                    <div><?= $order->shipping_address['recipient_name'] ?></div>
+                    <?php if (isset($order->shipping_address['recipient_name'])): ?>
+                        <div><?= $order->shipping_address['recipient_name'] ?></div>
+                    <?php endif; ?>
                     <?php if (isset($order->shipping_address['line1'])) echo '<div>'.$order->shipping_address['line1'].'</div>'; ?>
                     <?php if (isset($order->shipping_address['line2'])) echo '<div>'.$order->shipping_address['line2'].'</div>'; ?>
                     <div>
@@ -51,8 +53,11 @@
                         <?php if (isset($order->shipping_address['state'])) echo $order->shipping_address['state']; ?>,
                         <?php if (isset($order->shipping_address['postal_code'])) echo $order->shipping_address['postal_code']; ?>
                     </div>
-                    <?php if (isset($order->shipping_address['country_code']))
-                        echo '<div>'.$order->shipping_address['country_code'].'</div>'; ?>
+                    <?php if (isset($order->shipping_address['country'])): ?>
+                        <div><?= $order->shipping_address['country'] ?></div>
+                    <?php elseif (isset($order->shipping_address['country_code'])): ?>
+                        <div><?= $order->shipping_address['country_code'] ?></div>
+                    <?php endif; ?>
                 </td>
             </tr>
         </table>
