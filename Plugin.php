@@ -74,12 +74,6 @@ class Plugin extends PluginBase
                         'url'           => Backend::url('bedard/shop/coupons'),
                         'permissions'   => ['bedard.shop.access_coupons']
                     ],
-                    // 'emails' => [
-                    //     'label'         => 'Email',
-                    //     'icon'          => 'icon-envelope-o',
-                    //     'url'           => Backend::url('bedard/shop/emails'),
-                    //     'permissions'   => ['bedard.shop.access_email']
-                    // ],
                     'settings' => [
                         'label'         => 'Settings',
                         'icon'          => 'icon-cog',
@@ -146,6 +140,21 @@ class Plugin extends PluginBase
             'Bedard\Shop\Components\PaypalCallback' => 'shopPaypalCallback',
             'Bedard\Shop\Components\PaypalCheckout' => 'shopPaypalCheckout', 
             'Bedard\Shop\Components\Product'        => 'shopProduct'
+        ];
+    }
+
+
+    /**
+     * Registers report widgets
+     * @return  array
+     */
+    public function registerReportWidgets()
+    {
+        return [
+            'Bedard\Shop\ReportWidgets\HeatMap' => [
+                'label'     => 'Shop Overview',
+                'context'   => 'dashboard'
+            ],
         ];
     }
 }

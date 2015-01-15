@@ -1,0 +1,35 @@
+<div class="report-widget">
+    <h3><?= e($this->property('title')) ?></h3>
+
+    <div id="cal-heatmap"></div>
+    <script type="text/javascript">
+        var cal = new CalHeatMap();
+
+        // Convert the start date to a javascript date
+        var today = new Date();
+        var range = <?= e($this->property('range')) ?>;
+        var t = "<?= $start ?>".split(/[- :]/);
+        var start = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+        cal.init({
+            domain: "<?= $domain ?>",
+            subDomain: "<?= $subDomain ?>",
+            range: <?= $range ?>,
+            data: "/plugins/bedard/shop/reportwidgets/heatmap/assets/data/timestamps.json",
+            start: start,
+            cellSize: <?= $cellSize?>,
+            legend: [<?= $legend ?>],
+            // There is a bug with cal-heatmap, this will not work correctly
+            // legendColors: {
+            //     min: "<?= $this->property('minColor') ?>",
+            //     max: "<?= $this->property('maxColor') ?>",
+            //     empty: "<?= $this->property('emptyColor') ?>",
+            // },
+            // considerMissingDataAsZero: true
+            weekStartOnMonday: <?= $weekStartOnMonday ?>,
+            <?php if ($showDomainLabel == false): ?>domainLabelFormat: "",<?php endif ?>
+            cellPadding: <?= $cellPadding ?>
+        });
+    </script>
+
+</div>

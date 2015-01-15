@@ -13,6 +13,7 @@ use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\Customer;
+use Carbon\Carbon;
 
 class TempSeeder extends Seeder {
 
@@ -147,7 +148,7 @@ class TempSeeder extends Seeder {
          */
         $fnames = ['John', 'Mary', 'Alex', 'Mark', 'Sally'];
         $lnames = ['Smith', 'Johnson', 'Jones', 'Doe'];
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             $cart = Cart::create([]);
             $inventories = [];
             for ($j = 0; $j < rand(5, 15); $j++) $inventories[] = rand(1, 95);
@@ -165,7 +166,7 @@ class TempSeeder extends Seeder {
                 'last_name' => $last,
                 'email' => strtolower("$first.$last@example.com")
             ]);
-            $order = Order::create([]);
+            $order = Order::create(['created_at' => Carbon::now()->subDays(rand(1, 30)) ]);
             $cart->complete($order, $customer);
 
             $order->shipping_address = [
