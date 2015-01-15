@@ -20,7 +20,6 @@ class CreateCouponsTable extends Migration
             $table->decimal('amount', 10, 2)->unsigned()->default(0);
             $table->integer('limit')->unsigned()->default(0);
             $table->boolean('is_percentage')->unsigned()->default(0);
-            $table->boolean('is_freeshipping')->unsigned()->default(0);
             $table->timestamps();
         });
     }
