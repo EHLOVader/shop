@@ -208,7 +208,10 @@ class HeatMap extends ReportWidgetBase
         }
 
         // Calculate the legend
-        $step = ceil(max($subDomainData) / 5);
+        $step = count($subDomainData) > 0
+            ? ceil(max($subDomainData) / 5)
+            : 1;
+
         $legend = [];
         for ($i = 1; $i <= 4; $i++)
             $legend[] = $step * $i;
