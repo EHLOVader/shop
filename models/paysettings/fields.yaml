@@ -14,19 +14,23 @@ fields:
         comment: Symbol representing the currency ($, €, £, etc...)
         span: right
 
-    paypal_client_id:
-        label: PayPal Client ID
+    paypal_express_username:
+        label: PayPal Express API Username
         span: left
 
-    paypal_secret:
-        label: PayPal Secret
+    paypal_express_password:
+        label: PayPal Express API Password
         span: right
 
-    paypal_mode:
-        label: PayPal Mode
+    paypal_express_signature:
+        label: PayPal Express API Signature
         span: left
+
+    paypal_express_sandbox:
+        label: PayPal API Mode
+        span: right
         type: dropdown
         options:
-            live: Live
-            sandbox: Sandbox
-        default: life
+            0: Live
+            1: Sandbox
+        default: live

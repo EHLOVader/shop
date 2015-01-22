@@ -10,6 +10,6 @@
         }
     ],
     "require": {
-        "paypal/rest-api-sdk-php": "0.14.2"
+        "omnipay/paypal": "~2.0"
     }
 }

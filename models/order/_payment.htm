@@ -1,9 +1,9 @@
 <?php
-if ($record->service == 'paypal') {
+if ($record->gateway == 'PayPal_Express') {
     ?>
     <a class="list-link"
-        href="https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=<?= $record->payment_code ?>">
-        <i class="payment-icon icon-cc-paypal"></i><?= $record->payment_code ?>
+        href="https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=<?= $record->gateway_code ?>">
+        <i class="payment-icon icon-cc-paypal"></i><?= $record->gateway_code ?>
     </a>
     <?php
 }

@@ -166,20 +166,23 @@ class TempSeeder extends Seeder {
                 'last_name' => $last,
                 'email' => strtolower("$first.$last@example.com")
             ]);
-            $order = Order::create(['created_at' => Carbon::now()->subDays(rand(1, 30)) ]);
-            $cart->complete($order, $customer);
+            $order = Order::create(['created_at' => Carbon::now()->subDays(rand(1, 50)) ]);
+            $order->customer_id = $customer->id;
+            $order->cart_id = $cart->id;
+            $order->amount = $cart->total;
+            $cart->markAsComplete($order);
 
             $order->shipping_address = [
-                'recipient_name' => "$first $last",
-                'line1' => '123 Foo Street',
+                'first_name' => $first,
+                'last_name' => $last,
+                'address1' => '123 Foo Street',
                 'city' => 'Beverly Hills',
                 'state' => 'CA',
-                'postal_code' => '90210',
-                'country_code' => 'US'
+                'postcode' => '90210',
+                'country' => 'US'
             ];
-            $order->payment_id = '12345';
-            $order->service = 'paypal';
-            $order->payment_code = 'FAKE-PAYPAL-ID';
+            $order->gateway = 'PayPal_Express';
+            $order->gateway_code = 'FAKE-PAYPAL-ID';
             $order->save();
         }
         

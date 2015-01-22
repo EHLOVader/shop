@@ -70,6 +70,30 @@ trait CartTrait
     }
 
     /**
+     * Returns the full cart with it's relationships
+     * @return  Bedard\Shop\Models\Cart
+     */
+    public function loadDetailedCart()
+    {
+        if (!$cookie = Cookie::get('bedard_shop_cart'))
+            return FALSE;
+
+        $cart = CartModel::where('key', $cookie['key'])
+            ->whereNull('order_id')
+            ->with('items.inventory.product.discounts')
+            ->with('items.inventory.product.categories.discounts')
+            ->with(['items' => function($items) {
+                $items->inCart();
+            }])
+            ->find($cookie['id']);
+
+        if ($cart && !is_null($cart->coupon_id))
+            $cart->load('coupon');
+
+        return $cart;
+    }
+
+    /**
      * Refresh the cart cookie
      */
     private function refreshCartCookie()
@@ -87,14 +111,13 @@ trait CartTrait
      */
     private function restartCheckoutProcess()
     {
-        // Forget the shipping rates
-        Session::forget('bedard_shop_shipping');
-
-        // Kill any orders that were started
-        $delete = DB::table('bedard_shop_orders')
-            ->where('is_complete', 0)
-            ->where('cart_id', $this->cart->id)
-            ->delete();
+        if (Session::get('bedard_shop_order')) {
+            Session::forget('bedard_shop_order');
+            $delete = DB::table('bedard_shop_orders')
+                ->where('is_complete', 0)
+                ->where('cart_id', $this->cart->id)
+                ->delete();
+        }
     }
 
 }

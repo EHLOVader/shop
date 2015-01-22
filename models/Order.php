@@ -23,22 +23,21 @@ class Order extends Model
      */
     protected $fillable = [
         'cart_id',
-        'service',
-        'payment_code',
-        'payment_id',
+        'customer_id',
+        'gateway',
+        'gateway_code',
         'hash',
         'shipping_address',
         'shipping_cost',
-        'shipping_method'
+        'shipping_method',
+        'amount'
     ];
 
     /**
      * @var array Relations
      */
     public $belongsTo = [
-        'customer' => ['Bedard\Shop\Models\Customer', 'table' => 'bedard_shop_customers']
-    ];
-    public $hasOne = [
+        'customer' => ['Bedard\Shop\Models\Customer', 'table' => 'bedard_shop_customers'],
         'cart' => ['Bedard\Shop\Models\Cart', 'table' => 'bedard_shop_carts']
     ];
 

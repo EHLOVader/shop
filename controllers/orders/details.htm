@@ -30,10 +30,10 @@
                 <td>Payment</td>
                 <td>
                     <?php
-                    if ($order->service == 'paypal') {
+                    if ($order->gateway == 'PayPal_Express') {
                         ?>
-                        <a href="https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=<?= $order->payment_code ?>">
-                            <i class="payment-icon icon-cc-paypal"></i><?= $order->payment_code ?>
+                        <a href="https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=<?= $order->gateway_code ?>">
+                            <i class="payment-icon icon-cc-paypal"></i><?= $order->gateway_code ?>
                         </a>
                         <?php
                     }
@@ -43,15 +43,21 @@
             <tr>
                 <td>Address</td>
                 <td>
-                    <?php if (isset($order->shipping_address['recipient_name'])): ?>
-                        <div><?= $order->shipping_address['recipient_name'] ?></div>
-                    <?php endif; ?>
-                    <?php if (isset($order->shipping_address['line1'])) echo '<div>'.$order->shipping_address['line1'].'</div>'; ?>
-                    <?php if (isset($order->shipping_address['line2'])) echo '<div>'.$order->shipping_address['line2'].'</div>'; ?>
+                    <div>
+                        <?php
+                        if (isset($order->shipping_address['first_name']))
+                            echo $order->shipping_address['first_name'].' ';
+
+                        if (isset($order->shipping_address['last_name']))
+                            echo $order->shipping_address['last_name'];
+                        ?>
+                    </div>
+                    <?php if (isset($order->shipping_address['address1'])) echo '<div>'.$order->shipping_address['address1'].'</div>'; ?>
+                    <?php if (isset($order->shipping_address['address2'])) echo '<div>'.$order->shipping_address['address2'].'</div>'; ?>
                     <div>
                         <?php if (isset($order->shipping_address['city'])) echo $order->shipping_address['city']; ?>
                         <?php if (isset($order->shipping_address['state'])) echo $order->shipping_address['state']; ?>,
-                        <?php if (isset($order->shipping_address['postal_code'])) echo $order->shipping_address['postal_code']; ?>
+                        <?php if (isset($order->shipping_address['postcode'])) echo $order->shipping_address['postcode']; ?>
                     </div>
                     <?php if (isset($order->shipping_address['country'])): ?>
                         <div><?= $order->shipping_address['country'] ?></div>

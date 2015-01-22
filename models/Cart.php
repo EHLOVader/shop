@@ -2,8 +2,10 @@
 
 use Bedard\Shop\Models\Customer;
 use Bedard\Shop\Models\Order;
+use Cookie;
 use DB;
 use Model;
+use Session;
 
 /**
  * Cart Model
@@ -78,34 +80,24 @@ class Cart extends Model
     }
 
     /**
-     * Marks a shopping cart as complete, and updates item inventories
+     * Completes a shopping cart
+     * @param   Order   $order
      */
-    public function complete(Order $order, Customer $customer)
+    public function markAsComplete(Order $order)
     {
+        $this->load('items.inventory');
         foreach ($this->items as $item) {
-            // Update the inventory quantity
             $item->inventory->quantity -= $item->quantity;
             $item->inventory->save();
-
-            // Backup the cart item
-            $item->backup_product = $item->inventory->product->toArray();
-            $item->backup_inventory = $item->inventory->toArray();
-            $item->backup_price = $item->price;
-            $item->backup_full_price = $item->fullPrice;
-            $item->save();
         }
 
-        // Update the order
-        $order->amount = $this->total;
-        $order->customer_id = $customer->id;
-        $order->is_complete = TRUE;
+        $order->is_complete = true;
         $order->save();
 
-        // Attach the order and see if a coupon can be used
         $this->order_id = $order->id;
-        if (!$this->couponIsApplied)
-            $this->coupon_id = NULL;
         $this->save();
+
+        Session::forget('bedard_shop_order');
     }
 
     /**
