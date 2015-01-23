@@ -24,7 +24,7 @@ class Cart extends ComponentBase
     public $totalBeforeCoupon;  // string (numeric)
     public $fullTotal;          // string (numeric)
     public $isDiscounted;       // boolean
-    public $isEmpty = TRUE;     // boolean
+    public $isEmpty = true;     // boolean
     public $itemCount = 0;      // integer
     public $hasCoupon;          // boolean
     public $couponIsApplied;    // boolean
@@ -123,29 +123,34 @@ class Cart extends ComponentBase
         $quantity = post('bedard_shop_quantity') ?: 1;
         
         // Load the inventory
-        $inventory = $this->loadInventory($inventoryId, $slug);
-
-        // If no inventory was found, send back a failure message
-        if (!$inventory)
-            return $this->response('Inventory not found', FALSE);
+        if (!$inventory = $this->loadInventory($inventoryId, $slug))
+            return $this->failedResponse('Inventory not found.');
 
         // FirstOrCreate the cart item, and add the quantity
-        $cartItem = CartItem::firstOrCreate([
+        $cartItem = CartItem::firstOrNew([
             'cart_id' => $this->cart->id,
             'inventory_id' => $inventory->id
         ]);
-        $cartItem->quantity += $quantity;
 
-        // Attempt to save our results
-        if (!$cartItem->save())
-            return $this->response('Failed to save cart item', FALSE);
+        if ($cartItem->quantity >= $inventory->quantity) {
+            $this->itemCount = CartItem::where('cart_id', $this->cart->id)->sum('quantity');
+            $this->isEmpty = $this->itemCount == 0;
+            return $this->failedResponse('All available inventory is already in your cart.');
+        }
+
+        // Update and save the cart item quantity
+        $cartItem->quantity += $quantity;
+        if (!$cartItem->save()) {
+            $this->itemCount = CartItem::where('cart_id', $this->cart->id)->sum('quantity');
+            $this->isEmpty = $this->itemCount == 0;
+            return $this->failedResponse('Failed to save cart item.');
+        }
 
         // Restart the checkout process
         $this->restartCheckoutProcess();
 
         // Refresh the item count, and send back a response
-        $this->itemCount = CartItem::where('cart_id', $this->cart->id)
-            ->sum('quantity');
+        $this->itemCount = CartItem::where('cart_id', $this->cart->id)->sum('quantity');
         $this->isEmpty = $this->itemCount == 0;
         return $this->response('Product added to cart');
     }
@@ -158,19 +163,18 @@ class Cart extends ComponentBase
     {
         // Make sure we have a cart loaded
         if (!$this->cart)
-            return $this->response('Cart not found', FALSE);
+            return $this->failedResponse('Cart not found.');
 
         // Load the CartItem ID
         if (!$itemId = post('bedard_shop_item_id'))
-            return $this->response('Missing "bedard_shop_item_id"', FALSE);
+            return $this->failedResponse('Missing "bedard_shop_item_id".');
 
         // Find the item being removed
-        $item = CartItem::where('cart_id', $this->cart->id)
-            ->find($itemId);
+        $item = CartItem::where('cart_id', $this->cart->id)->find($itemId);
 
         // If the item wasn't found, send back a failure message
         if (!$item)
-            return $this->response('Item not found', FALSE);
+            return $this->failedResponse('Item not found');
 
         // Cart items are never fully deleted, instead just set the quantity
         // to zero. This way we have a record of what was "almost bought".
@@ -178,15 +182,15 @@ class Cart extends ComponentBase
 
         // Attempt to save the item
         if (!$item->save())
-            return $this->response('Failed to delete item', FALSE);
+            return $this->failedResponse('Failed to delete item');
 
         // Restart the checkout process
         $this->restartCheckoutProcess();
 
         // Refresh the cart, and send back a success message
-        $this->loadCart(TRUE);
+        $this->loadCart(true);
         $this->storeCartValues();
-        return $this->response('Item deleted');
+        return $this->response('Item successfully removed.');
     }
 
     /**
@@ -196,7 +200,7 @@ class Cart extends ComponentBase
     {
         // Make sure we have a cart loaded
         if (!$this->cart)
-            return $this->response('Cart not found', FALSE);
+            return $this->failedResponse('Cart not found.');
 
         // Load the cart items, and the desired quantities
         $this->cart->load('items.inventory');
@@ -211,9 +215,7 @@ class Cart extends ComponentBase
 
         // Check if a coupon code is being applied
         if ($couponCode = post('bedard_shop_coupon')) {
-            $coupon = Coupon::where('name', $couponCode)
-                ->isActive()
-                ->first();
+            $coupon = Coupon::where('name', $couponCode)->isActive()->first();
             if ($coupon)
                 $this->cart->coupon()->associate($coupon);
         }
@@ -221,7 +223,7 @@ class Cart extends ComponentBase
         // Save the cart, fix the quantities, and update cart items
         $this->cart->push();
         $fixedQuantities = $this->cart->fixQuantities();
-        $this->loadCart(TRUE);
+        $this->loadCart(true);
         $this->storeCartValues();
 
         // Restart the checkout process
@@ -229,13 +231,12 @@ class Cart extends ComponentBase
 
         // Coupon not found
         if ($couponCode && !$coupon)
-            return $this->response('Coupon not found', FALSE);
+            return $this->failedResponse('Coupon not found.');
 
         elseif ($fixedQuantities)
-            return $this->response('Fixed quantities', FALSE);
+            return $this->failedResponse('Item quantities fixed.');
 
-        else
-            return $this->response('Cart updated');
+        return $this->response('Cart updated.');
     }
 
     /**
@@ -244,16 +245,16 @@ class Cart extends ComponentBase
     public function onRemoveCoupon()
     {
         if (!$this->cart)
-            return $this->response('Cart not found', FALSE);
+            return $this->failedResponse('Cart not found.');
 
         if (!$this->cart->coupon_id)
-            return $this->response('No coupon to remove', FALSE);
+            return $this->failedResponse('No coupon to remove.');
 
-        $this->cart->coupon_id = NULL;
+        $this->cart->coupon_id = null;
         $this->cart->save();
 
-        $this->loadCart(TRUE);
+        $this->loadCart(true);
         $this->storeCartValues();
-        return $this->response('Cart updated');
+        return $this->response('Cart updated.');
     }
 }

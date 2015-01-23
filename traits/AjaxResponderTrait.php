@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Traits;
 
+use Response;
 use Request;
 
 trait AjaxResponderTrait
@@ -16,21 +17,42 @@ trait AjaxResponderTrait
     }
 
     /**
-     * Response builder
-     * @param   string  $message    The message being sent back to the page
-     * @param   boolean $result     True / false on if the request was ok
-     * @param   boolean $error      Sets a 406 status code if something unexpected happened
+     * Returns a response message
+     * @param   string  $message
+     * @return  array
      */
-    private function response($message, $success = TRUE, $error = FALSE)
+    private function response($message)
     {
-        // Set the response message and status
-        $response['message'] = $message;
-        $response['success'] = $success;
+        return [
+            'message' => $message
+        ];
+    }
 
-        // If we have a actual error, set the status code to 406
-        if ($error) $this->setStatusCode(406);
-
-        return $response;
+    /**
+     * Returns a "smart error" repsonse;
+     * @param   string  $message
+     * @return  array
+     */
+    private function failedResponse($message)
+    {
+        $this->setStatusCode(406);
+        return $this->response($message);
     }
 
 }
+
+// <daftspunk> scottbedard: Smart error is easy, just return error 406
+// <kaybee> lol
+// <daftspunk> return Response::make($responseContents, 406);
+// <daftspunk> chewyknows: It is executed after, as late as possible
+// <scottbedard> Then i can catch that with data-request-error, correct?
+// <daftspunk> OctoberFan: Try Search::make()
+// <daftspunk> scottbedard: I *think* so yeah
+// <scottbedard> and can I pass an error message along with it? so that I can respond differently based on what went wrong?
+// <OctoberFan> ... rage lol that works
+// <OctoberFan> daftspunk ty
+// <scottbedard> I know how to pass messages to the success handler, but I can't figure out how to pass them to the error handler
+// <daftspunk> scottbedard: Yes, via $responseContents['X_OCTOBER_ERROR_MESSAGE'] = "Doodie";
+// <scottbedard> Ahh, perfect
+// <scottbedard> thank you dafts :)
+// <daftspunk> Welcome
