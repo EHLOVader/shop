@@ -94,6 +94,14 @@ class Cart extends Model
         $order->is_complete = true;
         $order->save();
 
+        if (!$this->couponIsApplied || !isset($this->coupon->name))
+            $this->coupon_id = null;
+        else
+            $this->backup_couponName = $this->coupon->name;
+
+        $this->backup_total = $this->total;
+        $this->backup_totalBeforecoupon = $this->totalBeforeCoupon;
+        $this->backup_fullTotal = $this->fullTotal;
         $this->order_id = $order->id;
         $this->save();
 
@@ -107,6 +115,15 @@ class Cart extends Model
     public function getCouponIsAppliedAttribute()
     {
         return $this->totalBeforeCoupon > $this->total;
+    }
+
+    /**
+     * Returns the value of the applied
+     * @return  float
+     */
+    public function getCouponValueAttribute()
+    {
+        return $this->total - $this->totalBeforeCoupon;
     }
 
     /**
@@ -124,6 +141,9 @@ class Cart extends Model
      */
     public function getFullTotalAttribute()
     {
+        if (!is_null($this->attributes['backup_fullTotal']))
+            return $this->attributes['backup_fullTotal'];
+        
         $fullTotal = 0;
         foreach ($this->items as $item)
             $fullTotal += $item->quantity * $item->fullPrice;
@@ -136,6 +156,9 @@ class Cart extends Model
      */
     public function getTotalAttribute()
     {
+        if (!is_null($this->attributes['backup_total']))
+            return $this->attributes['backup_total'];
+        
         $total = $this->totalBeforeCoupon;
         if (!empty($this->attributes['coupon_id']) && $this->coupon && $this->coupon->cart_value <= $total) {
             $total -= $this->coupon->is_percentage
@@ -152,6 +175,9 @@ class Cart extends Model
      */
     public function getTotalBeforeCouponAttribute()
     {
+        if (!is_null($this->attributes['backup_totalBeforeCoupon']))
+            return $this->attributes['backup_totalBeforeCoupon'];
+
         $totalBeforeCoupon = 0;
         foreach ($this->items as $item)
             $totalBeforeCoupon += $item->quantity * $item->price;

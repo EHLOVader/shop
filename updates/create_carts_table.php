@@ -15,7 +15,10 @@ class CreateCartsTable extends Migration
             $table->string('key', 60)->nullable();
             $table->integer('coupon_id')->nullable()->unsigned();
             $table->integer('order_id')->nullable()->unsigned();
-            $table->string('note')->nullable();
+            $table->decimal('backup_total', 10, 2)->unsigned()->nullable();
+            $table->decimal('backup_totalBeforeCoupon', 10, 2)->unsigned()->nullable();
+            $table->decimal('backup_fullTotal', 10, 2)->unsigned()->nullable();
+            $table->string('backup_couponName')->nullable();
             $table->timestamps();
         });
     }

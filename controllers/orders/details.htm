@@ -24,7 +24,25 @@
             </tr>
             <tr>
                 <td>Amount</td>
-                <td><?= $currency.$order->amount ?></td>
+                <td>
+                    <?php
+                    if ($order->cart->total < $order->cart->totalBeforeCoupon) {
+                        echo '<strike>'.$currency.number_format($order->cart->totalBeforeCoupon, 2).'</strike>&nbsp;'.
+                             '<span class="green">'.$currency.number_format($order->cart->total, 2).'</span>';
+                    } else {
+                        echo $currency.number_format($order->cart->total, 2);
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Coupon</td>
+                <td>
+                    <?php
+                    if (!is_null($order->cart->backup_couponName))
+                        echo $order->cart->backup_couponName;
+                    ?>
+                </td>
             </tr>
             <tr>
                 <td>Payment</td>
