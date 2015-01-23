@@ -150,10 +150,10 @@ trait CheckoutTrait {
         $items = [];
         foreach ($cart->items as $item) {
             $items[] = [
-                'name'      => $item->productName,
-                'description' => $item->inventoryName,
-                'quantity'  => $item->quantity,
-                'price'     => number_format($item->price, 2)
+                'name'          => $item->productName,
+                'description'   => $item->inventoryName,
+                'quantity'      => $item->quantity,
+                'price'         => number_format($item->price, 2)
             ];
 
             // Backup the item
@@ -162,6 +162,15 @@ trait CheckoutTrait {
             $item->backup_inventory = $item->inventoryName;
             $item->backup_product = $item->productName;
             $item->save();
+        }
+
+        // Apply the promo code if there is one
+        if ($cart->couponIsApplied) {
+            $items[] = [
+                'name'  => 'Coupon: '.$cart->coupon->name,
+                'quantity'      => 1,
+                'price'         => $cart->couponValue
+            ];
         }
 
         return $items;
